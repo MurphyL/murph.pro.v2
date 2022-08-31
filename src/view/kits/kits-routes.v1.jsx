@@ -9,6 +9,7 @@ import JSON2X from "./json/sidebar/json-to-x/json-to-x.module";
 export default function KitsRoutes() {
     return (
         <Routes>
+            <Route index={true} element={<div>Kits</div>} />
             <Route path="/json/*" element={<JSONKitsLayout />}>
                 <Route index={true} element={<JSONKitsRoot />} />
                 <Route path="path-query" element={<JSONPathQuery />} />

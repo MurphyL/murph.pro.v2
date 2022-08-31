@@ -11,12 +11,16 @@
         "axios": "^0.27.2",
         "clsx": "^1.2.1",
         "dayjs": "^1.11.5",
+        "js-yaml": "^4.1.0",
+        "jsonpath-plus-browser": "^5.0.6",
         "monaco-editor": "^0.34.0",
         "normalize.css": "^8.0.1",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-router-dom": "^6.3.0",
-        "react-split": "^2.0.14"
+        "react-split": "^2.0.14",
+        "react-syntax-highlighter": "^15.5.0",
+        "sql-ddl-to-json-schema": "^4.0.6"
     },
     "devDependencies": {
         "@vitejs/plugin-react": "^2.0.1",
