@@ -1,0 +1,18 @@
+.root.layout-x {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+.root :global(.gutter) {
+    /* border-left: 3px solid var(--border-color); */
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+.root.layout-x :global(.gutter) {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+    cursor: col-resize;
+    border-left: 1px solid rgba(240, 240, 240, 0.6);
+    border-right: 1px solid rgba(240, 240, 240, 0.6);
+}

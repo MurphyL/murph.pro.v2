@@ -1,0 +1,4 @@
+.root {
+    padding: 3px;
+    height: calc(100% - 3px * 2);
+}
