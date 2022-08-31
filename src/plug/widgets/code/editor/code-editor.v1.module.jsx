@@ -52,4 +52,6 @@ const CodeEditor = React.forwardRef(function (props, ref) {
     )
 });
 
+CodeEditor.displayName = 'CodeEditor';
+
 export default CodeEditor;
