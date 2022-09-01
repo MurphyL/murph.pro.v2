@@ -6,6 +6,8 @@ import JSONKitsRoot from "./json/sidebar/json-kits-base/json-kits-base.module";
 import JSONPathQuery from "./json/sidebar/json-path-query/json-path-query.module";
 import JSON2X from "./json/sidebar/json-to-x/json-to-x.module";
 
+import DataXOptionsMaker from "./datax/datax-options.v1.module";
+
 import SQLKitsLayout from "./sql/layout/sql-kits-layout.v1.module";
 import MySQL_DDL2X from "./sql/sidebar/mysql-ddl2x/mysql-ddl2x.module";
 
@@ -21,6 +23,9 @@ export default function KitsRoutes() {
             </Route>
             <Route path="/sql" element={<SQLKitsLayout />}>
                 <Route index={true} element={<div>SQL Kits</div>} />
+            </Route>
+            <Route path="/datax/*">
+                <Route path="options" element={<DataXOptionsMaker />} />
             </Route>
             <Route path="/mysql/*">
                 <Route path="ddl" element={<MySQL_DDL2X />} />
