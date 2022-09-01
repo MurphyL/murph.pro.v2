@@ -6,7 +6,7 @@ import JSONKitsRoot from "./json/sidebar/json-kits-base/json-kits-base.module";
 import JSONPathQuery from "./json/sidebar/json-path-query/json-path-query.module";
 import JSON2X from "./json/sidebar/json-to-x/json-to-x.module";
 
-import DataXOptionsMaker from "./datax/datax-options.v1.module";
+import DataXOptionsMaker from "./datax/datax-options.module";
 
 import SQLKitsLayout from "./sql/layout/sql-kits-layout.v1.module";
 import MySQL_DDL2X from "./sql/sidebar/mysql-ddl2x/mysql-ddl2x.module";

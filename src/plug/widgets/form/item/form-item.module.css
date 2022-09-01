@@ -1,0 +1,11 @@
+.root {
+    display: block;
+}
+
+.root .label {
+    user-select: none;
+}
+
+.root .label::after {
+    content: '：';
+}
