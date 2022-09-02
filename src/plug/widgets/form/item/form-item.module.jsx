@@ -5,6 +5,7 @@ import styles from './form-item.module.css';
 const createFormInput = (type, id, name, extra) => {
     switch (type) {
         case 'text':
+        case 'number':
             return React.createElement('input', { id, name, type });
         case 'select':
             const options = Object.entries(extra.options || {})

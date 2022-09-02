@@ -6,17 +6,16 @@ import styles from './code-editor.v1.module.css';
 
 const CodeEditor = React.forwardRef(function (props, ref) {
     const id = React.useId();
-    const instanceId = React.useMemo(() => props.id || id, [props.id, id]);
     const [instance, setInstance] = React.useState(null);
     React.useEffect(() => () => instance && instance.dispose(), [instance]);
     React.useEffect(() => {
-        const element = document.getElementById(instanceId);
+        const element = document.getElementById(id);
         if (instance || element.dataset.modeId) {
             return;
         }
         const { showLineNumber = true } = props
         const editor = monaco.editor.create(element, {
-            id: instanceId,
+            id,
             value: props.defaultValue || '',
             language: props.language || 'txt',
             lineNumbers: showLineNumber ? 'on' : 'off',
@@ -38,7 +37,7 @@ const CodeEditor = React.forwardRef(function (props, ref) {
             });
         }
         setInstance(editor);
-    }, [instanceId, instance, props]);
+    }, [id, instance, props]);
     React.useImperativeHandle(ref, () => ({
         getValue() {
             return instance ? instance.getValue() : '';
@@ -48,7 +47,7 @@ const CodeEditor = React.forwardRef(function (props, ref) {
         }
     }));
     return (
-        <div id={instanceId} className={styles.root}></div>
+        <div id={id} className={styles.root} />
     )
 });
 
