@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { useDocumentTitle } from '/src/plug/hooks';
 
@@ -93,7 +93,6 @@ const MODE_KITS = {
 
 export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' }) {
     useDocumentTitle('文本工具集');
-    const params = useParams();
     const navigate = useNavigate();
     const editorRef = React.useRef(null);
     const [content, setContent] = React.useState(null);
@@ -105,7 +104,7 @@ export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' 
         return MODE_KITS[language];
     }, [language]);
     const changeViewState = React.useCallback((path, payload) => {
-        return navigate(path, { replace: true, state: { origin: payload || content } });
+        return navigate(path, { state: { origin: payload || content } });
     }, [navigate, content]);
     const changeEditorLanguage = React.useCallback((newLanguage) => {
         if (editorRef && editorRef.current) {
@@ -139,12 +138,10 @@ export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' 
                 <Group>
                     <FormItem label="切换语言" type="select" options={languages} value={language} onChange={(e) => changeEditorLanguage(e.target.value)} />
                 </Group>
-                {params['*'] === 'text' ? (
-                    <Group title="基本操作">
-                        <button>导入</button>
-                        <button>比较</button>
-                    </Group>
-                ) : null}
+                <Group title="基本操作">
+                    <button>导入</button>
+                    <button>比较</button>
+                </Group>
                 {Array.isArray(referenceKits) ? (
                     <Group title="相关操作">
                         {referenceKits.map((kit, index) => (
