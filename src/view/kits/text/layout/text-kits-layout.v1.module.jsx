@@ -102,10 +102,8 @@ export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' 
         if (editorRef && editorRef.current) {
             setLanguage(newLanguage);
             editorRef.current.setLanguage(newLanguage);
-            if (REDIRECT_MODES[newLanguage]) {
-                const path = REDIRECT_MODES[newLanguage];
-                navigate(path, { replace: true });
-            }
+            const target = REDIRECT_MODES[newLanguage] ? REDIRECT_MODES[newLanguage] : REDIRECT_MODES['plaintext'];
+            navigate(target, { replace: true });
         }
     }, [navigate, setLanguage, editorRef]);
     const replaceEditorContent = React.useCallback((language, source) => {
@@ -156,6 +154,7 @@ export function TextKitsHome() {
             </Group>
             <Group title="基本操作">
                 <button>导入</button>
+                <button>比较</button>
             </Group>
             {Array.isArray(referenceKits) ? (
                 <Group title="相关操作">

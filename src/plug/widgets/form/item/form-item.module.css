@@ -1,4 +1,5 @@
 .root {
+    --width: 180px;
     display: block;
     margin: 5px;
 }
@@ -9,4 +10,9 @@
 
 .root .label::after {
     content: '：';
+}
+
+.root .select {
+    width: var(--width);
+    outline: none;
 }
