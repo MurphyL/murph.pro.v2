@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Outlet, useNavigate, useOutletContext } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { useDocumentTitle } from '/src/plug/hooks';
 
@@ -92,6 +92,8 @@ const MODE_KITS = {
 };
 
 export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' }) {
+    useDocumentTitle('文本工具集');
+    const params = useParams();
     const navigate = useNavigate();
     const editorRef = React.useRef(null);
     const [content, setContent] = React.useState(null);
@@ -106,19 +108,18 @@ export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' 
         return navigate(path, { replace: true, state: { origin: payload || content } });
     }, [navigate, content]);
     const changeEditorLanguage = React.useCallback((newLanguage) => {
-        console.log(newLanguage);
-        if (REDIRECT_MODES[newLanguage]) {
-            return changeViewState(REDIRECT_MODES[newLanguage]);
-        }
         if (editorRef && editorRef.current) {
             setLanguage(newLanguage);
             editorRef.current.setLanguage(newLanguage);
         }
-    }, [navigate, setLanguage, editorRef]);
+        if (REDIRECT_MODES[newLanguage]) {
+            return changeViewState(REDIRECT_MODES[newLanguage]);
+        }
+    }, [navigate, content, setLanguage, editorRef]);
     const changeEditorContent = React.useCallback((source, newLanguage) => {
         if (editorRef && editorRef.current) {
-            changeEditorLanguage(newLanguage);
             editorRef.current.setValue(source);
+            changeEditorLanguage(newLanguage);
         }
     }, [setLanguage, editorRef]);
     const doCallback = React.useCallback((kit) => {
@@ -138,10 +139,12 @@ export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' 
                 <Group>
                     <FormItem label="切换语言" type="select" options={languages} value={language} onChange={(e) => changeEditorLanguage(e.target.value)} />
                 </Group>
-                <Group title="基本操作">
-                    <button>导入</button>
-                    <button>比较</button>
-                </Group>
+                {params['*'] === 'text' ? (
+                    <Group title="基本操作">
+                        <button>导入</button>
+                        <button>比较</button>
+                    </Group>
+                ) : null}
                 {Array.isArray(referenceKits) ? (
                     <Group title="相关操作">
                         {referenceKits.map((kit, index) => (

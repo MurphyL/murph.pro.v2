@@ -1,14 +1,9 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import JSONKitsLayout, { JSONKitsHome } from "./json/layout/json-kits-layout.v1.module";
-
-// import JSONKitsRoot from "./json/outlet/json-kits-base/json-kits-base.module";
 import JSONPathQuery from "./json/outlet/json-path-query/json-path-query.module";
-import JSON2X from "./json/outlet/json-to-x/json-to-x.module";
 
 import DataXOptionsMaker from "./datax/datax-options.module";
 
-import SQLKitsLayout from "./sql/layout/sql-kits-layout.v1.module";
 import MySQLDDL2X from "./sql/outlet/mysql-ddl2x/mysql-ddl2x.module";
 
 import HttpKitsLayout from "./http/layout/http-kits.layout.module";
@@ -29,9 +24,7 @@ export default function KitsRoutes() {
             <Route path="/http/*" element={<HttpKitsLayout />}>
                 <Route path="rest-template" element={<RestTemplate />} />
             </Route>
-            <Route path="/sql" element={<SQLKitsLayout />}>
-                <Route index={true} element={<div>SQL Kits</div>} />
-            </Route>
+            <Route path="/sql" element={<TextKitsLayout language="sql" />} />
             <Route path="/text" element={<TextKitsLayout />} />
             <Route path="/datax/*">
                 <Route path="options" element={<DataXOptionsMaker />} />
