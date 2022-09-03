@@ -19,7 +19,7 @@ const createFormInput = (type, id, className, name, extra) => {
         case 'select':
             const options = Object.entries(extra.options || {})
                 .map(([key, value], index) => (
-                    <option key={index} value={value}>{key}</option>
+                    <option key={index} value={key}>{value}</option>
                 ));
             return React.createElement('select', props, options)
     }

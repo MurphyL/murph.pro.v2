@@ -16,14 +16,14 @@ import RestTemplate from "./http/outlet/rest-template/rest-template.v1.module";
 
 import ElasticSearchLayout from "./elasticsearch/layout/es-layout.v1.module";
 
-import TextKitsLayout, { TextKitsHome } from "./text/layout/text-kits-layout.v1.module";
+import TextKitsLayout from "./text/layout/text-kits-layout.v1.module";
 
 export default function KitsRoutes() {
     return (
         <Routes>
             <Route index={true} element={<div>Kits</div>} />
-            <Route path="/json" element={<TextKitsLayout language="json" />}>
-                <Route index={true} element={<TextKitsHome />} />
+            <Route path="/json">
+                <Route index={true} element={<TextKitsLayout language="json" />} />
                 <Route path="path-query" element={<JSONPathQuery />} />
             </Route>
             <Route path="/http/*" element={<HttpKitsLayout />}>
@@ -32,9 +32,7 @@ export default function KitsRoutes() {
             <Route path="/sql" element={<SQLKitsLayout />}>
                 <Route index={true} element={<div>SQL Kits</div>} />
             </Route>
-            <Route path="/text" element={<TextKitsLayout />}>
-                <Route index={true} element={<TextKitsHome />} />
-            </Route>
+            <Route path="/text" element={<TextKitsLayout />} />
             <Route path="/datax/*">
                 <Route path="options" element={<DataXOptionsMaker />} />
             </Route>

@@ -16,7 +16,7 @@ import * as JSON_KITS from '/src/view/kits/json/json-kits.v1';
 
 import styles from './text-kits-layout.v1.module.css';
 
-const languages = Object.fromEntries(COSUTOM_MODES.map(item => ([item.aliases[0], item.id])));
+const languages = Object.fromEntries(COSUTOM_MODES.map(item => ([item.id, item.aliases[0]])));
 
 const REDIRECT_MODES = {
     sql: '/kits/sql',
@@ -29,66 +29,64 @@ const REDIRECT_MODES = {
 const MODE_KITS = {
     ini: [{
         display: '转换为 JSON',
-        action: 'CONVERT',
-        execute(replaceEditorContent, source) {
-            // JSON_KITS.fromINI(source)
-            replaceEditorContent('json', 'TODO: convert to INI')
+        action: 'CONVERTOR',
+        language: 'json',
+        convert(source) {
+            return JSON_KITS.format({ 'TODO': source });
         }
     }],
     json: [{
         display: '格式化',
-        action: 'CONVERT',
-        execute(replaceEditorContent, source) {
-            replaceEditorContent('json', JSON_KITS.format(source))
+        action: 'CONVERTOR',
+        language: 'json',
+        convert(source) {
+            return JSON_KITS.format(source)
         }
     }, {
         display: '发送到 JSONPath Query',
         action: 'PUSH_STATE',
-        execute(pushState) {
-            pushState('/kits/json/path-query', { replace: true })
-        }
+        target: '/kits/json/path-query'
     }, {
         line: true
     }, {
         display: '转换为 YAML',
-        action: 'CONVERT',
-        execute(replaceEditorContent, source) {
-            replaceEditorContent('yaml', JSON_KITS.toYAML(source))
+        action: 'CONVERTOR',
+        language: 'yaml',
+        convert(source) {
+            return JSON_KITS.toYAML(source);
         }
     }, {
         display: '转换为 XML',
-        action: 'CONVERT',
-        execute(replaceEditorContent, source) {
-            replaceEditorContent('xml', JSON_KITS.toXML(source))
+        action: 'CONVERTOR',
+        language: 'xml',
+        convert(source) {
+            return JSON_KITS.toXML(source);
         }
     }],
     mysql: [{
         display: '发送到 DDL Parser',
         action: 'PUSH_STATE',
-        target: '/kits/mysql/ddl',
-        execute(pushState) {
-            pushState('/kits/mysql/ddl', { replace: true })
-        }
+        target: '/kits/mysql/ddl'
     }],
     sql: [{
         display: '发送到 MySQL DDL',
         action: 'PUSH_STATE',
-        execute(pushState) {
-            pushState('/kits/mysql/ddl', { replace: true })
-        }
+        target: '/kits/mysql/ddl'
     }],
     xml: [{
         display: '转换为 JSON',
-        action: 'CONVERT',
-        execute(replaceEditorContent, source) {
-            replaceEditorContent('json', JSON_KITS.fromXML(source))
+        action: 'CONVERTOR',
+        language: 'json',
+        convert(source) {
+            return JSON_KITS.fromXML(source);
         }
     }],
     yaml: [{
         display: '转换为 JSON',
-        action: 'CONVERT',
-        execute(replaceEditorContent, source) {
-            replaceEditorContent('json', JSON_KITS.fromYAML(source))
+        action: 'CONVERTOR',
+        language: 'json',
+        convert(source) {
+            return JSON_KITS.fromYAML(source);
         }
     }]
 };
@@ -98,73 +96,62 @@ export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' 
     const editorRef = React.useRef(null);
     const [content, setContent] = React.useState(null);
     const [language, setLanguage] = React.useState(sourceLanguage);
-    const changeEditorLanguage = React.useCallback((newLanguage) => {
-        if (editorRef && editorRef.current) {
-            setLanguage(newLanguage);
-            editorRef.current.setLanguage(newLanguage);
-            const target = REDIRECT_MODES[newLanguage] ? REDIRECT_MODES[newLanguage] : REDIRECT_MODES['plaintext'];
-            navigate(target, { replace: true });
-        }
-    }, [navigate, setLanguage, editorRef]);
-    const replaceEditorContent = React.useCallback((language, source) => {
-        if (editorRef && editorRef.current) {
-            changeEditorLanguage(language);
-            editorRef.current.setValue(source);
-        }
-    }, [setLanguage, editorRef]);
-    return (
-        <Splitter className={styles.root} sizes={[75, 25]} minSizes={[700, 300]}>
-            <CodeEditor ref={editorRef} language={language} defaultValue={content} onValueChange={({ payload }) => setContent(payload)} />
-            <div className={styles.extra}>
-                <Outlet context={{ language, content, changeEditorLanguage, replaceEditorContent }} />
-            </div>
-        </Splitter>
-    );
-}
-
-export function TextKitsHome() {
-    useDocumentTitle('文本工具');
-    const navigate = useNavigate();
-    const { language, content, changeEditorLanguage, replaceEditorContent } = useOutletContext();
-    const changeLanguage = React.useCallback(({ target }) => {
-        changeEditorLanguage && changeEditorLanguage(target.value);
-    }, [changeEditorLanguage]);
     const referenceKits = React.useMemo(() => {
         if (!language || !MODE_KITS[language]) {
             return null;
         }
-        return MODE_KITS[language].map(item => ({
-            ...item
-        }))
+        return MODE_KITS[language];
     }, [language]);
+    const changeViewState = React.useCallback((path, payload) => {
+        return navigate(path, { replace: true, state: { origin: payload || content } });
+    }, [navigate, content]);
+    const changeEditorLanguage = React.useCallback((newLanguage) => {
+        console.log(newLanguage);
+        if (REDIRECT_MODES[newLanguage]) {
+            return changeViewState(REDIRECT_MODES[newLanguage]);
+        }
+        if (editorRef && editorRef.current) {
+            setLanguage(newLanguage);
+            editorRef.current.setLanguage(newLanguage);
+        }
+    }, [navigate, setLanguage, editorRef]);
+    const changeEditorContent = React.useCallback((source, newLanguage) => {
+        if (editorRef && editorRef.current) {
+            changeEditorLanguage(newLanguage);
+            editorRef.current.setValue(source);
+        }
+    }, [setLanguage, editorRef]);
     const doCallback = React.useCallback((kit) => {
         switch (kit.action) {
-            case 'CONVERT':
-                return kit.execute(replaceEditorContent, content);
+            case 'CONVERTOR':
+                return changeEditorContent(kit.convert(content), kit.language);
             case 'PUSH_STATE':
-                return kit.execute(navigate, content);
+                return changeViewState(kit.target, content);
             default:
                 console.log('不支持的操作', kit);
         }
-    }, [content]);
+    }, [navigate, content]);
     return (
-        <React.Fragment>
-            <Group>
-                <FormItem label="切换语言" type="select" options={languages} value={language} onChange={changeLanguage} />
-            </Group>
-            <Group title="基本操作">
-                <button>导入</button>
-                <button>比较</button>
-            </Group>
-            {Array.isArray(referenceKits) ? (
-                <Group title="相关操作">
-                    {referenceKits.map((kit, index) => (
-                        <React.Fragment key={index} >
-                            {kit.line ? (<br />) : (<button onClick={() => doCallback(kit)}>{kit.display}</button>)}
-                        </React.Fragment>
-                    ))}
+        <Splitter className={styles.root} sizes={[75, 25]} minSizes={[700, 300]}>
+            <CodeEditor ref={editorRef} language={language} value={content} onValueChange={({ payload }) => setContent(payload)} />
+            <div className={styles.extra}>
+                <Group>
+                    <FormItem label="切换语言" type="select" options={languages} value={language} onChange={(e) => changeEditorLanguage(e.target.value)} />
                 </Group>
-            ) : null}
-        </React.Fragment>
+                <Group title="基本操作">
+                    <button>导入</button>
+                    <button>比较</button>
+                </Group>
+                {Array.isArray(referenceKits) ? (
+                    <Group title="相关操作">
+                        {referenceKits.map((kit, index) => (
+                            <React.Fragment key={index} >
+                                {kit.line ? (<br />) : (<button onClick={() => doCallback(kit)}>{kit.display}</button>)}
+                            </React.Fragment>
+                        ))}
+                    </Group>
+                ) : null}
+            </div>
+        </Splitter>
     );
 }
