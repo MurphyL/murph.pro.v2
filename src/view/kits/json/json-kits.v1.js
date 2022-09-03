@@ -20,11 +20,11 @@ export const fromINI = (source) => {
 };
 
 export const fromXML = (source) => {
-    return format(x2js.xml2js(source));
+    return format(x2js.xml2js(source || ''));
 };
 
 export const toXML = (source) => {
-    return jstoxml.toXML(JSON.parse(source), { indent: INDENT_TEXT });
+    return jstoxml.toXML(JSON.parse(source), { indent: INDENT_TEXT }) || '';
 };
 
 export const fromYAML = (source) => {
@@ -32,6 +32,6 @@ export const fromYAML = (source) => {
 };
 
 export const toYAML = (source) => {
-    return YAML.dump(JSON.parse(source), { indent: INDENT_SIZE })
+    return YAML.dump(JSON.parse(source), { indent: INDENT_SIZE }) || ''
 };
 
