@@ -4,50 +4,48 @@ import * as monaco from 'monaco-editor';
 
 import styles from './code-editor.v1.module.css';
 
-const CodeEditor = React.forwardRef(function (props, ref) {
-    const id = React.useId();
+const CodeEditor = React.forwardRef(function ({ defaultValue, language, showLineNumber = true, ...props }, ref) {
+    const wrapper = React.useRef(null);
     const [instance, setInstance] = React.useState(null);
-    React.useEffect(() => () => instance && instance.dispose(), [instance]);
     React.useEffect(() => {
-        const element = document.getElementById(id);
-        if (instance || element.dataset.modeId) {
+        if (!wrapper.current || wrapper.current.dataset.modeId) {
             return;
         }
-        const { showLineNumber = true } = props
-        const editor = monaco.editor.create(element, {
-            id,
-            value: props.defaultValue || '',
-            language: props.language || 'txt',
+        const editor = monaco.editor.create(wrapper.current, {
+            value: defaultValue || '',
+            language: language || 'plaintext',
             lineNumbers: showLineNumber ? 'on' : 'off',
             multiCursorMergeOverlapping: showLineNumber,
             fontSize: 20,
             readOnly: props.readonly,
             smoothScrolling: true,
             automaticLayout: true,
-            minimap: {
-                enabled: true
-            }
         });
+        setInstance(editor);
         if (typeof props.onValueChange === 'function') {
             editor.onDidChangeModelContent(() => {
-                const content = editor.getValue();
                 props.onValueChange.call(null, {
-                    payload: content
+                    payload: editor.getValue()
                 });
             });
         }
-        setInstance(editor);
-    }, [id, instance, props]);
+    }, [defaultValue, language, showLineNumber, props, wrapper]);
+    React.useEffect(() => () => instance && instance.dispose(), [instance]);
     React.useImperativeHandle(ref, () => ({
         getValue() {
             return instance ? instance.getValue() : '';
         },
         setValue(payload) {
             instance && instance.setValue(payload)
+        },
+        setLanguage(language) {
+            const model = instance.getModel();
+            monaco.editor.setModelLanguage(model, language);
         }
     }));
+
     return (
-        <div id={id} className={styles.root} />
+        <div className={styles.root} ref={wrapper} />
     )
 });
 

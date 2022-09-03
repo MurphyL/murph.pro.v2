@@ -1,9 +1,11 @@
 import styles from './group.v1.module.css';
 
-export default function KitsSidebar({ title, children }) {
+export default function Group({ title, children }) {
     return (
         <fieldset className={styles.root}>
-            <legend className={styles.title}>{ title || '未命名分组' }</legend>
+            {title ? (
+                <legend className={styles.title}>{title}</legend>
+            ) : null}
             <div>{children}</div>
         </fieldset>
     );

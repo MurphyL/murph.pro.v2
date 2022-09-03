@@ -4,7 +4,7 @@ import Group from '/src/plug/widgets/container/group/group.v1.module';
 import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
 import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
 
-import FormItem from '../../../plug/widgets/form/item/form-item.module';
+import FormItem from '/src/plug/widgets/form/item/form-item.module';
 
 import * as JSONKits from '/src/view/kits/json/json-kits.v1';
 
