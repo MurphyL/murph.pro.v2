@@ -1,5 +1,6 @@
 .root {
-    --width: 180px;
+    --item-width: 180px;
+    --item-height: 30px;
     display: block;
     margin: 5px;
 }
@@ -12,7 +13,11 @@
     content: '：';
 }
 
+.root .item {
+    width: var(--item-width);
+    height: var(--item-height);
+}
+
 .root .select {
-    width: var(--width);
     outline: none;
 }
