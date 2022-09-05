@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { useDocumentTitle } from '/src/plug/hooks';
 
@@ -93,9 +93,10 @@ const MODE_KITS = {
 
 export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' }) {
     useDocumentTitle('文本工具集');
+    const location = useLocation();
     const navigate = useNavigate();
     const editorRef = React.useRef(null);
-    const [content, setContent] = React.useState(null);
+    const [content, setContent] = React.useState(location.state.origin || '');
     const [language, setLanguage] = React.useState(sourceLanguage);
     const referenceKits = React.useMemo(() => {
         if (!language || !MODE_KITS[language]) {
@@ -112,7 +113,7 @@ export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' 
             editorRef.current.setLanguage(newLanguage);
         }
         if (REDIRECT_MODES[newLanguage]) {
-            return changeViewState(REDIRECT_MODES[newLanguage]);
+            return changeViewState(REDIRECT_MODES[newLanguage], content);
         }
     }, [navigate, content, setLanguage, editorRef]);
     const changeEditorContent = React.useCallback((source, newLanguage) => {
@@ -133,7 +134,7 @@ export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' 
     }, [navigate, content]);
     return (
         <Splitter className={styles.root} sizes={[75, 25]} minSizes={[700, 300]}>
-            <CodeEditor ref={editorRef} language={language} value={content} onValueChange={({ payload }) => setContent(payload)} />
+            <CodeEditor ref={editorRef} language={language} defaultValue={content} onValueChange={({ payload }) => setContent(payload)} />
             <div className={styles.extra}>
                 <Group>
                     <FormItem label="切换语言" type="select" options={languages} value={language} onChange={(e) => changeEditorLanguage(e.target.value)} />

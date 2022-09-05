@@ -7,7 +7,7 @@ import RestRequestMaker from "./rest-request-maker";
 
 import styles from './rest-template.v1.module.css';
 
-const x = '{\n\t"dependencies": {\n\t\t\n\t}\n}\n';
+const x = 'POST http://cijian.us\n\n{\n\t"dependencies": {\n\t\t\n\t}\n}\n';
 
 export default function RestTemplate() {
     const onChange = React.useCallback(({ payload }) => {
