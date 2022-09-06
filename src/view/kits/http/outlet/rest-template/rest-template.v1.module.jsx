@@ -10,13 +10,14 @@ import styles from './rest-template.v1.module.css';
 const x = 'POST http://cijian.us\n\n{\n\t"dependencies": {\n\t\t\n\t}\n}\n';
 
 export default function RestTemplate() {
-    const onChange = React.useCallback(({ payload }) => {
-        console.log(payload);
+    const [payload, setPayload] = React.useState({});
+    const doRequest = React.useCallback((payload) => {
+        setPayload(payload);
     }, []);
     return (
         <Splitter sizes={[60, 40]} minSizes={[600, 400]}>
-            <RestRequestMaker className={styles.root} defaultValue={x} onValueChange={onChange} />
-            <CodeBlock dark={false} />
+            <RestRequestMaker className={styles.root} defaultValue={x} doRequest={doRequest} />
+            <CodeBlock dark={false} children={JSON.stringify(payload, null, 4)} />
         </Splitter>
     );
 }

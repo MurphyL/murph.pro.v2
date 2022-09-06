@@ -13,8 +13,26 @@ export default function RestRequestMaker(props) {
             return;
         }
         monaco.languages.register({ id: MONACO_EDITOR_LANG });
+        monaco.languages.setMonarchTokensProvider(MONACO_EDITOR_LANG, {
+            tokenizer: {
+                root: [
+                    [REST_REQUEST_RULE, 'method'],
+                ]
+            }
+        });
+        monaco.editor.defineTheme(MONACO_EDITOR_LANG, {
+            base: 'vs',
+            inherit: false,
+            rules: [
+                { token: 'method', foreground: '008800', fontStyle: 'bold' },
+            ],
+            colors: {
+                'editor.foreground': '#000000'
+            }
+        });
         const editor = monaco.editor.create(element, {
             id,
+            theme: MONACO_EDITOR_LANG,
             language: MONACO_EDITOR_LANG,
             value: props.defaultValue,
             fontSize: 16,
@@ -53,7 +71,9 @@ export default function RestRequestMaker(props) {
                     }
                 }
             }
-            console.log(request);
+            if (props.doRequest && typeof props.doRequest === 'function') {
+                props.doRequest(request);
+            }
         }, '');
         monaco.languages.registerCodeLensProvider(MONACO_EDITOR_LANG, {
             provideCodeLenses: function (model) {
@@ -90,14 +110,6 @@ export default function RestRequestMaker(props) {
                 };
             },
         });
-        if (typeof props.onValueChange === 'function') {
-            editor.onDidChangeModelContent(() => {
-                const content = editor.getValue();
-                props.onValueChange.call(null, {
-                    payload: content
-                });
-            });
-        }
     }, [id, props]);
     return (
         <div id={id} style={{ height: '100%' }} />
