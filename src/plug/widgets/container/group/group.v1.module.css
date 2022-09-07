@@ -9,3 +9,7 @@
     padding: 3px 5px;
     user-select: none;
 }
+
+.root .body button {
+    margin: 0 5px 5px 0;
+}

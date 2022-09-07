@@ -1,12 +1,13 @@
+import clsx from 'clsx';
 import styles from './group.v1.module.css';
 
-export default function Group({ title, children }) {
+export default function Group({ className, title, children }) {
     return (
-        <fieldset className={styles.root}>
+        <fieldset className={clsx(styles.root, className)}>
             {title ? (
                 <legend className={styles.title}>{title}</legend>
             ) : null}
-            <div>{children}</div>
+            <div className={styles.body}>{children}</div>
         </fieldset>
     );
 }

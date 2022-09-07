@@ -148,10 +148,10 @@ export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' 
                         <Button size='tiny'>比较</Button>
                     </Group>
                     {Array.isArray(referenceKits) ? (
-                        <Group title="相关操作">
+                        <Group title="相关操作" className={styles.kits}>
                             {referenceKits.map((kit, index) => (
                                 <React.Fragment key={index} >
-                                    {kit.line ? (<Divider />) : (<Button size='tiny' onClick={() => doCallback(kit)}>{kit.display}</Button>)}
+                                    {kit.line ? (<br />) : (<Button size='tiny' onClick={() => doCallback(kit)}>{kit.display}</Button>)}
                                 </React.Fragment>
                             ))}
                         </Group>
