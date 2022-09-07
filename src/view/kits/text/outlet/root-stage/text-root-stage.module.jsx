@@ -1,11 +1,10 @@
 import React from "react";
-import { Button, Divider, Form, Dropdown } from 'semantic-ui-react'
+import { Button, Dropdown, Form, Modal } from 'semantic-ui-react'
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { useDocumentTitle } from '/src/plug/hooks';
 
 import Group from '/src/plug/widgets/container/group/group.v1.module';
-import FormItem from '/src/plug/widgets/form/item/form-item.module';
 import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
 import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
 
@@ -95,6 +94,7 @@ export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' 
     const { state } = useLocation();
     const navigate = useNavigate();
     const editorRef = React.useRef(null);
+    const [showError, setShowError] = React.useState(false);
     const [content, setContent] = React.useState(state ? state.origin : '');
     const [language, setLanguage] = React.useState(sourceLanguage);
     const referenceKits = React.useMemo(() => {
@@ -122,42 +122,54 @@ export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' 
         }
     }, [setLanguage, editorRef]);
     const doCallback = React.useCallback((kit) => {
-        switch (kit.action) {
-            case 'CONVERTOR':
-                return changeEditorContent(kit.convert(content), kit.language);
-            case 'PUSH_STATE':
-                return changeViewState(kit.target, content);
-            default:
-                console.log('不支持的操作', kit);
+        try {
+            switch (kit.action) {
+                case 'CONVERTOR':
+                    return changeEditorContent(kit.convert(content), kit.language);
+                case 'PUSH_STATE':
+                    return changeViewState(kit.target, content);
+                default:
+                    console.log('不支持的操作', kit);
+            }
+        } catch (e) {
+            console.error('操作出错', kit, e);
+            setShowError(true);
         }
     }, [navigate, content]);
     return (
-        <Splitter className={styles.root} sizes={[75, 25]} minSizes={[700, 300]}>
-            <CodeEditor ref={editorRef} language={language} defaultValue={content} onValueChange={({ payload }) => setContent(payload)} />
-            <div className={styles.extra}>
-                <Form >
-                    <div className={styles.language}>
-                        <Form.Field>
-                            <label>切换语言</label>
-                            {/* <FormItem label="切换语言" type="select" options={languages} value={language} onChange={(e) => changeEditorLanguage(e.target.value)} /> */}
-                            <Dropdown fluid selection placeholder='请选择' options={languages} defaultValue={language} onChange={(e, data) => changeEditorLanguage(data.value)} />
-                        </Form.Field>
-                    </div>
-                    <Group title="基本操作">
-                        <Button size='tiny'>导入</Button>
-                        <Button size='tiny'>比较</Button>
-                    </Group>
-                    {Array.isArray(referenceKits) ? (
-                        <Group title="相关操作" className={styles.kits}>
-                            {referenceKits.map((kit, index) => (
-                                <React.Fragment key={index} >
-                                    {kit.line ? (<br />) : (<Button size='tiny' onClick={() => doCallback(kit)}>{kit.display}</Button>)}
-                                </React.Fragment>
-                            ))}
+        <React.Fragment>
+            <Splitter className={styles.root} sizes={[75, 25]} minSizes={[700, 300]}>
+                <CodeEditor ref={editorRef} language={language} defaultValue={content} onValueChange={({ payload }) => setContent(payload)} />
+                <div className={styles.extra}>
+                    <Form >
+                        <div className={styles.language}>
+                            <Form.Field>
+                                <label>切换语言</label>
+                                {/* <FormItem label="切换语言" type="select" options={languages} value={language} onChange={(e) => changeEditorLanguage(e.target.value)} /> */}
+                                <Dropdown fluid selection placeholder='请选择' options={languages} defaultValue={language} onChange={(e, data) => changeEditorLanguage(data.value)} />
+                            </Form.Field>
+                        </div>
+                        <Group title="基本操作">
+                            <Button size='tiny'>导入</Button>
+                            <Button size='tiny'>比较</Button>
                         </Group>
-                    ) : null}
-                </Form>
-            </div>
-        </Splitter>
+                        {Array.isArray(referenceKits) ? (
+                            <Group title="相关操作" className={styles.kits}>
+                                {referenceKits.map((kit, index) => (
+                                    <React.Fragment key={index} >
+                                        {kit.line ? (<br />) : (<Button size='tiny' onClick={() => doCallback(kit)}>{kit.display}</Button>)}
+                                    </React.Fragment>
+                                ))}
+                            </Group>
+                        ) : null}
+                    </Form>
+                </div>
+            </Splitter>
+            <Modal open={showError} size="mini" onClose={() => setShowError(false)}>
+                <Modal.Content>
+                    <p>操作出错</p>
+                </Modal.Content>
+            </Modal>
+        </React.Fragment>
     );
 }
