@@ -1,12 +1,11 @@
 import React from "react";
-
+import { Button, Divider, Form, Dropdown } from 'semantic-ui-react'
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { useDocumentTitle } from '/src/plug/hooks';
 
 import Group from '/src/plug/widgets/container/group/group.v1.module';
 import FormItem from '/src/plug/widgets/form/item/form-item.module';
-
 import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
 import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
 
@@ -16,7 +15,7 @@ import * as JSON_KITS from '/src/view/kits/json/json-kits.v1';
 
 import styles from './text-root-stage.module.css';
 
-const languages = Object.fromEntries(COSUTOM_MODES.map(item => ([item.id, item.aliases[0]])));
+const languages = COSUTOM_MODES.map(item => ({ value: item.id, text: item.aliases[0] }));
 
 const REDIRECT_MODES = {
     sql: '/kits/sql',
@@ -136,22 +135,28 @@ export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' 
         <Splitter className={styles.root} sizes={[75, 25]} minSizes={[700, 300]}>
             <CodeEditor ref={editorRef} language={language} defaultValue={content} onValueChange={({ payload }) => setContent(payload)} />
             <div className={styles.extra}>
-                <Group>
-                    <FormItem label="切换语言" type="select" options={languages} value={language} onChange={(e) => changeEditorLanguage(e.target.value)} />
-                </Group>
-                <Group title="基本操作">
-                    <button>导入</button>
-                    <button>比较</button>
-                </Group>
-                {Array.isArray(referenceKits) ? (
-                    <Group title="相关操作">
-                        {referenceKits.map((kit, index) => (
-                            <React.Fragment key={index} >
-                                {kit.line ? (<br />) : (<button onClick={() => doCallback(kit)}>{kit.display}</button>)}
-                            </React.Fragment>
-                        ))}
+                <Form >
+                    <div className={styles.language}>
+                        <Form.Field>
+                            <label>切换语言</label>
+                            {/* <FormItem label="切换语言" type="select" options={languages} value={language} onChange={(e) => changeEditorLanguage(e.target.value)} /> */}
+                            <Dropdown fluid selection placeholder='请选择' options={languages} defaultValue={language} onChange={(e, data) => changeEditorLanguage(data.value)} />
+                        </Form.Field>
+                    </div>
+                    <Group title="基本操作">
+                        <Button size='tiny'>导入</Button>
+                        <Button size='tiny'>比较</Button>
                     </Group>
-                ) : null}
+                    {Array.isArray(referenceKits) ? (
+                        <Group title="相关操作">
+                            {referenceKits.map((kit, index) => (
+                                <React.Fragment key={index} >
+                                    {kit.line ? (<Divider />) : (<Button size='tiny' onClick={() => doCallback(kit)}>{kit.display}</Button>)}
+                                </React.Fragment>
+                            ))}
+                        </Group>
+                    ) : null}
+                </Form>
             </div>
         </Splitter>
     );

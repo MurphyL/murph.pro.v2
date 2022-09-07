@@ -1,3 +1,7 @@
 .root .extra {
     min-height: 300px;
 }
+
+.root .extra .language {
+    padding: 5px 10px;
+}

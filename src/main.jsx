@@ -7,8 +7,4 @@ import 'normalize.css';
 
 const root = document.getElementById('root');
 
-createRoot(root).render(
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>
-)
+createRoot(root).render(<App />)
