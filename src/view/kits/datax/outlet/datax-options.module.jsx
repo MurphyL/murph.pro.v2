@@ -8,8 +8,8 @@ import FormItem from '/src/plug/widgets/form/item/form-item.module';
 
 import * as JSONKits from '/src/view/kits/json/json-kits.v1';
 
-import DATAX_TEMPLATE from './datax-options.template.json';
-import DATAX_PROXY_PROPS from './datax-proxy.properties.json';
+import DATAX_TEMPLATE from '../datax-options.template.json';
+import DATAX_PROXY_PROPS from '../datax-proxy.properties.json';
 
 const proxies = {
     readers: {},

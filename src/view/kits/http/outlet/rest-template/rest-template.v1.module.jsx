@@ -15,8 +15,8 @@ export default function RestTemplate() {
         setPayload(payload);
     }, []);
     return (
-        <Splitter sizes={[60, 40]} minSizes={[600, 400]}>
-            <RestRequestMaker className={styles.root} defaultValue={x} doRequest={doRequest} />
+        <Splitter className={styles.root} sizes={[60, 40]} minSizes={[600, 400]}>
+            <RestRequestMaker className={styles.editor} defaultValue={x} doRequest={doRequest} />
             <CodeBlock dark={false} children={JSON.stringify(payload, null, 4)} />
         </Splitter>
     );

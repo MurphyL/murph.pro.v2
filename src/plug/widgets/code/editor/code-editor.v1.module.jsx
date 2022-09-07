@@ -8,7 +8,7 @@ const CodeEditor = React.forwardRef(function ({ defaultValue, language, showLine
     const wrapper = React.useRef(null);
     const [instance, setInstance] = React.useState(null);
     React.useEffect(() => {
-        if (!wrapper.current || wrapper.current.dataset.modeId) {
+        if (!wrapper.current || wrapper.current.childElementCount) {
             return;
         }
         const editor = monaco.editor.create(wrapper.current, {

@@ -2,7 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 import JSONPathQuery from "./json/outlet/json-path-query/json-path-query.module";
 
-import DataXOptionsMaker from "./datax/datax-options.module";
+import DataXOptionsMaker from "./datax/outlet/datax-options.module";
 
 import MySQLDDL2X from "./sql/outlet/mysql-ddl2x/mysql-ddl2x.module";
 
@@ -11,21 +11,25 @@ import RestTemplate from "./http/outlet/rest-template/rest-template.v1.module";
 
 import ElasticSearchLayout from "./elasticsearch/layout/es-layout.v1.module";
 
-import TextKitsLayout from "./text/layout/text-kits-layout.v1.module";
+import TextRootStage from "./text/outlet/root-stage/text-root-stage.module";
+import TextDifference from "./text/outlet/difference/text-difference.module";
 
 export default function KitsRoutes() {
     return (
         <Routes>
             <Route index={true} element={<div>Kits</div>} />
             <Route path="/json">
-                <Route index={true} element={<TextKitsLayout language="json" />} />
+                <Route index={true} element={<TextRootStage language="json" />} />
                 <Route path="path-query" element={<JSONPathQuery />} />
             </Route>
             <Route path="/http/*" element={<HttpKitsLayout />}>
                 <Route path="rest-template" element={<RestTemplate />} />
             </Route>
-            <Route path="/sql" element={<TextKitsLayout language="sql" />} />
-            <Route path="/text" element={<TextKitsLayout />} />
+            <Route path="/sql" element={<TextRootStage language="sql" />} />
+            <Route path="/text/*">
+                <Route index={true} element={<TextRootStage />} />
+                <Route path="difference" element={<TextDifference />} />
+            </Route>
             <Route path="/datax/*">
                 <Route path="options" element={<DataXOptionsMaker />} />
             </Route>

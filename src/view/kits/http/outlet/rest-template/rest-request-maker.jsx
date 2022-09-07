@@ -6,10 +6,9 @@ const MONACO_EDITOR_LANG = 'rest';
 const REST_REQUEST_RULE = /^(GET|POST|PUT|DELETE|PATCH)\s+/;
 
 export default function RestRequestMaker(props) {
-    const id = React.useId();
+    const wrapper = React.useRef(null);
     React.useEffect(() => {
-        const element = document.getElementById(id);
-        if (element.dataset.modeId) {
+        if (!wrapper.current || wrapper.current.childElementCount) {
             return;
         }
         monaco.languages.register({ id: MONACO_EDITOR_LANG });
@@ -30,8 +29,7 @@ export default function RestRequestMaker(props) {
                 'editor.foreground': '#000000'
             }
         });
-        const editor = monaco.editor.create(element, {
-            id,
+        const editor = monaco.editor.create(wrapper.current, {
             theme: MONACO_EDITOR_LANG,
             language: MONACO_EDITOR_LANG,
             value: props.defaultValue,
@@ -110,8 +108,8 @@ export default function RestRequestMaker(props) {
                 };
             },
         });
-    }, [id, props]);
+    }, [wrapper, props]);
     return (
-        <div id={id} style={{ height: '100%' }} />
+        <div ref={wrapper} className={props.className} />
     );
 }
