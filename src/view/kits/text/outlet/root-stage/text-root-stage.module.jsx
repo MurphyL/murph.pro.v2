@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, Dropdown, Form, Modal } from 'semantic-ui-react'
+// import { Button, Dropdown, Form, Modal } from 'semantic-ui-react'
+import { Button, InputLabel, MenuItem, FormControl, Select } from '@mui/material';
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { useDocumentTitle } from '/src/plug/hooks';
@@ -136,40 +137,39 @@ export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' 
             setShowError(true);
         }
     }, [navigate, content]);
+    const onValueChange = React.useCallback(({ payload }) => {
+        setContent(payload)
+    }, [setContent]);
     return (
         <React.Fragment>
             <Splitter className={styles.root} sizes={[75, 25]} minSizes={[700, 300]}>
-                <CodeEditor ref={editorRef} language={language} defaultValue={content} onValueChange={({ payload }) => setContent(payload)} />
+                <CodeEditor ref={editorRef} language={language} defaultValue={content} onValueChange={onValueChange} />
                 <div className={styles.extra}>
-                    <Form >
-                        <div className={styles.language}>
-                            <Form.Field>
-                                <label>切换语言</label>
-                                {/* <FormItem label="切换语言" type="select" options={languages} value={language} onChange={(e) => changeEditorLanguage(e.target.value)} /> */}
-                                <Dropdown fluid selection placeholder='请选择' options={languages} defaultValue={language} onChange={(e, data) => changeEditorLanguage(data.value)} />
-                            </Form.Field>
-                        </div>
-                        <Group title="基本操作">
-                            <Button size='tiny'>导入</Button>
-                            <Button size='tiny'>比较</Button>
-                        </Group>
-                        {Array.isArray(referenceKits) ? (
-                            <Group title="相关操作" className={styles.kits}>
-                                {referenceKits.map((kit, index) => (
-                                    <React.Fragment key={index} >
-                                        {kit.line ? (<br />) : (<Button size='tiny' onClick={() => doCallback(kit)}>{kit.display}</Button>)}
-                                    </React.Fragment>
+                    <div className={styles.language}>
+                        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                            <InputLabel>当前语言</InputLabel>
+                            <Select value={language} label="切换语言" onChange={e => changeEditorLanguage(e.target.value)}>
+                                {languages.map(item => (
+                                    <MenuItem key={item.value} value={item.value}>{item.text}</MenuItem>
                                 ))}
-                            </Group>
-                        ) : null}
-                    </Form>
+                            </Select>
+                        </FormControl>
+                    </div>
+                    <Group title="基本操作">
+                        <Button variant="contained">导入</Button>
+                        <Button variant="contained">比较</Button>
+                    </Group>
+                    {Array.isArray(referenceKits) ? (
+                        <Group title="相关操作" className={styles.kits}>
+                            {referenceKits.map((kit, index) => (
+                                <React.Fragment key={index} >
+                                    {kit.line ? (<br />) : (<Button variant="outlined" onClick={() => doCallback(kit)}>{kit.display}</Button>)}
+                                </React.Fragment>
+                            ))}
+                        </Group>
+                    ) : null}
                 </div>
             </Splitter>
-            <Modal open={showError} size="mini" onClose={() => setShowError(false)}>
-                <Modal.Content>
-                    <p>操作出错</p>
-                </Modal.Content>
-            </Modal>
         </React.Fragment>
     );
 }

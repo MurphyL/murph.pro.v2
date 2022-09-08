@@ -4,7 +4,7 @@ import * as monaco from 'monaco-editor';
 
 import styles from './code-editor.v1.module.css';
 
-const CodeEditor = React.forwardRef(function ({ defaultValue, language, showLineNumber = true, ...props }, ref) {
+const CodeEditor = React.forwardRef(function ({ defaultValue, language, showLineNumber = true, onValueChange }, ref) {
     const wrapper = React.useRef(null);
     const [instance, setInstance] = React.useState(null);
     React.useEffect(() => {
@@ -17,20 +17,22 @@ const CodeEditor = React.forwardRef(function ({ defaultValue, language, showLine
             lineNumbers: showLineNumber ? 'on' : 'off',
             multiCursorMergeOverlapping: showLineNumber,
             fontSize: 20,
-            readOnly: props.readonly,
             smoothScrolling: true,
             automaticLayout: true,
         });
         setInstance(editor);
-        if (typeof props.onValueChange === 'function') {
-            editor.onDidChangeModelContent(() => {
-                props.onValueChange.call(null, {
-                    payload: editor.getValue()
+
+    }, [defaultValue, language, showLineNumber, wrapper]);
+    React.useEffect(() => {
+        if (instance && typeof onValueChange === 'function') {
+            instance.onDidChangeModelContent(() => {
+                onValueChange.call(null, {
+                    payload: instance.getValue()
                 });
             });
         }
-    }, [defaultValue, language, showLineNumber, props, wrapper]);
-    React.useEffect(() => () => instance && instance.dispose(), [instance]);
+        return () => instance && instance.dispose();
+    }, [instance, onValueChange]);
     React.useImperativeHandle(ref, () => ({
         getValue() {
             return instance ? instance.getValue() : '';
@@ -43,7 +45,6 @@ const CodeEditor = React.forwardRef(function ({ defaultValue, language, showLine
             monaco.editor.setModelLanguage(model, language);
         }
     }));
-
     return (
         <div className={styles.root} ref={wrapper} />
     )

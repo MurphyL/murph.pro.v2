@@ -8,6 +8,10 @@
         "build": "vite build"
     },
     "dependencies": {
+        "@emotion/react": "^11.10.4",
+        "@emotion/styled": "^11.10.4",
+        "@mui/icons-material": "^5.10.3",
+        "@mui/material": "^5.10.4",
         "axios": "^0.27.2",
         "clsx": "^1.2.1",
         "dayjs": "^1.11.5",
@@ -15,14 +19,12 @@
         "jsonpath-plus-browser": "^5.0.6",
         "jstoxml": "^3.2.5",
         "monaco-editor": "^0.34.0",
-        "normalize.css": "^8.0.1",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "react-hot-keys": "^2.7.2",
         "react-router-dom": "^6.3.0",
         "react-split": "^2.0.14",
         "react-syntax-highlighter": "^15.5.0",
-        "semantic-ui-css": "^2.4.1",
-        "semantic-ui-react": "^2.1.3",
         "sql-ddl-to-json-schema": "^4.0.6",
         "x2js": "^3.4.3"
     },
