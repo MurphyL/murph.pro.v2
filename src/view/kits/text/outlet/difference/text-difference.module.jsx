@@ -1,6 +1,7 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { SpeedDial, SpeedDialAction } from '@mui/material';
-import { Settings, Flip, FormatAlignLeft } from '@mui/icons-material';
+import { Construction, Settings, Flip, FormatAlignLeft } from '@mui/icons-material';
 
 import * as monaco from 'monaco-editor';
 
@@ -10,6 +11,7 @@ import styles from './text-difference.module.css';
 
 export default function TextDifference({ renderSideBySide = true }) {
     useDocumentTitle('文本比较');
+    const navigate = useNavigate();
     const wrapper = React.useRef(null);
     const [instance, setInstance] = React.useState(null);
     const [options, setOptions] = React.useState({ renderSideBySide });
@@ -32,6 +34,7 @@ export default function TextDifference({ renderSideBySide = true }) {
             dragAndDrop: false,
             smoothScrolling: true,
             automaticLayout: true,
+            originalEditable: true,
             renderSideBySide: true,
             accessibilitySupport: 'off',
             enableSplitViewResizing: true
@@ -48,14 +51,15 @@ export default function TextDifference({ renderSideBySide = true }) {
         instance && instance.updateOptions(newOptions);
     }, [instance, options, setOptions]);
     const actions = React.useMemo(() => ([
-        { name: '行间显示', show: options.renderSideBySide, icon: <FormatAlignLeft />, handler: () => updateEditorOptions({ renderSideBySide: false }) },
-        { name: '拆分视图', show: !options.renderSideBySide, icon: <Flip />, handler: () => updateEditorOptions({ renderSideBySide: true }) },
-    ]), [updateEditorOptions, options]);
+        { name: '行间显示', hide: !options.renderSideBySide, icon: <FormatAlignLeft />, handler: () => updateEditorOptions({ renderSideBySide: false }) },
+        { name: '拆分视图', hide: options.renderSideBySide, icon: <Flip />, handler: () => updateEditorOptions({ renderSideBySide: true }) },
+        { name: '全部工具', icon: <Construction />, handler: () => navigate('/kits') },
+    ].filter(item => !item.hide)), [updateEditorOptions, options]);
     return (
         <div className={styles.root}>
             <div className={styles.editor} ref={wrapper} />
             <SpeedDial ariaLabel="设置" sx={{ position: 'absolute', bottom: 16, right: 56 }} icon={<Settings />}>
-                {actions.filter(item => item.show).map((action, index) => (
+                {actions.map((action, index) => (
                     <SpeedDialAction key={index} icon={action.icon} tooltipTitle={action.name} onClick={action.handler} />
                 ))}
             </SpeedDial>

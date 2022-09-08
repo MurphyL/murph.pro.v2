@@ -1,0 +1,33 @@
+.root {
+    --bar-height: 50px;
+    --bar-padding: 15px;
+    height: 100%;
+}
+
+.root .bar {
+    display: flex;
+    height: var(--bar-height);
+    box-shadow: 0 1px 1px 0 var(--border-color);
+    align-items: center;
+}
+
+.root .bar .logo {
+    display: flex;
+    padding: 0 var(--bar-padding);
+    width: 140px;
+    opacity: 0.3;
+}
+
+.root .bar .logo:hover {
+    opacity: 0.6;
+}
+
+.root .bar .navi {
+    flex: 1;
+    padding-right: var(--bar-padding);
+    text-align: right;
+}
+
+.root .stage {
+    height: calc(100% - var(--bar-height));
+}

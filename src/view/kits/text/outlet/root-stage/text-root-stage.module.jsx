@@ -158,6 +158,7 @@ export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' 
                     <Group title="基本操作">
                         <Button variant="contained">导入</Button>
                         <Button variant="contained">比较</Button>
+                        <Button variant="outlined" onClick={() => navigate('/kits')}>全部工具</Button>
                     </Group>
                     {Array.isArray(referenceKits) ? (
                         <Group title="相关操作" className={styles.kits}>
