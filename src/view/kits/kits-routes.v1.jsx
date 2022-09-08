@@ -1,3 +1,4 @@
+import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import JSONPathQuery from "./json/outlet/json-path-query/json-path-query.module";
@@ -11,8 +12,9 @@ import RestTemplate from "./http/outlet/rest-template/rest-template.v1.module";
 
 import ElasticSearchLayout from "./elasticsearch/layout/es-layout.v1.module";
 
-import TextRootStage from "./text/outlet/root-stage/text-root-stage.module";
 import TextDifference from "./text/outlet/difference/text-difference.module";
+
+const TextRootStage = React.lazy(() => import("./text/outlet/root-stage/text-root-stage.module"));
 
 export default function KitsRoutes() {
     return (

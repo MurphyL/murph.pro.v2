@@ -4,7 +4,6 @@ import Group from '/src/plug/widgets/container/group/group.v1.module';
 import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
 import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
 
-import FormItem from '/src/plug/widgets/form/item/form-item.module';
 
 import * as JSONKits from '/src/view/kits/json/json-kits.v1';
 
@@ -33,10 +32,10 @@ export default function DataXOptionsMaker() {
             <CodeEditor language="json" defaultValue={value} />
             <div>
                 <Group title="Reader 配置">
-                    <FormItem type="select" name="reader" label="代理" options={proxies.readers} />
+                    {/* <FormItem type="select" name="reader" label="代理" options={proxies.readers} /> */}
                 </Group>
                 <Group title="Writer 配置">
-                    <FormItem type="select" name="writer" label="代理" options={proxies.writers} />
+                    {/* <FormItem type="select" name="writer" label="代理" options={proxies.writers} /> */}
                 </Group>
                 <Group title="通用配置">
 
