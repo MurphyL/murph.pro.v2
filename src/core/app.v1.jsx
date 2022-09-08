@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import KitsRoutes from '../view/kits/kits-routes.v1';
 
+import 'normalize.css';
 import './app.v1.css';
 
 export default function App() {
