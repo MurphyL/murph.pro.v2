@@ -18,14 +18,17 @@ import ElasticSearchLayout from "./elasticsearch/layout/es-layout.v1.module";
 
 import TextDifference from "./text/outlet/difference/text-difference.module";
 
+const IconsFinder = React.lazy(() => import("./icons/outlet/icons-finder/icons-finder.module"));
 const TextRootStage = React.lazy(() => import("./text/outlet/root-stage/text-root-stage.module"));
-
 
 export default function KitsRoutes() {
     return (
         <Routes>
             <Route path="/" element={<NaviStageLayout />}>
                 <Route index={true} element={<KitsHome />} />
+                <Route path="/icons/*">
+                    <Route path="*" element={<IconsFinder />} />
+                </Route>
                 <Route path="/json">
                     <Route index={true} element={<TextRootStage language="json" />} />
                     <Route path="path-query" element={<JSONPathQuery />} />

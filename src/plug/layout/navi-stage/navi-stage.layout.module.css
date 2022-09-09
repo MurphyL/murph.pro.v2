@@ -1,6 +1,4 @@
 .root {
-    --bar-height: 50px;
-    --bar-padding: 15px;
     height: 100%;
     overflow: hidden;
 }
