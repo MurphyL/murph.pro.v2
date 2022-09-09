@@ -12,14 +12,16 @@ import DataXOptionsMaker from "./datax/outlet/datax-options.module";
 import MySQLDDL2X from "./sql/outlet/mysql-ddl2x/mysql-ddl2x.module";
 
 import HttpKitsLayout from "./http/layout/http-kits.layout.module";
-import RestTemplate from "./http/outlet/rest-template/rest-template.v1.module";
+
 
 import ElasticSearchLayout from "./elasticsearch/layout/es-layout.v1.module";
 
-import TextDifference from "./text/outlet/difference/text-difference.module";
+const RestTemplate = React.lazy(() => import("./http/outlet/rest-template/rest-template.v1.module"));
+
+const TextRootStage = React.lazy(() => import("./text/outlet/root-stage/text-root-stage.module"));
+const TextDifference = React.lazy(() => import("./text/outlet/difference/text-difference.module"));
 
 const IconsFinder = React.lazy(() => import("./icons/outlet/icons-finder/icons-finder.module"));
-const TextRootStage = React.lazy(() => import("./text/outlet/root-stage/text-root-stage.module"));
 
 export default function KitsRoutes() {
     return (
