@@ -5,9 +5,9 @@ import { useDocumentTitle } from '/src/plug/hooks';
 import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
 import CodeBlock from "/src/plug/widgets/code/block/code-block.v1.module";
 
-import RestRequestEditor from "../../rest-request-editor";
-
 import styles from './rest-template.v1.module.css';
+
+const RestRequestEditor = React.lazy(() => import("../../rest-request-editor"));
 
 const x = 'POST http://cijian.us\n\n{\n\t"dependencies": {\n\t\t\n\t}\n}\n';
 

@@ -4,7 +4,6 @@ import Group from '/src/plug/widgets/container/group/group.v1.module';
 import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
 import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
 
-
 import * as JSONKits from '/src/view/kits/json/json-kits.v1';
 
 import DATAX_TEMPLATE from '../datax-options.template.json';
