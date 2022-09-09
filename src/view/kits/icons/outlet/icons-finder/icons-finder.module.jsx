@@ -17,9 +17,10 @@ export default function IconsFinder() {
     useDocumentTitle('搜索图标');
     const [keyword, setKeyword] = React.useState(null);
     const doCopy = React.useCallback((name) => {
-        clipboard.write(name).then(() => {
-            console.log('Copied:', name);
-        });
+        clipboard.write(name)
+            // .then(() => {
+            //     console.log('Copied:', name);
+            // });
     }, []);
     const filted = React.useMemo(() => {
         return ((keyword && keyword.length > 0) ? si.filter(({ key }) => key.toLowerCase().includes(keyword.toLowerCase())) : si).slice(0, 100);
