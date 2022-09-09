@@ -1,6 +1,6 @@
 import React from "react";
-// import { Button, Dropdown, Form, Modal } from 'semantic-ui-react'
-import { Button, InputLabel, MenuItem, FormControl, Select } from '@mui/material';
+import { Button, IconButton, InputLabel, MenuItem, FormControl, Select, Tooltip } from '@mui/material';
+import Construction from '@mui/icons-material/Construction';
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { useDocumentTitle } from '/src/plug/hooks';
@@ -145,20 +145,29 @@ export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' 
             <Splitter className={styles.root} sizes={[75, 25]} minSizes={[700, 300]}>
                 <CodeEditor ref={editorRef} language={language} defaultValue={content} onValueChange={onValueChange} />
                 <div className={styles.extra}>
-                    <div className={styles.language}>
-                        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                            <InputLabel>当前语言</InputLabel>
-                            <Select value={language} label="切换语言" onChange={e => changeEditorLanguage(e.target.value)}>
-                                {languages.map(item => (
-                                    <MenuItem key={item.value} value={item.value}>{item.text}</MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+                    <div className={styles.bar}>
+                        <div className={styles.language}>
+                            <FormControl sx={{ m: 1, minWidth: 160 }} size="small">
+                                <InputLabel>当前语言</InputLabel>
+                                <Select value={language} label="切换语言" onChange={e => changeEditorLanguage(e.target.value)}>
+                                    {languages.map(item => (
+                                        <MenuItem key={item.value} value={item.value}>{item.text}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </div>
+                        <div className={styles.actions}>
+                            <Tooltip title="全部工具">
+                                <IconButton color="default" onClick={() => navigate('/kits')}>
+                                    <Construction />
+                                </IconButton>
+                            </Tooltip>
+                        </div>
                     </div>
+
                     <Group title="基本操作">
                         <Button variant="contained">导入</Button>
                         <Button variant="contained">比较</Button>
-                        <Button variant="outlined" onClick={() => navigate('/kits')}>全部工具</Button>
                     </Group>
                     {Array.isArray(referenceKits) ? (
                         <Group title="相关操作" className={styles.kits}>

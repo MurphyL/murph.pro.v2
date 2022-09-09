@@ -2,6 +2,18 @@
     min-height: 300px;
 }
 
-.root .extra .language {
-    margin: 10px 5px;
+.root .extra .bar {
+    display: flex;
+    margin: 10px;
+}
+
+.root .extra .bar .language {
+    flex: 1;
+}
+
+.root .extra .bar .actions {
+    display: flex;
+    width: 70px;
+    align-items: center;
+    justify-content: right;
 }

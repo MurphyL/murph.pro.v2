@@ -3,6 +3,8 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 import NaviStageLayout from "/src/plug/layout/navi-stage/navi-stage.layout.module";
 
+import KitsHome from "./home/kits-home.module";
+
 import JSONPathQuery from "./json/outlet/json-path-query/json-path-query.module";
 
 import DataXOptionsMaker from "./datax/outlet/datax-options.module";
@@ -23,7 +25,7 @@ export default function KitsRoutes() {
     return (
         <Routes>
             <Route path="/" element={<NaviStageLayout />}>
-                <Route index={true} element={<div>Kits</div>} />
+                <Route index={true} element={<KitsHome />} />
                 <Route path="/json">
                     <Route index={true} element={<TextRootStage language="json" />} />
                     <Route path="path-query" element={<JSONPathQuery />} />
