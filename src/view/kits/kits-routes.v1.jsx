@@ -1,27 +1,24 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import NaviStageLayout from "/src/plug/layout/navi-stage/navi-stage.layout.module";
+const NaviStageLayout = React.lazy(() => import("/src/plug/layout/navi-stage/navi-stage.layout.module"));
 
-import KitsHome from "./home/kits-home.module";
+const KitsHome = React.lazy(() => import("./home/kits-home.module"));
+const IconsFinder = React.lazy(() => import("./icons/outlet/icons-finder/icons-finder.module"));
 
-import JSONPathQuery from "./json/outlet/json-path-query/json-path-query.module";
+const JSONPathQuery = React.lazy(() => import("./json/outlet/json-path-query/json-path-query.module"));
 
-import DataXOptionsMaker from "./datax/outlet/datax-options.module";
+const DataXOptionsMaker = React.lazy(() => import("./datax/outlet/datax-options.module"));
 
-import MySQLDDL2X from "./sql/outlet/mysql-ddl2x/mysql-ddl2x.module";
+const MySQLDDL2X = React.lazy(() => import("./sql/outlet/mysql-ddl2x/mysql-ddl2x.module"));
 
-import HttpKitsLayout from "./http/layout/http-kits.layout.module";
-
-
-import ElasticSearchLayout from "./elasticsearch/layout/es-layout.v1.module";
+const HttpKitsLayout = React.lazy(() => import("./http/layout/http-kits.layout.module"));
 
 const RestTemplate = React.lazy(() => import("./http/outlet/rest-template/rest-template.v1.module"));
+const ElasticSearchLayout = React.lazy(() => import("./elasticsearch/layout/es-layout.v1.module"));
 
 const TextRootStage = React.lazy(() => import("./text/outlet/root-stage/text-root-stage.module"));
 const TextDifference = React.lazy(() => import("./text/outlet/difference/text-difference.module"));
-
-const IconsFinder = React.lazy(() => import("./icons/outlet/icons-finder/icons-finder.module"));
 
 export default function KitsRoutes() {
     return (
