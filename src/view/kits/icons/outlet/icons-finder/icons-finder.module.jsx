@@ -4,7 +4,6 @@ import { IconButton, InputBase, Paper } from '@mui/material';
 import { Menu as MenuIcon, Search as SearchIcon } from '@mui/icons-material/';
 
 import * as SI from '@icons-pack/react-simple-icons';
-import clipboard from 'clipboardy';
 
 import { useDocumentTitle } from '/src/plug/hooks';
 
@@ -17,7 +16,7 @@ export default function IconsFinder() {
     useDocumentTitle('搜索图标');
     const [keyword, setKeyword] = React.useState(null);
     const doCopy = React.useCallback((name) => {
-        clipboard.write(name)
+        console.log('Copied:', name)
             // .then(() => {
             //     console.log('Copied:', name);
             // });
