@@ -72,14 +72,7 @@ const MODE_KITS = {
         action: 'PUSH_STATE',
         target: '/kits/mysql/ddl'
     }],
-    xml: [{
-        display: '转换为 JSON',
-        action: 'CONVERTOR',
-        language: 'json',
-        convert(source) {
-            return JSON_KITS.fromXML(source);
-        }
-    }],
+    xml: [],
     yaml: [{
         display: '转换为 JSON',
         action: 'CONVERTOR',
@@ -164,7 +157,6 @@ export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' 
                             </Tooltip>
                         </div>
                     </div>
-
                     <Group title="基本操作">
                         <Button variant="contained">导入</Button>
                         <Button variant="contained">比较</Button>
