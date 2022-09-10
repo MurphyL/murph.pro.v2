@@ -1,9 +1,7 @@
 import React from "react";
 import { Button, IconButton, InputLabel, MenuItem, FormControl, Select, Tooltip } from '@mui/material';
 
-import PublishIcon from '@mui/icons-material/Publish';
 import ConstructionIcon from '@mui/icons-material/Construction';
-import { Sitepoint } from '@icons-pack/react-simple-icons';
 
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSnackbar } from 'notistack';
@@ -177,11 +175,11 @@ export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' 
                         </div>
                     </div>
                     <Group title="基本操作">
-                        <Button variant="contained" startIcon={<PublishIcon />} component="label">
+                        <Button variant="contained" component="label">
                             <input hidden={true} accept="*" type="file" onChange={e => readFileContent(e.target.files)} />
                             <span>导入</span>
                         </Button>
-                        <Button variant="contained" startIcon={<Sitepoint size={18} />} onClick={() => doCallback({ display: '发送到文本比较', action: 'PUSH_STATE', target: '/kits/text/difference' })}>比较</Button>
+                        <Button variant="contained" onClick={() => doCallback({ display: '发送到文本比较', action: 'PUSH_STATE', target: '/kits/text/difference' })}>比较</Button>
                     </Group>
                     {Array.isArray(referenceKits) ? (
                         <Group title="相关操作" className={styles.kits}>
