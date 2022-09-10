@@ -1,11 +1,8 @@
 import YAML from 'js-yaml';
-// import XML2JS from 'x2js';
 import jstoxml from 'jstoxml';
 
 const INDENT_SIZE = 4;
 const INDENT_TEXT = new Array(INDENT_SIZE).join(' ');
-
-// const x2js = new XML2JS({ attributePrefix: '' });
 
 export const format = (source, pretty = true, indent = INDENT_SIZE) => {
     let parsed = typeof source === 'string' ? JSON.parse(source) : source;

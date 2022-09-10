@@ -1,10 +1,15 @@
 import React from "react";
 import { Button, IconButton, InputLabel, MenuItem, FormControl, Select, Tooltip } from '@mui/material';
-import Construction from '@mui/icons-material/Construction';
+
+import PublishIcon from '@mui/icons-material/Publish';
+import ConstructionIcon from '@mui/icons-material/Construction';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
+import { Sitepoint } from '@icons-pack/react-simple-icons';
+
 import { useLocation, useNavigate } from "react-router-dom";
+import { useSnackbar } from 'notistack';
 
 import { useDocumentTitle } from '/src/plug/hooks';
-
 import Group from '/src/plug/widgets/container/group/group.v1.module';
 import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
 import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
@@ -85,20 +90,20 @@ const MODE_KITS = {
 
 export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' }) {
     useDocumentTitle('文本工具集');
-    const { state } = useLocation();
     const navigate = useNavigate();
+    const { state } = useLocation();
     const editorRef = React.useRef(null);
-    const [showError, setShowError] = React.useState(false);
-    const [content, setContent] = React.useState(state ? state.origin : '');
+    const { enqueueSnackbar } = useSnackbar();
     const [language, setLanguage] = React.useState(sourceLanguage);
+    const [content, setContent] = React.useState(state ? state.origin : '');
     const referenceKits = React.useMemo(() => {
         if (!language || !MODE_KITS[language]) {
             return null;
         }
         return MODE_KITS[language];
     }, [language]);
-    const changeViewState = React.useCallback((path, payload) => {
-        return navigate(path, { state: { origin: payload || content } });
+    const changeViewState = React.useCallback((path, payload, language) => {
+        return navigate(path, { state: { language, origin: payload || content } });
     }, [navigate, content]);
     const changeEditorLanguage = React.useCallback((newLanguage) => {
         if (editorRef && editorRef.current) {
@@ -106,7 +111,7 @@ export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' 
             editorRef.current.setLanguage(newLanguage);
         }
         if (REDIRECT_MODES[newLanguage]) {
-            return changeViewState(REDIRECT_MODES[newLanguage], content);
+            return changeViewState(REDIRECT_MODES[newLanguage], content, newLanguage);
         }
     }, [navigate, content, setLanguage, editorRef]);
     const changeEditorContent = React.useCallback((source, newLanguage) => {
@@ -121,15 +126,18 @@ export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' 
                 case 'CONVERTOR':
                     return changeEditorContent(kit.convert(content), kit.language);
                 case 'PUSH_STATE':
-                    return changeViewState(kit.target, content);
+                    return changeViewState(kit.target, content, language);
                 default:
                     console.log('不支持的操作', kit);
             }
         } catch (e) {
             console.error('操作出错', kit, e);
-            setShowError(true);
+            enqueueSnackbar(`【${kit.display}】操作出错：${e.message || '未知错误'}`, {
+                preventDuplicate: true,
+                variant: 'error'
+            });
         }
-    }, [navigate, content]);
+    }, [navigate, enqueueSnackbar, language, content]);
     const onValueChange = React.useCallback(({ payload }) => {
         setContent(payload)
     }, [setContent]);
@@ -152,14 +160,14 @@ export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' 
                         <div className={styles.actions}>
                             <Tooltip title="全部工具">
                                 <IconButton color="default" onClick={() => navigate('/kits')}>
-                                    <Construction />
+                                    <ConstructionIcon />
                                 </IconButton>
                             </Tooltip>
                         </div>
                     </div>
                     <Group title="基本操作">
-                        <Button variant="contained">导入</Button>
-                        <Button variant="contained">比较</Button>
+                        <Button variant="contained" startIcon={<PublishIcon />}>导入</Button>
+                        <Button variant="contained" startIcon={<Sitepoint size={18} />} onClick={() => doCallback({ display: '发送到文本比较', action: 'PUSH_STATE', target: '/kits/text/difference' })}>比较</Button>
                     </Group>
                     {Array.isArray(referenceKits) ? (
                         <Group title="相关操作" className={styles.kits}>
