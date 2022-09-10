@@ -3,7 +3,6 @@ import { Button, IconButton, InputLabel, MenuItem, FormControl, Select, Tooltip 
 
 import PublishIcon from '@mui/icons-material/Publish';
 import ConstructionIcon from '@mui/icons-material/Construction';
-import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import { Sitepoint } from '@icons-pack/react-simple-icons';
 
 import { useLocation, useNavigate } from "react-router-dom";
@@ -120,6 +119,18 @@ export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' 
             changeEditorLanguage(newLanguage);
         }
     }, [setLanguage, editorRef]);
+    const readFileContent = React.useCallback((files) => {
+        const reader = new FileReader();
+        const file = files[0];
+        reader.readAsText(file);
+        reader.onload = () => {
+            changeEditorContent(reader.result, language);
+            enqueueSnackbar(`【${file.name}】导入成功，文件类型：${file.type || 'text/plain'}`, {
+                autoHideDuration: 10000,
+                variant: 'success',
+            });
+        }
+    }, [changeEditorContent, language]);
     const doCallback = React.useCallback((kit) => {
         try {
             switch (kit.action) {
@@ -166,7 +177,10 @@ export default function TextKitsLayout({ language: sourceLanguage = 'plaintext' 
                         </div>
                     </div>
                     <Group title="基本操作">
-                        <Button variant="contained" startIcon={<PublishIcon />}>导入</Button>
+                        <Button variant="contained" startIcon={<PublishIcon />} component="label">
+                            <input hidden={true} accept="*" type="file" onChange={e => readFileContent(e.target.files)} />
+                            <span>导入</span>
+                        </Button>
                         <Button variant="contained" startIcon={<Sitepoint size={18} />} onClick={() => doCallback({ display: '发送到文本比较', action: 'PUSH_STATE', target: '/kits/text/difference' })}>比较</Button>
                     </Group>
                     {Array.isArray(referenceKits) ? (

@@ -10,6 +10,8 @@
     user-select: none;
 }
 
-.root .body button {
-    margin: 0 5px 5px 0;
+
+.root .body>* {
+    display: inline-block;
+    margin: 3px;
 }
