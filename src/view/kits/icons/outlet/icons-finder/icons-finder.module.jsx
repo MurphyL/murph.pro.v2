@@ -2,27 +2,27 @@ import React from 'react';
 
 import { IconButton, InputBase, Paper } from '@mui/material';
 import { Menu as MenuIcon, Search as SearchIcon } from '@mui/icons-material/';
+import { useSnackbar } from 'notistack';
+import * as icons from 'simple-icons/icons';
 
-import * as SI from '@icons-pack/react-simple-icons';
-
-import { useDocumentTitle } from '/src/plug/hooks';
+import { useDocumentTitle, useClipboard } from '/src/plug/hooks';
+import SimpleIconWrap from '/src/plug/widgets/container/x-icon/x-icon.module';
 
 import styles from './icons-finder.module.css';
 
-const si = Object.keys(SI).map(key => ({ key, group: 'Simple Icons' }));
-
+const si = Object.entries(icons);
 
 export default function IconsFinder() {
     useDocumentTitle('搜索图标');
+    const copy = useClipboard();
+    const { enqueueSnackbar } = useSnackbar();
     const [keyword, setKeyword] = React.useState(null);
-    const doCopy = React.useCallback((name) => {
-        console.log('Copied:', name)
-            // .then(() => {
-            //     console.log('Copied:', name);
-            // });
+    const doCopy = React.useCallback((key, item) => {
+        copy(key);
+        enqueueSnackbar(`Copied: ${item.title} - ${key}`);
     }, []);
     const filted = React.useMemo(() => {
-        return ((keyword && keyword.length > 0) ? si.filter(({ key }) => key.toLowerCase().includes(keyword.toLowerCase())) : si).slice(0, 100);
+        return ((keyword && keyword.length > 0) ? si.filter(({ title }) => title.toLowerCase().includes(keyword.toLowerCase())) : si).slice(0, 100);
     }, [keyword, si]);
     return (
         <div className={styles.root}>
@@ -38,15 +38,12 @@ export default function IconsFinder() {
                 </Paper>
             </div>
             <div className={styles.board}>
-                {filted.map(({ key, group }) => {
-                    const IconComp = SI[key];
-                    return (
-                        <div key={key} className={styles.item} data-group={group} onClick={() => doCopy(key)}>
-                            <IconComp />
-                            <div className={styles.label}>{key}</div>
-                        </div>
-                    );
-                })}
+                {filted.map(([key, item]) => (
+                    <div key={key} className={styles.item} onClick={() => doCopy(key, item)}>
+                        <SimpleIconWrap size={32} {...item} />
+                        <div className={styles.label}>{item.title}</div>
+                    </div>
+                ))}
             </div>
         </div>
     );

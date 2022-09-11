@@ -10,11 +10,11 @@
     "dependencies": {
         "@emotion/react": "^11.10.4",
         "@emotion/styled": "^11.10.4",
-        "@icons-pack/react-simple-icons": "^5.5.0",
         "@mui/icons-material": "^5.10.3",
         "@mui/material": "^5.10.4",
         "axios": "^0.27.2",
         "clsx": "^1.2.1",
+        "copy-to-clipboard": "^3.3.2",
         "dayjs": "^1.11.5",
         "js-yaml": "^4.1.0",
         "jsonpath-plus-browser": "^5.0.6",
@@ -26,7 +26,8 @@
         "react-dom": "^18.2.0",
         "react-router-dom": "^6.3.0",
         "react-split": "^2.0.14",
-        "react-syntax-highlighter": "^15.5.0"
+        "react-syntax-highlighter": "^15.5.0",
+        "simple-icons": "^7.11.0"
     },
     "devDependencies": {
         "@vitejs/plugin-react": "^2.0.1",

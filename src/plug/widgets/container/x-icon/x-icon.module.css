@@ -1,0 +1,12 @@
+.root {
+    margin-bottom: 6px;
+    width: var(--si-size);
+    height: var(--si-size);
+    color: rgba(0, 0, 0, 0.6);
+    user-select: none;
+    fill: currentColor;
+}
+
+:global(.MuiTab-textColorPrimary.Mui-selected) .root {
+    color: #1976d2;
+}
