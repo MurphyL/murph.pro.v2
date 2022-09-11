@@ -10,13 +10,13 @@ const AXIOS_INSTANCE = axios.create({
 
 export const doAjaxRequest = async (url = '/', params = {}) => {
     return await AXIOS_INSTANCE.post(url, params)
-        .then(({ status, data }) => ({ success: status === 200, payload: data || {} }))
-        .catch(e => ({ success: false, message: e.message || '执行请求错误' }));
+        .then(({ status, data }) => ({ status, payload: data || {} }))
+        .catch(e => ({ status: 500, payload: e.message || '执行请求错误' }));
 };
 
 export const renderResponse = (request = {}, response = {}) => {
     return [
-        `${request.method} ${request.url}\n`, 
+        `${request.method} ${request.url}\n`,
         format(request.body),
         `HTTP/1 - ${response.status}\n`,
         format(response.payload)

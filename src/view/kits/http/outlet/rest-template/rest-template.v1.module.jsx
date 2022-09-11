@@ -1,4 +1,7 @@
 import React from "react";
+import { useSnackbar } from 'notistack';
+import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { useDocumentTitle } from '/src/plug/hooks';
 
@@ -15,18 +18,45 @@ const TEMPLATE_REQUESTS = 'POST http://murph.pro/endpoints\n\n{\n\t"dependencies
 
 const REST_ENDPOINT = '/rest_template';
 
+const renderStatusView = ({ status, payload }) => {
+    switch (status) {
+        case 200:
+            return (
+                <CodeBlock children={renderResponse(payload.request, payload.response)} />
+            );
+        case 300:
+            return (
+                <CircularProgress />
+            );
+        case 500:
+            return (
+                <Alert severity="error">请求出错：${payload}</Alert>
+            )
+        default:
+            return (
+                <Alert severity="warning">暂未执行任何请求</Alert>
+            );
+    }
+};
+
 export default function RestTemplate() {
     useDocumentTitle('REST 请求');
-    const [response, setResponse] = React.useState(null);
+    const { enqueueSnackbar } = useSnackbar();
+    const [response, setResponse] = React.useState({ code: 100 });
     const doRequest = React.useCallback(async (params) => {
-        const x = await doAjaxRequest(REST_ENDPOINT, params);
-        setResponse(x);
+        setResponse({ status: 300 })
+        setResponse(await doAjaxRequest(REST_ENDPOINT, params));
+        enqueueSnackbar('请求成功', {
+            autoHideDuration: 5000,
+            variant: 'success',
+        });
     }, [setResponse]);
     return (
         <Splitter className={styles.root} sizes={[60, 40]} minSizes={[600, 400]}>
             <RestRequestEditor className={styles.editor} defaultValue={TEMPLATE_REQUESTS} doRequest={doRequest} />
             <div className={styles.response}>
-                {response ? (
+                {renderStatusView(response)}
+                {/* {response ? (
                     response.success ? (
                         <CodeBlock children={renderResponse(response.payload.request, response.payload.response)} />
                     ) : (
@@ -34,7 +64,7 @@ export default function RestTemplate() {
                     )
                 ) : (
                     <div>Nothing here!</div>
-                )}
+                )} */}
             </div>
         </Splitter>
     );

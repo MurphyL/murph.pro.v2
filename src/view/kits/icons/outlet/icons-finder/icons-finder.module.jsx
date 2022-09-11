@@ -1,7 +1,6 @@
 import React from 'react';
-
+import { useParams } from "react-router-dom";
 import { IconButton, InputBase, Paper } from '@mui/material';
-import { Menu as MenuIcon, Search as SearchIcon } from '@mui/icons-material/';
 import { useSnackbar } from 'notistack';
 import * as icons from 'simple-icons/icons';
 
@@ -14,6 +13,7 @@ const si = Object.entries(icons);
 
 export default function IconsFinder() {
     useDocumentTitle('搜索图标');
+    const params = useParams();
     const copy = useClipboard();
     const { enqueueSnackbar } = useSnackbar();
     const [keyword, setKeyword] = React.useState(null);
@@ -22,19 +22,16 @@ export default function IconsFinder() {
         enqueueSnackbar(`Copied: ${item.title} - ${key}`);
     }, []);
     const filted = React.useMemo(() => {
-        return ((keyword && keyword.length > 0) ? si.filter(({ title }) => title.toLowerCase().includes(keyword.toLowerCase())) : si).slice(0, 100);
+        return ((keyword && keyword.length > 0) ? si.filter(([key, item]) => item.title.toLowerCase().includes(keyword.toLowerCase())) : si).slice(0, 100);
     }, [keyword, si]);
     return (
         <div className={styles.root}>
             <div className={styles.bar}>
                 <Paper sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}>
                     <IconButton sx={{ p: '10px' }} aria-label="menu">
-                        <MenuIcon />
+                        <SimpleIconWrap {...icons.siSimpleicons} />
                     </IconButton>
                     <InputBase sx={{ ml: 1, flex: 1 }} placeholder="搜索图标……" onChange={e => { setKeyword(e.target.value) }} />
-                    <IconButton type="button" sx={{ p: '10px' }} aria-label="搜索">
-                        <SearchIcon />
-                    </IconButton>
                 </Paper>
             </div>
             <div className={styles.board}>

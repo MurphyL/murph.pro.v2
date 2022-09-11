@@ -11,5 +11,5 @@ export const useDocumentTitle = (title) => {
 };
 
 export const useClipboard = () => {
-    return React.useCallback(copy);
+    return React.useCallback(copy, []);
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 
 import NaviStageLayout from "/src/plug/layout/navi-stage/navi-stage.layout.module";
 import KitsHome from "./home/kits-home.module";
@@ -24,10 +24,11 @@ export default function KitsRoutes() {
         <Routes>
             <Route path="/" element={<NaviStageLayout />}>
                 <Route index={true} element={<KitsHome />} />
-                <Route path="/icons/*">
-                    <Route path="*" element={<IconsFinder />} />
+                <Route path="/icons/*" element={<Outlet />}>
+                    <Route index element={<div>Icons</div>} />
+                    <Route path="finder" element={<IconsFinder />} />
                 </Route>
-                <Route path="/json">
+                <Route path="/json/*">
                     <Route index={true} element={<TextRootStage language="json" />} />
                     <Route path="path-query" element={<JSONPathQuery />} />
                 </Route>
