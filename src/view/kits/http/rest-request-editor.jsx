@@ -1,7 +1,7 @@
 import React from 'react'
 import * as monaco from 'monaco-editor'
 
-import { parseRequestSchema } from './rest-request-maker';
+import { REST_REQUEST_RULE, parseRequestSchema } from './rest-request-maker';
 
 const MONACO_EDITOR_LANG = 'rest';
 

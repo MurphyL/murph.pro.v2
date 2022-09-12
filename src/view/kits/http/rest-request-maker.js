@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { format } from '../json/json-kits.v1';
 
-const REST_REQUEST_RULE = /^(GET|POST|PUT|DELETE|PATCH)\s+/;
+export const REST_REQUEST_RULE = /^(GET|POST|PUT|DELETE|PATCH)\s+/;
 
 const AXIOS_INSTANCE = axios.create({
     baseURL: import.meta.env.VITE_ENDPOINTS_ROOT,
