@@ -1,9 +1,12 @@
 import React from "react";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 
-import NaviStageLayout from "/src/plug/layout/navi-stage/navi-stage.layout.module";
-import KitsHome from "./home/kits-home.module";
+import PlaintextKitsReference from "./text/outlet/plaintext-root.text-reference";
+
 import HttpKitsLayout from "./http/layout/http-kits.layout.module";
+
+import JSONKitsTextReference from "./json/outlet/json-kits.text-reference";
+import SQLKitsTextReference from "./sql/outlet/sql-kits.text-reference";
 
 const IconsFinder = React.lazy(() => import("./icons/outlet/icons-finder/icons-finder.module"));
 
@@ -16,40 +19,31 @@ const MySQLDDL2X = React.lazy(() => import("./sql/outlet/mysql-ddl2x/mysql-ddl2x
 const RestTemplate = React.lazy(() => import("./http/outlet/rest-template/rest-template.v1.module"));
 const ElasticSearchLayout = React.lazy(() => import("./elasticsearch/layout/es-layout.v1.module"));
 
-const TextRootStage = React.lazy(() => import("./text/outlet/root-stage/text-root-stage.module"));
+const TextRootStage = React.lazy(() => import("./text/layout/root-stage/text-root-stage.module"));
 const TextDifference = React.lazy(() => import("./text/outlet/difference/text-difference.module"));
 
 export default function KitsRoutes() {
     return (
         <Routes>
-            <Route path="/" element={<NaviStageLayout />}>
-                <Route index={true} element={<KitsHome />} />
-                <Route path="/icons/*" element={<Outlet />}>
-                    <Route index element={<div>Icons</div>} />
-                    <Route path="finder" element={<IconsFinder />} />
-                </Route>
-                <Route path="/json/*">
-                    <Route index={true} element={<TextRootStage language="json" />} />
-                    <Route path="path-query" element={<JSONPathQuery />} />
-                </Route>
-                <Route path="/http/*" element={<HttpKitsLayout />}>
-                    <Route path="rest-template" element={<RestTemplate />} />
-                </Route>
-                <Route path="/sql" element={<TextRootStage language="sql" />} />
-                <Route path="/text/*">
-                    <Route index={true} element={<TextRootStage />} />
-                    <Route path="difference" element={<TextDifference />} />
-                </Route>
-                <Route path="/datax/*">
-                    <Route path="options" element={<DataXOptionsMaker />} />
-                </Route>
-                <Route path="/mysql/*">
-                    <Route path="ddl" element={<MySQLDDL2X />} />
-                </Route>
-                <Route path="/es" element={<Navigate to="../elasticsearch" replace={true} />} />
-                <Route path="/elasticsearch" element={<ElasticSearchLayout />}>
-                </Route>
-                <Route path="*" element={<div>404 - NOT FOUND</div>} />
+            <Route path="/es" element={<Navigate to="../elasticsearch" replace={true} />} />
+            <Route path="/elasticsearch" element={<ElasticSearchLayout />} />
+            <Route path="/mysql/ddl" element={<MySQLDDL2X />} />
+            <Route path="/json/path-query" element={<JSONPathQuery />} />
+            <Route path="/text/difference" element={<TextDifference />} />
+            <Route path="/icons/*" element={<Outlet />}>
+                <Route index element={<div>Icons</div>} />
+                <Route path="finder" element={<IconsFinder />} />
+            </Route>
+            <Route path="/datax/*">
+                <Route path="options" element={<DataXOptionsMaker />} />
+            </Route>
+            <Route path="/http/*" element={<HttpKitsLayout />}>
+                <Route path="rest-template" element={<RestTemplate />} />
+            </Route>
+            <Route path="/*" element={<TextRootStage />}>
+                <Route path="json" element={<JSONKitsTextReference />} />
+                <Route path="sql" element={<SQLKitsTextReference />} />
+                <Route path="plaintext" element={<PlaintextKitsReference />} />
             </Route>
         </Routes>
     );

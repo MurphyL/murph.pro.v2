@@ -2,10 +2,11 @@ import React from 'react';
 import { useParams } from "react-router-dom";
 import { IconButton, InputBase, Paper } from '@mui/material';
 import { useSnackbar } from 'notistack';
+
 import * as icons from 'simple-icons/icons';
+import SimpleIconWrap from '/src/plug/widgets/container/x-icon/x-icon.module';
 
 import { useDocumentTitle, useClipboard } from '/src/plug/hooks';
-import SimpleIconWrap from '/src/plug/widgets/container/x-icon/x-icon.module';
 
 import styles from './icons-finder.module.css';
 
@@ -22,7 +23,7 @@ export default function IconsFinder() {
         enqueueSnackbar(`Copied: ${item.title} - ${key}`);
     }, []);
     const filted = React.useMemo(() => {
-        return ((keyword && keyword.length > 0) ? si.filter(([key, item]) => item.title.toLowerCase().includes(keyword.toLowerCase())) : si).slice(0, 100);
+        return ((keyword && keyword.length > 0) ? si.filter(([key, item]) => item.title.toLowerCase().includes(keyword.toLowerCase())) : si).slice(0, 200);
     }, [keyword, si]);
     return (
         <div className={styles.root}>

@@ -8,10 +8,16 @@
 .root .title {
     padding: 3px 5px;
     user-select: none;
+    line-height: 24px;
+}
+
+.root .title svg {
+    margin: 0 5px;
+    vertical-align: middle;
 }
 
 
-.root .body>* {
+.root .body>*:not([role='alert']) {
     display: inline-block;
     margin: 3px;
 }
