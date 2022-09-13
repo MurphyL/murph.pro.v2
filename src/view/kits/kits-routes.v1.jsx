@@ -8,7 +8,7 @@ import HttpKitsLayout from "./http/layout/http-kits.layout.module";
 import JSONKitsTextReference from "./json/outlet/json-kits.text-reference";
 import SQLKitsTextReference from "./sql/outlet/sql-kits.text-reference";
 
-const DatetimeKits = React.lazy(() => import('./datetime/outlet/datetime-kits.module'));
+const DatetimeKits = React.lazy(() => import('./datetime/datetime-kits.module'));
 
 const IconsFinder = React.lazy(() => import("./icons/outlet/icons-finder/icons-finder.module"));
 
