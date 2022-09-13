@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useSnackbar } from 'notistack';
-import { Outlet, useParams, useNavigate } from "react-router-dom";
+import { Link, Outlet, useParams, useNavigate } from "react-router-dom";
 
 import { Button, IconButton, InputLabel, MenuItem, FormControl, Select, Tooltip } from '@mui/material';
 
@@ -76,7 +76,7 @@ export default function TextKitsLayout() {
                         </div>
                         <div className={styles.actions}>
                             <Tooltip title="全部工具">
-                                <IconButton color="default" onClick={() => navigate('/kits')}>
+                                <IconButton color="default" component={Link} to="/kits">
                                     <ConstructionIcon />
                                 </IconButton>
                             </Tooltip>

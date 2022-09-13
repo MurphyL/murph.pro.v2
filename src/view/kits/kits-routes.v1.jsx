@@ -8,6 +8,8 @@ import HttpKitsLayout from "./http/layout/http-kits.layout.module";
 import JSONKitsTextReference from "./json/outlet/json-kits.text-reference";
 import SQLKitsTextReference from "./sql/outlet/sql-kits.text-reference";
 
+const DatetimeKits = React.lazy(() => import('./datetime/outlet/datetime-kits.module'));
+
 const IconsFinder = React.lazy(() => import("./icons/outlet/icons-finder/icons-finder.module"));
 
 const JSONPathQuery = React.lazy(() => import("./json/outlet/json-path-query/json-path-query.module"));
@@ -27,6 +29,7 @@ export default function KitsRoutes() {
         <Routes>
             <Route path="/es" element={<Navigate to="../elasticsearch" replace={true} />} />
             <Route path="/elasticsearch" element={<ElasticSearchLayout />} />
+            <Route path="/datetime" element={<DatetimeKits />} />
             <Route path="/mysql/ddl" element={<MySQLDDL2X />} />
             <Route path="/json/path-query" element={<JSONPathQuery />} />
             <Route path="/text/difference" element={<TextDifference />} />
