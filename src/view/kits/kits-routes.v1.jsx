@@ -27,7 +27,7 @@ const TextDifference = React.lazy(() => import("./text/outlet/difference/text-di
 export default function KitsRoutes() {
     return (
         <Routes>
-            <Route path="/es" element={<Navigate to="../elasticsearch" replace={true} />} />
+            <Route path="/es" element={<Navigate to="../elasticsearch" />} />
             <Route path="/elasticsearch" element={<ElasticSearchLayout />} />
             <Route path="/datetime" element={<DatetimeKits />} />
             <Route path="/mysql/ddl" element={<MySQLDDL2X />} />

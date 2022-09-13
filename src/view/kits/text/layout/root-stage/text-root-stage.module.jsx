@@ -29,20 +29,17 @@ export default function TextKitsLayout() {
     const navigate = useNavigate();
     const editorRef = React.useRef(null);
     const { enqueueSnackbar } = useSnackbar();
-    const [language, setLanguage] = React.useState(params['*']);
     const [editorOption, setEditorOption] = React.useState({});
-    const languageInfo = React.useMemo(() => COSUTOM_MODES.find(item => item.id === language), [language]);
+    const languageInfo = React.useMemo(() => COSUTOM_MODES.find(item => item.id === params['*']), [params]);
     const getEditorContent = React.useCallback(() => editorRef.current ? editorRef.current.getValue() : '', [editorRef]);
     const setEditorContent = React.useCallback((value) => editorRef.current && editorRef.current.setValue(value), [editorRef]);
     const updateEditorOption = React.useCallback(() => { }, [editorOption, setEditorOption]);
     const setEditorLanguage = React.useCallback((newLanguage) => {
         if (editorRef && editorRef.current) {
-            setLanguage(newLanguage);
             editorRef.current.setLanguage(newLanguage);
-            const path = REDIRECT_MODES[newLanguage] || '/kits/plaintext';
-            navigate(path, { replace: true });
+            navigate(REDIRECT_MODES[newLanguage] || '/kits/plaintext');
         }
-    }, [navigate, setLanguage, editorRef]);
+    }, [navigate, editorRef]);
     const loadFileContent = React.useCallback((files) => {
         const reader = new FileReader();
         const file = files[0];
@@ -54,20 +51,20 @@ export default function TextKitsLayout() {
                 variant: 'success',
             });
         }
-    }, [setEditorContent, language]);
+    }, [setEditorContent]);
     const sendToTextDifference = React.useCallback(() => {
-        navigate('/kits/text/difference', { replace: true, state: { language, origin: getEditorContent() } });
-    }, [getEditorContent, language]);
+        navigate('/kits/text/difference', { state: { language: params['*'], origin: getEditorContent() } });
+    }, [getEditorContent, params]);
     return (
         <React.Fragment>
             <Splitter className={styles.root} sizes={[75, 25]} minSizes={[700, 300]}>
-                <CodeEditor ref={editorRef} language={language} />
+                <CodeEditor ref={editorRef} language={params['*']} />
                 <div className={styles.extra}>
                     <div className={styles.bar}>
                         <div className={styles.language}>
                             <FormControl sx={{ m: 1, minWidth: 160 }} size="small">
                                 <InputLabel>当前语言</InputLabel>
-                                <Select value={language} label="切换语言" onChange={e => setEditorLanguage(e.target.value)}>
+                                <Select value={params['*']} label="切换语言" onChange={e => setEditorLanguage(e.target.value)}>
                                     {COSUTOM_MODES.map(item => (
                                         <MenuItem key={item.id} value={item.id}>{item.aliases[0]}</MenuItem>
                                     ))}
@@ -98,7 +95,7 @@ export default function TextKitsLayout() {
                             </React.Fragment>
                         ) : null}
                     </Group>
-                    {languageInfo && language && language.length ? (
+                    {params['*'].length > 0 && languageInfo ? (
                         <Group title="相关工具">
                             <Outlet context={{ getEditorContent, setEditorContent, setEditorLanguage, languageInfo }} />
                         </Group>
