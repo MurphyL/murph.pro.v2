@@ -7,7 +7,6 @@ import { Button, IconButton, InputLabel, MenuItem, FormControl, Select, Tooltip 
 
 import ConstructionIcon from '@mui/icons-material/Construction';
 
-import { useDocumentTitle } from '/src/plug/hooks';
 import Group from '/src/plug/widgets/container/group/group.v1.module';
 import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
 import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
@@ -24,7 +23,6 @@ const REDIRECT_MODES = {
 };
 
 export default function TextKitsLayout() {
-    useDocumentTitle('文本工具集');
     const params = useParams();
     const navigate = useNavigate();
     const editorRef = React.useRef(null);
@@ -55,6 +53,9 @@ export default function TextKitsLayout() {
     const sendToTextDifference = React.useCallback(() => {
         navigate('/kits/text/difference', { state: { language: params['*'], origin: getEditorContent() } });
     }, [getEditorContent, params]);
+    const pushState = React.useCallback((path) => {
+        navigate(path, { state: { language: params['*'], origin: getEditorContent() } });
+    }, [navigate, params, getEditorContent]);
     return (
         <React.Fragment>
             <Splitter className={styles.root} sizes={[75, 25]} minSizes={[700, 300]}>
@@ -97,7 +98,7 @@ export default function TextKitsLayout() {
                     </Group>
                     {params['*'].length > 0 && languageInfo ? (
                         <Group title="相关工具">
-                            <Outlet context={{ getEditorContent, setEditorContent, setEditorLanguage, languageInfo }} />
+                            <Outlet context={{ getEditorContent, setEditorContent, setEditorLanguage, pushState, languageInfo }} />
                         </Group>
                     ) : null}
                 </div>

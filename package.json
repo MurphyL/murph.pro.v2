@@ -17,7 +17,7 @@
         "copy-to-clipboard": "^3.3.2",
         "dayjs": "^1.11.5",
         "js-yaml": "^4.1.0",
-        "jsonpath-plus-browser": "^5.0.6",
+        "jsonpath-plus": "^7.2.0",
         "jstoxml": "^3.2.5",
         "monaco-editor": "^0.34.0",
         "normalize.css": "^8.0.1",

@@ -1,16 +1,37 @@
 import React from 'react';
 
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import * as styles from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { nord, coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-export default function CodeBlock({ language, children, dark = true, showLineNumbers = true }) {
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+
+import { useClipboard } from '/src/plug/hooks';
+
+import styles from './code-block.v1.module.css';
+
+export default function CodeBlock({ language, children, dark = true, showLineNumbers = true, showCopy = true }) {
+    const copy = useClipboard();
     const options = React.useMemo(() => ({
         children: children,
         language: language,
         showLineNumbers: showLineNumbers,
-        style: dark ? styles.nord : styles.coy,
+        style: dark ? nord : coy,
+        customStyle: { width: '100%' }
     }), [language, dark, children])
     return (
-        <SyntaxHighlighter {...options} />
+        <div className={styles.root}>
+            <div className={styles.actions}>
+                {showCopy ? (
+                    <Tooltip title="Copy">
+                        <IconButton className={styles.action} size="mini" onClick={() => copy(children)}>
+                            <ContentCopyIcon />
+                        </IconButton>
+                    </Tooltip>
+                ) : null}
+            </div>
+            <SyntaxHighlighter {...options} />
+        </div>
     );
 }

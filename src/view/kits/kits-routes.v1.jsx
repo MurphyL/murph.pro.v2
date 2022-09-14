@@ -10,15 +10,17 @@ import SQLKitsTextReference from "./sql/outlet/sql-kits.text-reference";
 
 const DatetimeKits = React.lazy(() => import('./datetime/datetime-kits.module'));
 
-const IconsFinder = React.lazy(() => import("./icons/outlet/icons-finder/icons-finder.module"));
+const IconsFinder = React.lazy(() => import("./icons/icons-finder/icons-finder.module"));
 
-const JSONPathQuery = React.lazy(() => import("./json/outlet/json-path-query/json-path-query.module"));
+const JSONTreeView = React.lazy(() => import("./json/tree-view/tree-view.module"));
+const JSONPathQuery = React.lazy(() => import("./json/path-query/path-query.module"));
 
 const DataXOptionsMaker = React.lazy(() => import("./datax/outlet/datax-options.module"));
 
-const MySQLDDL2X = React.lazy(() => import("./sql/outlet/mysql-ddl2x/mysql-ddl2x.module"));
+const MySQLDDL2X = React.lazy(() => import("./sql/mysql-ddl2x/mysql-ddl2x.module"));
 
 const RestTemplate = React.lazy(() => import("./http/outlet/rest-template/rest-template.v1.module"));
+const StatusCodeList = React.lazy(() => import("./http/outlet/status-code/status-code.module"));
 const ElasticSearchLayout = React.lazy(() => import("./elasticsearch/layout/es-layout.v1.module"));
 
 const TextRootStage = React.lazy(() => import("./text/layout/root-stage/text-root-stage.module"));
@@ -31,6 +33,7 @@ export default function KitsRoutes() {
             <Route path="/elasticsearch" element={<ElasticSearchLayout />} />
             <Route path="/datetime" element={<DatetimeKits />} />
             <Route path="/mysql/ddl" element={<MySQLDDL2X />} />
+            <Route path="/json/tree-view" element={<JSONTreeView />} />
             <Route path="/json/path-query" element={<JSONPathQuery />} />
             <Route path="/text/difference" element={<TextDifference />} />
             <Route path="/icons/*" element={<Outlet />}>
@@ -41,6 +44,7 @@ export default function KitsRoutes() {
                 <Route path="options" element={<DataXOptionsMaker />} />
             </Route>
             <Route path="/http/*" element={<HttpKitsLayout />}>
+                <Route path="status-code" element={<StatusCodeList />} />
                 <Route path="rest-template" element={<RestTemplate />} />
             </Route>
             <Route path="/*" element={<TextRootStage />}>

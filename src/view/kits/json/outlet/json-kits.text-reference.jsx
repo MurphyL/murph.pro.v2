@@ -1,15 +1,18 @@
 import React from "react";
 
 import { useOutletContext } from "react-router-dom";
-import { Button } from '@mui/material';
+import Button from '@mui/material/Button';
 
 import { useSnackbar } from 'notistack';
 
-import * as JSONKits from '../json-kits.v1';
+import { useDocumentTitle } from '/src/plug/hooks';
+
+import { format, toYAML, toXML } from '../json-kits.v1';
 
 export default React.memo(function JSONKitsTextReference() {
+    useDocumentTitle('JSON 工具集');
     const { enqueueSnackbar } = useSnackbar();
-    const { getEditorContent, setEditorContent, setEditorLanguage } = useOutletContext();
+    const { getEditorContent, setEditorContent, setEditorLanguage, pushState } = useOutletContext();
     const doConvent = React.useCallback((converter, language = 'json') => {
         const source = getEditorContent();
         if (source && source.trim().length) {
@@ -24,11 +27,14 @@ export default React.memo(function JSONKitsTextReference() {
     }, [getEditorContent, setEditorContent, setEditorLanguage]);
     return (
         <React.Fragment>
-            <Button variant="outlined" onClick={() => doConvent(JSONKits.format)}>格式化</Button>
-            <Button variant="outlined" onClick={() => enqueueSnackbar('TODO：相关工具未实现')}>发送到 JSONPath Query</Button>
+            <Button variant="outlined" onClick={() => doConvent((source) => format(source, true, 4))}>格式化</Button>
+            <Button variant="outlined" onClick={() => doConvent((source) => format(source, false))}>压缩</Button>
+            <Button variant="outlined" onClick={() => pushState('/kits/json/tree-view')}>Tree View</Button>
             <br />
-            <Button variant="outlined" onClick={() => doConvent(JSONKits.toYAML, 'yaml')}>转换为 YAML</Button>
-            <Button variant="outlined" onClick={() => doConvent(JSONKits.toXML, 'xml')}>转换为 XML</Button>
+            <Button variant="outlined" onClick={() => pushState('/kits/json/path-query')}>发送到 JSONPath Query</Button>
+            <br />
+            <Button variant="outlined" onClick={() => doConvent(toYAML, 'yaml')}>转换为 YAML</Button>
+            <Button variant="outlined" onClick={() => doConvent(toXML, 'xml')}>转换为 XML</Button>
         </React.Fragment>
     );
 })

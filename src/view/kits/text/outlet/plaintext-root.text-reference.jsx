@@ -9,7 +9,10 @@ import CodeIcon from '@mui/icons-material/Code';
 import FunctionsIcon from '@mui/icons-material/Functions';
 import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
 
+import { useDocumentTitle } from '/src/plug/hooks';
+
 export default function PlaintextKitsReference() {
+    useDocumentTitle('通用文本工具集');
     const { languageInfo } = useOutletContext();
     return languageInfo ? (
         <List dense>

@@ -1,0 +1,9 @@
+.root .board .query {
+	padding: 5px;
+	width: calc(100% - 10px);
+	min-height: 3rem;
+	max-height: 20rem;
+	border: none;
+	outline: none;
+	resize: vertical;
+}
