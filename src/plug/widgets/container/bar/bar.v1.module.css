@@ -1,0 +1,8 @@
+.root {
+    margin: 10px;
+    padding: var(--padding);
+}
+
+.root>* {
+    margin: 3px;
+}

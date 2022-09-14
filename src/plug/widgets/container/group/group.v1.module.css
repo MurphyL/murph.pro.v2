@@ -16,7 +16,6 @@
     vertical-align: middle;
 }
 
-
 .root .body>*:not([role='alert']) {
     margin: 3px;
 }

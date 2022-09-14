@@ -1,8 +1,11 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
+// import Button from '@mui/material/Button';
+
 import { useDocumentTitle } from '/src/plug/hooks';
 
+// import Bar from '/src/plug/widgets/container/bar/bar.v1.module';
 import Group from '/src/plug/widgets/container/group/group.v1.module';
 import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
 import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
@@ -19,10 +22,7 @@ export default function JSONPathQuery() {
     const [content, setContent] = React.useState(location.state ? location.state.origin : demo);
     const [success, rows] = React.useMemo(() => {
         try {
-            if (content.length === 0) {
-                return [true, null]
-            }
-            return [true, doJSONPathQuery(content, expr)];
+            return [true, content.length > 0 ? doJSONPathQuery(content, expr) : null];
         } catch (e) {
             return [false, `查询出错：${e.message || 未知错误}`];
         }
@@ -34,13 +34,16 @@ export default function JSONPathQuery() {
                 <Group title="JSONPath" padding={0}>
                     <textarea className={styles.query} placeholder="请输入 JSONPath" value={expr} onChange={e => setExpr(e.target.value)} />
                 </Group>
-                <Group title="查询结果">
+                {/* <Bar>
+                    <Button variant="contained" size="small">查询</Button>
+                </Bar> */}
+                <div className={styles.result}>
                     {success ? (
                         <CodeBlock dark={false} language="json" children={format(rows, true, 2)} />
                     ) : (
                         <div>查询错误</div>
                     )}
-                </Group>
+                </div>
             </div>
         </Splitter>
     );
