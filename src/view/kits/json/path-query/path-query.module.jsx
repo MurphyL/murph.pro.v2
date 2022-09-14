@@ -15,13 +15,16 @@ import styles from './path-query.module.css';
 export default function JSONPathQuery() {
     useDocumentTitle('JSONPath Evaluator');
     const location = useLocation();
-    const [ expr, setExpr ] = React.useState('$');
-    const [ content, setContent ] = React.useState(location.state ? location.state.origin : demo);
-    const [ success, rows ] = React.useMemo(() => {
+    const [expr, setExpr] = React.useState('$');
+    const [content, setContent] = React.useState(location.state ? location.state.origin : demo);
+    const [success, rows] = React.useMemo(() => {
         try {
-            return [ true, doJSONPathQuery(content, expr) ];    
-        } catch(e) {
-            return [ false, `查询出错：${e.message || 未知错误}` ];
+            if (content.length === 0) {
+                return [true, null]
+            }
+            return [true, doJSONPathQuery(content, expr)];
+        } catch (e) {
+            return [false, `查询出错：${e.message || 未知错误}`];
         }
     }, [expr, content]);
     return (
@@ -32,11 +35,11 @@ export default function JSONPathQuery() {
                     <textarea className={styles.query} placeholder="请输入 JSONPath" value={expr} onChange={e => setExpr(e.target.value)} />
                 </Group>
                 <Group title="查询结果">
-                {success ? (
-                    <CodeBlock dark={false} language="json" children={format(rows, true, 2)}/>
-                ) : (
-                    <div>查询错误</div>
-                )}
+                    {success ? (
+                        <CodeBlock dark={false} language="json" children={format(rows, true, 2)} />
+                    ) : (
+                        <div>查询错误</div>
+                    )}
                 </Group>
             </div>
         </Splitter>
