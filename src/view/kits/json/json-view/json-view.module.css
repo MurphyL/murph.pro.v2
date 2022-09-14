@@ -1,0 +1,9 @@
+.root .views {
+	position: relative;
+}
+
+.root .views .switch {
+	position: absolute;
+	top:  20px;
+	right: 15px;
+}

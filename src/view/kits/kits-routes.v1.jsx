@@ -12,7 +12,7 @@ const DatetimeKits = React.lazy(() => import('./datetime/datetime-kits.module'))
 
 const IconsFinder = React.lazy(() => import("./icons/icons-finder/icons-finder.module"));
 
-const JSONTreeView = React.lazy(() => import("./json/tree-view/tree-view.module"));
+const JSONView = React.lazy(() => import("./json/json-view/json-view.module"));
 const JSONPathQuery = React.lazy(() => import("./json/path-query/path-query.module"));
 
 const DataXOptionsMaker = React.lazy(() => import("./datax/outlet/datax-options.module"));
@@ -33,7 +33,7 @@ export default function KitsRoutes() {
             <Route path="/elasticsearch" element={<ElasticSearchLayout />} />
             <Route path="/datetime" element={<DatetimeKits />} />
             <Route path="/mysql/ddl" element={<MySQLDDL2X />} />
-            <Route path="/json/tree-view" element={<JSONTreeView />} />
+            <Route path="/json/tree-view" element={<JSONView />} />
             <Route path="/json/path-query" element={<JSONPathQuery />} />
             <Route path="/text/difference" element={<TextDifference />} />
             <Route path="/icons/*" element={<Outlet />}>
