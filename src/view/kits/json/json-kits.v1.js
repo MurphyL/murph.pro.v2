@@ -42,3 +42,10 @@ export const toYAML = (source) => {
 export const doJSONPathQuery = (source, expr) => {
     return JSONPath(expr, parseJSON(source));
 };
+
+
+// papaparse
+export const fromCSV() {};
+
+// papaparse
+export const toCSV() {};
