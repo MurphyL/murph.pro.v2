@@ -8,6 +8,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import './app.v1.css';
 
 const KitsRoutes = React.lazy(() => import('../view/kits/kits-routes.v1'));
+const SnippetRoutes = React.lazy(() => import('../view/snippets/snippets-routes.v1'));
 
 export default function App() {
     return (
@@ -21,6 +22,7 @@ export default function App() {
                     <BrowserRouter>
                         <Routes>
                             <Route path="/" element={<div>Home</div>} />
+                            <Route path="/snippets/*" element={<SnippetRoutes />} />
                             <Route path="/kits/*" element={<KitsRoutes />} />
                             <Route path="/about" element={<div>About</div>} />
                         </Routes>

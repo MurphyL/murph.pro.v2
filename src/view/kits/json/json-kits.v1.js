@@ -45,7 +45,7 @@ export const doJSONPathQuery = (source, expr) => {
 
 
 // papaparse
-export const fromCSV() {};
+export const fromCSV = () =>  {};
 
 // papaparse
-export const toCSV() {};
+export const toCSV = () => {};
