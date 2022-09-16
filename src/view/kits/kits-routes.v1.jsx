@@ -24,6 +24,7 @@ const StatusCodeList = React.lazy(() => import("./http/outlet/status-code/status
 const ElasticSearchLayout = React.lazy(() => import("./elasticsearch/layout/es-layout.v1.module"));
 
 const TextRootStage = React.lazy(() => import("./text/layout/root-stage/text-root-stage.module"));
+const TextConvertors = React.lazy(() => import("./text/converters/text-converters.v1.module"));
 const TextDifference = React.lazy(() => import("./text/outlet/difference/text-difference.module"));
 
 export default function KitsRoutes() {
@@ -35,6 +36,10 @@ export default function KitsRoutes() {
             <Route path="/mysql/ddl" element={<MySQLDDL2X />} />
             <Route path="/json/tree-view" element={<JSONView />} />
             <Route path="/json/path-query" element={<JSONPathQuery />} />
+            <Route path="/converters/*" element={<Outlet />}>
+                <Route index element={<TextConvertors />} />
+                <Route path=":cate" element={<TextConvertors />} />
+            </Route>
             <Route path="/text/difference" element={<TextDifference />} />
             <Route path="/icons/*" element={<Outlet />}>
                 <Route index element={<div>Icons</div>} />

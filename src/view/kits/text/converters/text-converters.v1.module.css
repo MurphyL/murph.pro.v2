@@ -1,0 +1,25 @@
+.root {
+	height: 100%;
+}
+
+.root .header {
+	border-bottom: 1px solid #efefef;
+}
+
+.root .stage {
+	height: calc(100% - 50px);
+	overflow-y: hidden;
+}
+
+.root .stage .form {
+	width: calc(100% - 5px * 5);
+}
+
+.root .stage .form textarea {
+	padding: 5px;
+	width: 100%;
+	min-height: 6rem;
+	max-height: 10rem;
+	outline: none;
+	resize: vertical;
+}
