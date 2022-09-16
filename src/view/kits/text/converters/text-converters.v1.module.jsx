@@ -27,6 +27,12 @@ const convertors = {
 			label: '加密'
 		}]	
 	},
+	base64: {
+		label: 'MD5',
+		actions: [{
+			label: '加密'
+		}]	
+	},
 	url: {
 		label: 'URL',
 		actions: [{

@@ -37,7 +37,7 @@ export default function KitsRoutes() {
             <Route path="/json/tree-view" element={<JSONView />} />
             <Route path="/json/path-query" element={<JSONPathQuery />} />
             <Route path="/converters/*" element={<Outlet />}>
-                <Route index element={<TextConvertors />} />
+                <Route index element={<Navigate to="../url" />} />
                 <Route path=":cate" element={<TextConvertors />} />
             </Route>
             <Route path="/text/difference" element={<TextDifference />} />
