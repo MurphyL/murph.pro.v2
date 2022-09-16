@@ -39,6 +39,10 @@ export default React.memo(function JSONKitsTextReference() {
                     console.log('导入 CSV 文件', file.name, '成功');
                 }).catch(e => {
                     console.error('导入 CSV 文件', file.name, '失败', e);
+                    enqueueSnackbar(`导入 CSV 文件（${file.name}）失败`, {
+                        autoHideDuration: 2000,
+                        variant: 'error',
+                    });
                 });
                 break;
         }
