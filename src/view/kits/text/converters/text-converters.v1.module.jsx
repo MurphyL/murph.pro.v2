@@ -28,7 +28,8 @@ const convertors = {
 		}]	
 	},
 	base64: {
-		label: 'MD5',
+		label: 'Base 64',
+		doc: '',
 		actions: [{
 			label: '加密'
 		}]	
@@ -105,7 +106,6 @@ export default function TextConverters() {
 					</div>
 				</Splitter>
 			</div>
-
 		</div>
 	);
 }
