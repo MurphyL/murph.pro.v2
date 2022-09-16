@@ -43,6 +43,10 @@ export const doJSONPathQuery = (source, expr) => {
     return JSONPath(expr, parseJSON(source));
 };
 
+// TODO - https://jmespath.org/
+export const doJEMSPathQuery = (source, expr) => {
+    return null;
+};
 
 // papaparse
 export const fromCSV = () =>  {};
