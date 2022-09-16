@@ -7,7 +7,7 @@ import { useSnackbar } from 'notistack';
 
 import { useDocumentTitle } from '/src/plug/hooks';
 
-import { format, toYAML, toXML } from '../json-kits.v1';
+import { format, fromCSVFile, toYAML, toXML } from '../json-kits.v1';
 
 export default React.memo(function JSONKitsTextReference() {
     useDocumentTitle('JSON 工具集');
@@ -25,11 +25,26 @@ export default React.memo(function JSONKitsTextReference() {
             });
         }
     }, [getEditorContent, setEditorContent, setEditorLanguage]);
+    const loadCSVFile = React.useCallback(async ([ file ]) => { 
+        fromCSVFile(file).then((payload) => {
+            setEditorContent(format(payload));
+            console.log('导入 CSV 文件', file.name, '成功');
+        }).catch(e => {
+            console.error('导入 CSV 文件', file.name, '失败');
+        });
+    }, [setEditorContent]);
     return (
         <React.Fragment>
             <Button variant="outlined" onClick={() => doConvent((source) => format(source, true, 4))}>格式化</Button>
             <Button variant="outlined" onClick={() => doConvent((source) => format(source, false))}>压缩</Button>
             <Button variant="outlined" onClick={() => pushState('/kits/json/tree-view')}>Tree View</Button>
+            <br />
+            <Button variant="outlined" component="label">
+                <input hidden={true} accept="*" type="file" onChange={e => loadCSVFile(e.target.files)} />
+                <span>导入 CSV 文件</span>
+            </Button>
+            {/* TODO - 导出 CSV 文件 */}
+            {/* <Button variant="outlined">导出 CSV 文件</Button> */}
             <br />
             <Button variant="outlined" onClick={() => pushState('/kits/json/path-query')}>发送到 JSONPath Query</Button>
             <br />

@@ -1,4 +1,5 @@
 import YAML from 'js-yaml';
+import Papa from 'papaparse';
 import jstoxml from 'jstoxml';
 import { JSONPath } from 'jsonpath-plus';
 
@@ -49,7 +50,27 @@ export const doJEMSPathQuery = (source, expr) => {
 };
 
 // papaparse
-export const fromCSV = () =>  {};
+export const fromCSV = () => { };
 
 // papaparse
-export const toCSV = () => {};
+export const toCSV = () => { };
+
+/**
+ * 解析 CSV 文件
+ */
+export const fromCSVFile = (file) => {
+    return new Promise((resolve, reject) => {
+        Papa.parse(file, {
+            header: true,
+            worker: true,
+            complete: (results) => {
+                console.log('CSV 文件解析成功：', file.name);
+                resolve(results.data);
+            },
+            error: (e) => {
+                console.error('CSV 文件解析错误：', file.name, e);
+                reject(e.message || 'CSV 文件解析错误');
+            }
+        })
+    });
+}

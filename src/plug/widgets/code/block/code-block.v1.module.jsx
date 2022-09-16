@@ -23,13 +23,13 @@ export default function CodeBlock({ language, children, dark = true, showLineNum
     return (
         <div className={styles.root}>
             <div className={styles.actions}>
-                {showCopy ? (
+                {/* {showCopy ? (
                     <Tooltip title="Copy">
                         <IconButton className={styles.action} size="mini" onClick={() => copy(children)}>
                             <ContentCopyIcon />
                         </IconButton>
                     </Tooltip>
-                ) : null}
+                ) : null} */}
             </div>
             <SyntaxHighlighter {...options} />
         </div>
