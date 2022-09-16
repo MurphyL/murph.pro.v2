@@ -2,59 +2,70 @@ import React from 'react';
 
 import { Link, useParams } from "react-router-dom";
 
-import Box from '@mui/material/Box';
+import { useSnackbar } from 'notistack';
+
 import Button from '@mui/material/Button';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import TextField from '@mui/material/TextField';
 
-import { useDocumentTitle } from '/src/plug/hooks';
-
 import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
+
+import { useDocumentTitle } from '/src/plug/hooks';
+import { toBase64, fromBase64, toMD5, toSHA256, fromUnicode } from '../text-kits.v1';
 
 import styles from './text-converters.v1.module.css';
 
 const convertors = {
 	sha: {
-		label: 'SHA',
+		display: 'SHA',
 		actions: [{
-			label: '加密'
+			display: 'SHA256',
+			apply(source) {
+				return toSHA256(source);
+			}
+		}, {
+			display: 'HAMC SHA256',
+			apply(source) {
+				return toSHA256(source, true);
+			}
 		}]
 	},
 	md5: {
-		label: 'MD5',
+		display: 'MD5',
 		actions: [{
-			label: '加密'
-		}]	
+			display: '加密',
+			apply(source) {
+				return toMD5(source);
+			}
+		}]
 	},
 	base64: {
-		label: 'Base 64',
-		doc: '',
+		display: 'Base 64',
+		excerpt: 'res/documents/what-is-base64.md',
 		actions: [{
-			label: '加密'
-		}]	
+			display: '加密',
+			apply: toBase64
+		}, {
+			display: '解密',
+			apply: fromBase64
+		}]
 	},
 	url: {
-		label: 'URL',
+		display: 'URL',
 		actions: [{
-			label: 'Encode',
+			display: 'Encode',
 			apply: encodeURIComponent
 		}, {
-			label: 'Dencode',
+			display: 'Dencode',
 			apply: decodeURIComponent
-		}]	
-	},
-	utf8: {
-		label: 'UTF-8',
-		actions: [{
-			label: 'Unicode 转中文'
-		}]	
+		}]
 	},
 	ascii: {
-		label: 'ASCII',
+		display: 'ASCII',
 		actions: [{
-			label: 'Unicode 转中文'
-		}]	
+			display: 'Unicode 转中文'
+		}]
 	}
 };
 
@@ -71,21 +82,30 @@ const TEXT_AREA_PROPS = {
 
 export default function TextConverters() {
 	const { cate } = useParams();
+	const { enqueueSnackbar } = useSnackbar();
 	const current = React.useMemo(() => convertors[cate], [cate]);
-	const [ source, setSource ] = React.useState(window.location.origin);
-	const [ target, setTarget ] = React.useState('');
-	useDocumentTitle(`${current.label} - 转换工具`);
+	const [source, setSource] = React.useState(window.location.origin);
+	const [target, setTarget] = React.useState('');
+	useDocumentTitle(`${current.display} - 转换工具`);
 	const onSourceChange = React.useCallback((e) => setSource(e.target.value), [setSource]);
 	const execAction = React.useCallback((action) => {
-		if(action.apply) {
-			setTarget(action.apply(source));
+		if (action.apply) {
+			try {
+				setTarget(action.apply(source));
+			} catch (e) {
+				console.log('操作失败：', action, e);
+				enqueueSnackbar(`操作失败：${e.message || '未知错误'}`, {
+					variant: 'error',
+				})
+			}
+
 		}
 	}, [source, setTarget]);
 	return (
 		<div className={styles.root}>
 			<Tabs className={styles.header} value={current.index} variant="scrollable" scrollButtons="auto">
 				{Object.entries(convertors).map(([key, entry]) => (
-					<Tab key={key} component={Link} label={entry.label} to={`/kits/converters/${key}`} />
+					<Tab key={key} component={Link} label={entry.display} to={`/kits/converters/${key}`} />
 				))}
 			</Tabs>
 			<div className={styles.stage}>
@@ -96,7 +116,7 @@ export default function TextConverters() {
 						</div>
 						<div className={styles.bar}>
 							{(current.actions || []).map((action, index) => (
-								<Button key={index} variant="contained" size="small" onClick={() => execAction(action)}>{action.label}</Button>
+								<Button key={index} variant="contained" size="small" onClick={() => execAction(action)}>{action.display}</Button>
 							))}
 							<Button variant="contained" size="small" onClick={() => setSource(target)}>^ 传输</Button>
 						</div>
