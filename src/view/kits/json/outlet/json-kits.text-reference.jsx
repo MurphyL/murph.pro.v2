@@ -9,6 +9,12 @@ import { useDocumentTitle } from '/src/plug/hooks';
 
 import { format, fromCSVFile, toYAML, toXML } from '../json-kits.v1';
 
+
+/**
+ * csv - accept=".csv"
+ * xls - accept="application/vnd.ms-excel"
+ * xlsx - accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+ */
 export default React.memo(function JSONKitsTextReference() {
     useDocumentTitle('JSON 工具集');
     const { enqueueSnackbar } = useSnackbar();
@@ -25,7 +31,7 @@ export default React.memo(function JSONKitsTextReference() {
             });
         }
     }, [getEditorContent, setEditorContent, setEditorLanguage]);
-    const loadFile = React.useCallback(async ([ file ], fileType) => { 
+    const loadFile = React.useCallback((fileType, [ file ]) => { 
         switch(fileType) {
             case 'csv':
                 fromCSVFile(file).then((payload) => {
@@ -46,7 +52,7 @@ export default React.memo(function JSONKitsTextReference() {
             <Button variant="outlined" onClick={() => pushState('/kits/json/path-query')}>发送到 JSONPath Query</Button>
             <br />
             <Button variant="outlined" component="label">
-                <input hidden={true} accept="*" type="file" onChange={e => loadFile(e.target.files, 'csv')} />
+                <input hidden={true} accept=".csv" type="file" onChange={e => loadFile('csv', e.target.files)} />
                 <span>导入 CSV 文件</span>
             </Button>
             {/* TODO - 导出 CSV 文件 */}
