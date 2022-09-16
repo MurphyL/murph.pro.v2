@@ -63,6 +63,7 @@ export const fromCSVFile = (file) => {
         Papa.parse(file, {
             header: true,
             worker: true,
+            skipEmptyLines: true,
             complete: (results) => {
                 console.log('CSV 文件解析成功：', file.name);
                 resolve(results.data);
