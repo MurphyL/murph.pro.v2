@@ -10,55 +10,47 @@ import Tab from '@mui/material/Tab';
 import TextField from '@mui/material/TextField';
 
 import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
+import CodeBlock from '/src/plug/widgets/code/block/code-block.v1.module';
 
 import { useDocumentTitle } from '/src/plug/hooks';
-import { toBase64, fromBase64, toMD5, toSHA256, fromUnicode } from '../text-kits.v1';
+
+import textConvertersReducer from './text-converters.v1.reducer';
 
 import styles from './text-converters.v1.module.css';
 
 const convertors = {
-	sha: {
-		display: 'SHA',
+	crypto: {
+		display: 'crypto.js',
 		actions: [{
+			type: 'sha256/encode',
 			display: 'SHA256',
-			apply(source) {
-				return toSHA256(source);
-			}
 		}, {
+			type: 'hamc-sha256/encode',
 			display: 'HAMC SHA256',
-			apply(source) {
-				return toSHA256(source, true);
-			}
-		}]
-	},
-	md5: {
-		display: 'MD5',
-		actions: [{
-			display: '加密',
-			apply(source) {
-				return toMD5(source);
-			}
+		}, {
+			type: 'md5/encode',
+			display: 'MD5',
 		}]
 	},
 	base64: {
 		display: 'Base 64',
 		excerpt: 'res/documents/what-is-base64.md',
 		actions: [{
+			type: 'base64/encode',
 			display: '加密',
-			apply: toBase64
 		}, {
+			type: 'base64/dencode',
 			display: '解密',
-			apply: fromBase64
 		}]
 	},
 	url: {
 		display: 'URL',
 		actions: [{
+			type: 'url/encode',
 			display: 'Encode',
-			apply: encodeURIComponent
 		}, {
+			type: 'url/dencode',
 			display: 'Dencode',
-			apply: decodeURIComponent
 		}]
 	},
 	ascii: {
@@ -84,23 +76,15 @@ export default function TextConverters() {
 	const { cate } = useParams();
 	const { enqueueSnackbar } = useSnackbar();
 	const current = React.useMemo(() => convertors[cate], [cate]);
-	const [source, setSource] = React.useState(window.location.origin);
-	const [target, setTarget] = React.useState('');
+	const [state, dispatch] = React.useReducer(textConvertersReducer, { source: window.location.origin, target: '\n' });
 	useDocumentTitle(`${current.display} - 转换工具`);
-	const onSourceChange = React.useCallback((e) => setSource(e.target.value), [setSource]);
-	const execAction = React.useCallback((action) => {
-		if (action.apply) {
-			try {
-				setTarget(action.apply(source));
-			} catch (e) {
-				console.log('操作失败：', action, e);
-				enqueueSnackbar(`操作失败：${e.message || '未知错误'}`, {
-					variant: 'error',
-				})
-			}
-
+	React.useEffect(() => {
+		if (state.success === false) {
+			enqueueSnackbar(state.message || '未知错误', {
+				variant: 'error',
+			})
 		}
-	}, [source, setTarget]);
+	}, [state]);
 	return (
 		<div className={styles.root}>
 			<Tabs className={styles.header} value={current.index} variant="scrollable" scrollButtons="auto">
@@ -112,17 +96,20 @@ export default function TextConverters() {
 				<Splitter sizes={[65, 35]} minSizes={[700, 500]}>
 					<div className={styles.form}>
 						<div className={styles.source}>
-							<TextField {...TEXT_AREA_PROPS} autoFocus={true} label="原文" value={source} onChange={onSourceChange} />
+							<TextField {...TEXT_AREA_PROPS} autoFocus={true} label="原文" value={state.source} onChange={(e) => dispatch({ type: 'exchange', source: e.target.value })} />
 						</div>
 						<div className={styles.bar}>
 							{(current.actions || []).map((action, index) => (
-								<Button key={index} variant="contained" size="small" onClick={() => execAction(action)}>{action.display}</Button>
+								<Button key={index} variant="contained" size="small" onClick={() => dispatch({ ...action, source: state.source })}>{action.display}</Button>
 							))}
-							<Button variant="contained" size="small" onClick={() => setSource(target)}>^ 传输</Button>
+							<Button variant="contained" size="small" onClick={() => dispatch({ type: 'exchange', source: state.target })}>^ 传输</Button>
 						</div>
 						<div className={styles.target}>
-							<TextField {...TEXT_AREA_PROPS} value={target} onChange={() => null} />
+							<CodeBlock children={state.target} language={state.language || 'plaintext'} />
 						</div>
+					</div>
+					<div className={styles.extra}>
+						<p>相关文档</p>
 					</div>
 				</Splitter>
 			</div>

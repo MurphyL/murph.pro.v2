@@ -27,3 +27,7 @@
 .root .stage .form .bar button {
 	margin: 3px;
 }
+
+.root .stage  .extra {
+	padding: 10px;
+}
