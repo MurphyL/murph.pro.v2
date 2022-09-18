@@ -6,8 +6,8 @@ import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
 
 import * as JSONKits from '/src/view/kits/json/json-kits.v1';
 
-import DATAX_TEMPLATE from '../datax-options.template.json';
-import DATAX_PROXY_PROPS from '../datax-proxy.properties.json';
+import DATAX_TEMPLATE from './datax-options.template.json';
+import DATAX_PROXY_PROPS from './datax-proxy.properties.json';
 
 const proxies = {
     readers: {},
