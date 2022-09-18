@@ -21,7 +21,7 @@ const ElasticSearchLayout = React.lazy(() => import("./elasticsearch/layout/es-l
 const TextConvertors = React.lazy(() => import("./converters/text-converters.v1.module"));
 const TextDifference = React.lazy(() => import("./difference/text-difference.module"));
 
-const CodeKits = React.lazy(() => import('./code/code-kits.v1.module'));
+const CodeKits = React.lazy(() => import('./source-code/code-kits.v1.module'));
 
 
 export default function KitsRoutes() {
