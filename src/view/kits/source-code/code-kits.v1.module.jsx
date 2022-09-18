@@ -113,7 +113,7 @@ export default function CodeKits() {
                         <input hidden={true} accept="*" type="file" onChange={e => dispatch({ action: 'import-file', files: e.target.files })} />
                         <span>导入</span>
                     </Button>
-                    <Button variant="contained" onClick={() => dispatch({ action: 'navigate-to', redirect: '/kits/text/difference' })}>比较</Button>
+                    <Button variant="contained" onClick={() => dispatch({ action: 'navigate-to', redirect: '/kits/difference' })}>比较</Button>
                     {state.options && state.options.snippet ? (
                         <Button variant="contained" onClick={() => enqueueSnackbar('功能暂未实现')}>代码片段</Button>
                     ) : null}

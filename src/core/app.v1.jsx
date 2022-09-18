@@ -23,7 +23,7 @@ export default function App() {
                         <Routes>
                             <Route path="/" element={<div>Home</div>} />
                             <Route path="/snippets/*" element={<SnippetRoutes />} />
-                            <Route path="/kits/*" element={<KitsRoutes />} />
+                            <Route path="/kits/*" element={<KitsRoutes />} errorElement={<div>Kits Error</div>} />
                             <Route path="/about" element={<div>About</div>} />
                         </Routes>
                     </BrowserRouter>
