@@ -38,11 +38,15 @@ const CodeEditor = React.forwardRef(function ({ defaultValue, language, showLine
             return instance ? instance.getValue() : '';
         },
         setValue(payload) {
-            instance && instance.setValue(payload)
+            if (instance) {
+                instance.setValue(payload);
+            }
         },
         setLanguage(language) {
-            const model = instance.getModel();
-            monaco.editor.setModelLanguage(model, language);
+            if (instance) {
+                const model = instance.getModel();
+                monaco.editor.setModelLanguage(model, language);
+            }
         }
     }));
     return (

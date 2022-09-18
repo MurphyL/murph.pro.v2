@@ -19,7 +19,7 @@ export default function JSONPathQuery() {
     useDocumentTitle('JSONPath Evaluator');
     const location = useLocation();
     const [expr, setExpr] = React.useState('$');
-    const [content, setContent] = React.useState(location.state ? location.state.origin : demo);
+    const [content, setContent] = React.useState(location.state ? location.state.content : demo);
     const [success, rows] = React.useMemo(() => {
         try {
             return [true, content.length > 0 ? doJSONPathQuery(content, expr) : null];
