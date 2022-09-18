@@ -1,6 +1,7 @@
 ## Reference
 
 - [Nginx - Full Example Configuration](https://www.nginx.com/resources/wiki/start/topics/examples/full/)
+- [Tangled tree visualization](https://observablehq.com/@nitaku/tangled-tree-visualization-ii)
 
 ## Extra
 

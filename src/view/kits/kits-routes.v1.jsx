@@ -27,6 +27,9 @@ const TextRootStage = React.lazy(() => import("./text/layout/root-stage/text-roo
 const TextConvertors = React.lazy(() => import("./text/converters/text-converters.v1.module"));
 const TextDifference = React.lazy(() => import("./text/outlet/difference/text-difference.module"));
 
+const CodeKits = React.lazy(() => import('./code/code-kits.v1.module'));
+
+
 export default function KitsRoutes() {
     return (
         <Routes>
@@ -51,6 +54,8 @@ export default function KitsRoutes() {
             <Route path="/http/*" element={<HttpKitsLayout />}>
                 <Route path="status-code" element={<StatusCodeList />} />
                 <Route path="rest-template" element={<RestTemplate />} />
+            </Route>
+            <Route path="/source-code" element={<CodeKits />}>
             </Route>
             <Route path="/*" element={<TextRootStage />}>
                 <Route path="json" element={<JSONKitsTextReference />} />

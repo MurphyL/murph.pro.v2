@@ -27,7 +27,7 @@ export default function TextDifference({ renderSideBySide = true }) {
         if (!wrapper.current || wrapper.current.childElementCount) {
             return;
         }
-        const source = (state && state.origin) ? state.origin : '';
+        const source = (state && state.content) ? state.content : '';
         const language = (state && state.language) ? state.language : 'plaintext';
         var originalModel = monaco.editor.createModel(source, language);
         var modifiedModel = monaco.editor.createModel(source, language);
