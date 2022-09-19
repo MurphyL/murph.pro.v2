@@ -6,6 +6,7 @@ import SimpleIconWrap from '/src/plug/widgets/container/x-icon/x-icon.module';
 
 import TabNaviLayout, { ChildRouteLayout } from "/src/plug/layout/tab-navi/tab-navi.layout.module";
 
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import BubbleChartIcon from '@mui/icons-material/BubbleChart';
 import CodeOffIcon from '@mui/icons-material/CodeOff';
@@ -93,9 +94,13 @@ const ROOT_NAVI_ITEMS = [{
     icon: (<SimpleIconWrap {...siMysql} />),
     label: 'MySQL DDL',
 }, {
-    url: '/kits/converters',
+    url: '/kits/datetime',
+    icon: (<AccessTimeFilledIcon />),
+    label: '时间工具类',
+}, {
+    url: '/kits/converters/crypto',
     icon: (<TranslateIcon />),
-    label: '转换',
+    label: '加/解密',
 }, {
     url: '/kits/icons/finder',
     icon: (<WidgetsIcon />),
@@ -131,7 +136,7 @@ const HTTP_KITS_NAVI = [{
 const CONVERTORS_NAVI = [{
     url: '/kits/converters/crypto',
     icon: (<PublishedWithChangesIcon />),
-    label: 'URL Encoder',
+    label: '加/解密',
 }, {
     url: '/kits/converters/url',
     icon: (<LinkIcon />),
