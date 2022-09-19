@@ -87,7 +87,7 @@ export default function RestRequestEditor({ defaultValue, execRequest, ...props 
             language: MONACO_EDITOR_LANG,
             value: defaultValue || '',
             fontSize: 20,
-            lineNumbers: 'on',
+            lineNumbers: 'off',
             contextmenu: false,
             smoothScrolling: true,
             automaticLayout: true,
