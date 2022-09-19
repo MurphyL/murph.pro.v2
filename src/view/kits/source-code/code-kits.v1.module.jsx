@@ -2,14 +2,10 @@ import React from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import Tooltip from '@mui/material/Tooltip';
-
-import ConstructionIcon from '@mui/icons-material/Construction';
 
 import { useSnackbar } from 'notistack';
 
@@ -99,13 +95,6 @@ export default function CodeKits() {
                                 ))}
                             </Select>
                         </FormControl>
-                    </div>
-                    <div className={styles.actions}>
-                        <Tooltip title="全部工具">
-                            <IconButton color="default" component={Link} to="/kits">
-                                <ConstructionIcon />
-                            </IconButton>
-                        </Tooltip>
                     </div>
                 </div>
                 <Group title="基本操作">

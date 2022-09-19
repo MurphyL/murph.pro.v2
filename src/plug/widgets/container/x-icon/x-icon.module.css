@@ -1,5 +1,5 @@
 .root {
-    margin-bottom: 6px;
+    --si-size: 24px;
     width: var(--si-size);
     height: var(--si-size);
     color: rgba(0, 0, 0, 0.6);

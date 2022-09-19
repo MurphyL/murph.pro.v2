@@ -1,0 +1,14 @@
+.root {
+	display: flex;
+	height: 100%;
+}
+.root .navi {
+	padding: 5px 3px;
+	overflow-y: hidden;
+	border-right: 1px solid #efefef;
+}
+.root .stage {
+	flex: 1;
+	height: 100%;
+	overflow-y: auto;
+}

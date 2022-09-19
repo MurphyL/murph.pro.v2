@@ -105,7 +105,7 @@ export default function TextConverters() {
 							<Button variant="contained" size="small" onClick={() => dispatch({ type: 'exchange', source: state.target })}>^ 传输</Button>
 						</div>
 						<div className={styles.target}>
-							<CodeBlock children={state.target} language={state.language || 'plaintext'} />
+							<CodeBlock dark={false} children={state.target} language={state.language || 'plaintext'} />
 						</div>
 					</div>
 					<div className={styles.extra}>

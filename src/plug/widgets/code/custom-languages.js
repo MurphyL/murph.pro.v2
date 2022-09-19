@@ -7,16 +7,12 @@ const MURPH_LANGS = {
     bat: {
         snippet: true
     },
-    c: {},
-    cpp: {},
-    csharp: {},
     css: {
         snippet: true
     },
     dockerfile: {
         snippet: true
     },
-    go: {},
     html: {},
     ini: {},
     java: {
@@ -35,9 +31,6 @@ const MURPH_LANGS = {
             }
         }
     },
-    julia: {},
-    kotlin: {},
-    lua: {},
     markdown: {},
     mysql: {
         snippet: true,
@@ -48,12 +41,9 @@ const MURPH_LANGS = {
         parent: 'sql'
     },
     plaintext: {},
-    powershell: {},
-    proto: {},
     python: {
         snippet: true
     },
-    redis: {},
     shell: {
         snippet: true
     },

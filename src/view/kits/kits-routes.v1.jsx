@@ -1,7 +1,20 @@
 import React from "react";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 
+import { siHttpie, siJson, siMysql, siVisualstudiocode } from 'simple-icons/icons';
+import SimpleIconWrap from '/src/plug/widgets/container/x-icon/x-icon.module';
+
+import TabNaviLayout, { ChildRouteLayout } from "/src/plug/layout/tab-navi/tab-navi.layout.module";
+
 import HttpKitsLayout from "./http/layout/http-kits.layout.module";
+
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import BubbleChartIcon from '@mui/icons-material/BubbleChart';
+import DynamicFormIcon from '@mui/icons-material/DynamicForm';
+import FormatIndentIncreaseIcon from '@mui/icons-material/FormatIndentIncrease';
+import ManageSearchIcon from '@mui/icons-material/ManageSearch';
+import TranslateIcon from '@mui/icons-material/Translate';
+import WidgetsIcon from '@mui/icons-material/Widgets';
 
 const DatetimeKits = React.lazy(() => import('./datetime/datetime-kits.module'));
 
@@ -21,35 +34,95 @@ const ElasticSearchLayout = React.lazy(() => import("./elasticsearch/layout/es-l
 const TextConvertors = React.lazy(() => import("./converters/text-converters.v1.module"));
 const TextDifference = React.lazy(() => import("./difference/text-difference.module"));
 
-const CodeKits = React.lazy(() => import('./source-code/code-kits.v1.module'));
+const SourceCodeKits = React.lazy(() => import('./source-code/code-kits.v1.module'));
 
 
 export default function KitsRoutes() {
     return (
         <Routes>
-            <Route path="/es" element={<Navigate to="../elasticsearch" />} />
-            <Route path="/elasticsearch" element={<ElasticSearchLayout />} />
-            <Route path="/datetime" element={<DatetimeKits />} />
-            <Route path="/mysql/ddl" element={<MySQLDDL2X />} />
-            <Route path="/json/tree-view" element={<JSONView />} />
-            <Route path="/json/path-query" element={<JSONPathQuery />} />
-            <Route path="/converters/*" element={<Outlet />}>
-                <Route index element={<Navigate to="../url" />} />
-                <Route path=":cate" element={<TextConvertors />} />
+            <Route path="/" element={<TabNaviLayout navi={ROOT_NAVI_ITEMS} />}>
+                <Route path="/es" element={<Navigate to="../elasticsearch" />} />
+                <Route path="/elasticsearch" element={<ElasticSearchLayout />} />
+                <Route path="/datetime" element={<DatetimeKits />} />
+                <Route path="/sql/*" element={<ChildRouteLayout navi={SQL_KITS_NAVI} parent="/kits/source-code" />}>
+                    <Route path="mysql/ddl" element={<MySQLDDL2X />} />    
+                </Route>
+                <Route path="/json/*" element={<ChildRouteLayout navi={JSON_KITS_NAVI} parent="/kits/source-code" />}>
+                    <Route path="tree-view" element={<JSONView />} />
+                    <Route path="path-query" element={<JSONPathQuery />} />    
+                </Route>
+                <Route path="/converters/*" element={<Outlet />}>
+                    <Route index element={<Navigate to="../url" />} />
+                    <Route path=":cate" element={<TextConvertors />} />
+                </Route>
+                <Route path="/difference" element={<TextDifference />} />
+                <Route path="/icons/*" element={<Outlet />}>
+                    <Route index element={<div>Icons</div>} />
+                    <Route path="finder" element={<IconsFinder />} />
+                </Route>
+                <Route path="/datax/*">
+                    <Route path="options" element={<DataXOptionsMaker />} />
+                </Route>
+                <Route path="/http/*" element={<ChildRouteLayout navi={HTTP_KITS_NAVI} parent="/kits/source-code" />}>
+                    <Route path="status-code" element={<StatusCodeList />} />
+                    <Route path="rest-template" element={<RestTemplate />} />
+                </Route>
+                <Route path="/source-code" element={<ChildRouteLayout navi={ROOT_NAVI_ITEMS} />}>
+                    <Route index element={<SourceCodeKits />} />
+                </Route>
             </Route>
-            <Route path="/difference" element={<TextDifference />} />
-            <Route path="/icons/*" element={<Outlet />}>
-                <Route index element={<div>Icons</div>} />
-                <Route path="finder" element={<IconsFinder />} />
-            </Route>
-            <Route path="/datax/*">
-                <Route path="options" element={<DataXOptionsMaker />} />
-            </Route>
-            <Route path="/http/*" element={<HttpKitsLayout />}>
-                <Route path="status-code" element={<StatusCodeList />} />
-                <Route path="rest-template" element={<RestTemplate />} />
-            </Route>
-            <Route path="/source-code" element={<CodeKits />} />
         </Routes>
     );
 }
+
+const ROOT_NAVI_ITEMS = [{
+    url: '/kits/source-code',
+    icon: (<SimpleIconWrap {...siVisualstudiocode} />),
+    label: 'Source Code',
+}, {
+    url: '/kits/json/path-query',
+    icon: (<SimpleIconWrap {...siJson} />),
+    label: 'JSONPath Query',
+}, {
+    url: '/kits/http/rest-template',
+    icon: (<DynamicFormIcon />),
+    label: 'REST Template',
+}, {
+    url: '/kits/sql/mysql/ddl',
+    icon: (<SimpleIconWrap {...siMysql} />),
+    label: 'MySQL DDL',
+}, {
+    url: '/kits/converters',
+    icon: (<TranslateIcon />),
+    label: '转换',
+}, {
+    url: '/kits/icons/finder',
+    icon: (<WidgetsIcon />),
+    label: '查找图标',
+}];
+
+const JSON_KITS_NAVI = [{
+    url: '/kits/json/path-query',
+    icon: (<ManageSearchIcon />),
+    label: 'JSONPath Query',
+}, {
+    url: '/kits/json/tree-view',
+    icon: (<AccountTreeIcon />),
+    label: 'JSON TreeView',
+}];
+
+const SQL_KITS_NAVI = [{
+    url: '/kits/sql/mysql/ddl',
+    icon: (<AccountTreeIcon />),
+    label: 'MySQL DDL',
+}];
+
+const HTTP_KITS_NAVI = [{
+    url: '/kits/http/rest-template',
+    icon: (<FormatIndentIncreaseIcon />),
+    label: 'REST Template',
+}, {
+    url: '/kits/http/status-code',
+    icon: (<BubbleChartIcon />),
+    label: 'HTTP Status Code',
+}];

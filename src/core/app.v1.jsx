@@ -14,11 +14,7 @@ export default function App() {
     return (
         <SnackbarProvider maxSnack={5} autoHideDuration={5000}>
             <RecoilRoot>
-                <React.Suspense fallback={
-                    <Box sx={{ display: 'flex', p: 1 }}>
-                        <CircularProgress />
-                    </Box>
-                }>
+                <React.Suspense fallback={<Box sx={{ p: 1 }}><CircularProgress /></Box>}>
                     <BrowserRouter>
                         <Routes>
                             <Route path="/" element={<div>Home</div>} />

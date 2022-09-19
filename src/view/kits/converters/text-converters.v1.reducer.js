@@ -26,7 +26,7 @@ export default function (state, action) {
             case 'exchange':
                 return { source: action.source, target: '\n' };
             default:
-                return { success: false, source: state.source, target: '\n', message: `不支持的操作：${action.type}` };
+                return state;
         }
     } catch (e) {
         console.error('操作出错', action, e);
