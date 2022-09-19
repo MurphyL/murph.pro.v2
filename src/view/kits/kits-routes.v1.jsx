@@ -10,9 +10,12 @@ import HttpKitsLayout from "./http/layout/http-kits.layout.module";
 
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import BubbleChartIcon from '@mui/icons-material/BubbleChart';
+import CodeOffIcon from '@mui/icons-material/CodeOff';
 import DynamicFormIcon from '@mui/icons-material/DynamicForm';
 import FormatIndentIncreaseIcon from '@mui/icons-material/FormatIndentIncrease';
+import LinkIcon from '@mui/icons-material/Link';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
+import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import TranslateIcon from '@mui/icons-material/Translate';
 import WidgetsIcon from '@mui/icons-material/Widgets';
 
@@ -51,7 +54,7 @@ export default function KitsRoutes() {
                     <Route path="tree-view" element={<JSONView />} />
                     <Route path="path-query" element={<JSONPathQuery />} />    
                 </Route>
-                <Route path="/converters/*" element={<Outlet />}>
+                <Route path="/converters/*" element={<ChildRouteLayout navi={CONVERTORS_NAVI} parent="/kits/source-code" />}>
                     <Route index element={<Navigate to="../url" />} />
                     <Route path=":cate" element={<TextConvertors />} />
                 </Route>
@@ -125,4 +128,14 @@ const HTTP_KITS_NAVI = [{
     url: '/kits/http/status-code',
     icon: (<BubbleChartIcon />),
     label: 'HTTP Status Code',
+}];
+
+const CONVERTORS_NAVI = [{
+    url: '/kits/converters/crypto',
+    icon: (<PublishedWithChangesIcon />),
+    label: 'URL Encoder',
+}, {
+    url: '/kits/converters/url',
+    icon: (<LinkIcon />),
+    label: 'URL Encoder',
 }];

@@ -1,12 +1,10 @@
-import React from "react";
+import SvgIcon from '@mui/material/SvgIcon';
 
-import styles from './x-icon.module.css';
-
-export default React.memo(function SimpleIconWrap({ ...si }) {
+export default function SimpleIconWrap({ viewBox, color, fontSize, sx, ...si }) {
     return (
-        <svg className={styles.root} role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <SvgIcon sx={sx} viewBox={viewBox} color={color} fontSize={fontSize} titleAccess={si.title}>
             <title data-slug={si.slug}>{si.title}</title>
             <path d={si.path} />
-        </svg>
+        </SvgIcon>
     );
-});
+};
