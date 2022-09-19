@@ -6,8 +6,6 @@ import SimpleIconWrap from '/src/plug/widgets/container/x-icon/x-icon.module';
 
 import TabNaviLayout, { ChildRouteLayout } from "/src/plug/layout/tab-navi/tab-navi.layout.module";
 
-import HttpKitsLayout from "./http/layout/http-kits.layout.module";
-
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import BubbleChartIcon from '@mui/icons-material/BubbleChart';
 import CodeOffIcon from '@mui/icons-material/CodeOff';
@@ -30,8 +28,8 @@ const DataXOptionsMaker = React.lazy(() => import("./datax/datax-options.module"
 
 const MySQLDDL2X = React.lazy(() => import("./sql/mysql-ddl2x/mysql-ddl2x.module"));
 
-const RestTemplate = React.lazy(() => import("./http/outlet/rest-template/rest-template.v1.module"));
-const StatusCodeList = React.lazy(() => import("./http/outlet/status-code/status-code.module"));
+const RestTemplate = React.lazy(() => import("./http/rest-template/rest-template.v1.module"));
+const StatusCodeList = React.lazy(() => import("./http/status-code/status-code.module"));
 const ElasticSearchLayout = React.lazy(() => import("./elasticsearch/layout/es-layout.v1.module"));
 
 const TextConvertors = React.lazy(() => import("./converters/text-converters.v1.module"));
