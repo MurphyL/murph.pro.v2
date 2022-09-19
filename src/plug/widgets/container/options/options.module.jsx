@@ -15,7 +15,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import styles from './options.module.css';
 
-export default function OptionBoard({ title = "设置", show = false, width = 550, options, onClose, updateOption }) {
+export default function OptionBoard({ title = "设置", show = false, width = 1000, options, onClose, updateOption }) {
     return (
         <Drawer className={styles.root} anchor="right" open={show}>
             <Toolbar variant="dense">

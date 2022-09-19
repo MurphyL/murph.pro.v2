@@ -1,11 +1,15 @@
 import React from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Tooltip from '@mui/material/Tooltip';
+
+import ConstructionIcon from '@mui/icons-material/Construction';
 
 import { useSnackbar } from 'notistack';
 
@@ -14,18 +18,20 @@ import { useDocumentTitle } from '/src/plug/hooks';
 import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
 import Group from '/src/plug/widgets/container/group/group.v1.module';
 import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
-
-import styles from './code-kits.v1.module.css';
+import OptionBoard from "/src/plug/widgets/container/options/options.module";
 
 import COSUTOM_MODES from '/src/plug/widgets/code/custom-languages';
 
 import { getActions, doConvert, doImport } from './code-kits.v1.support';
 
-export default function SourceCodeKits() {
-    useDocumentTitle('源代码工具');
+import styles from './code-kits.v1.module.css';
+
+export default function CodeKits() {
+    useDocumentTitle('源代码工具集');
     const navigate = useNavigate();
     const editorRef = React.useRef(null);
     const { enqueueSnackbar } = useSnackbar();
+    const [showOptionBoard, setShowOptionBoard] = React.useState(false);
     const [searchParams, setSearchParams] = useSearchParams();
     const showMessage = React.useCallback((message, options) => {
         enqueueSnackbar(message, {
@@ -99,6 +105,13 @@ export default function SourceCodeKits() {
                             </Select>
                         </FormControl>
                     </div>
+                    <div className={styles.actions}>
+                        <Tooltip title="设置">
+                            <IconButton color="default" onClick={() => setShowOptionBoard(true)}>
+                                <ConstructionIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
                 </div>
                 <Group title="基本操作">
                     <Button variant="contained" component="label">
@@ -133,6 +146,9 @@ export default function SourceCodeKits() {
                             }
                         })}
                     </Group>
+                ) : null}
+                {state.options && state.options ? (
+                    <OptionBoard show={showOptionBoard} options={{}} onClose={() => setShowOptionBoard(false)} />
                 ) : null}
             </div>
         </Splitter >
