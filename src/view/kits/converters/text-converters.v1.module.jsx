@@ -20,7 +20,7 @@ import styles from './text-converters.v1.module.css';
 
 const convertors = {
 	crypto: {
-		display: 'crypto.js',
+		display: 'CRYPTO.JS',
 		actions: [{
 			type: 'sha256/encode',
 			display: 'SHA256',
@@ -105,7 +105,7 @@ export default function TextConverters() {
 							<Button variant="contained" size="small" onClick={() => dispatch({ type: 'exchange', source: state.target })}>^ 传输</Button>
 						</div>
 						<div className={styles.target}>
-							<CodeBlock dark={false} children={state.target} language={state.language || 'plaintext'} />
+							<CodeBlock showLineNumbers={false} children={state.target} language={state.language || 'plaintext'} />
 						</div>
 					</div>
 					<div className={styles.extra}>

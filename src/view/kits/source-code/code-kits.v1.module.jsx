@@ -9,6 +9,8 @@ import Select from '@mui/material/Select';
 
 import { useSnackbar } from 'notistack';
 
+import { useDocumentTitle } from '/src/plug/hooks';
+
 import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
 import Group from '/src/plug/widgets/container/group/group.v1.module';
 import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
@@ -19,7 +21,8 @@ import COSUTOM_MODES from '/src/plug/widgets/code/custom-languages';
 
 import { getActions, doConvert, doImport } from './code-kits.v1.support';
 
-export default function CodeKits() {
+export default function SourceCodeKits() {
+    useDocumentTitle('源代码工具');
     const navigate = useNavigate();
     const editorRef = React.useRef(null);
     const { enqueueSnackbar } = useSnackbar();
