@@ -1,5 +1,6 @@
 import React from 'react';
-import { camelCase, capitalize, trim } from 'lodash';
+import { pascalCase } from "pascal-case";
+import { camelCase, trim, upperCase } from 'lodash';
 
 import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
 import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
@@ -44,23 +45,17 @@ export default function MySQLDDL2X() {
     );
 }
 
+
 const SPACE_CHAR = ' ';
 const EMPTY_LINE = '\n';
 const INDENT_STR = '   ';
 
-const pascalCase = (text) => camelCase(trim(text));
-
 const renderJavaClass = (parsed) => {
-    const fields = parsed.columns.map(column2field);
-    return [
-        `/** ${parsed.schema}.${parsed.table} **/`,
-        `public class ${capitalize(pascalCase(parsed.table))} {`,
-            fields.join(EMPTY_LINE),
-        '}'
-    ].join(EMPTY_LINE);
+    const fields = parsed.columns.map(column2field).join(EMPTY_LINE);
+    return `public class ${pascalCase(parsed.table)} {\n${fields}\n}`;
 };
 
-const columnType2JavaType = {
+const SCHEMA_TYPES_MAP2JAVA = {
     VARCHAR: 'String',
     STRING: 'String',
     INT: 'Integer',
@@ -71,13 +66,46 @@ const columnType2JavaType = {
     TIMESTAMP: 'Date',
 };
 
+const convertType = (type) => {
+    const upperType = upperCase(type);
+
+    switch(upperType) {
+        case 'VARCHAR':
+        case 'STRING':
+            return 'String';
+        case 'INT':
+        case 'INTEGER':
+            return 'Integer';
+        case 'BIGINT':
+            return 'Long';
+        case 'DECIMAL':
+            return 'BigDecimal';
+        case 'DATE':
+        case 'TIMESTAMP':
+            return 'Date';
+        default:
+            return upperType;
+    }
+}
+
 const column2field = (column, index) => {
-    const fieldType = columnType2JavaType[column.dataType] || column.dataType;
-    const fieldName = pascalCase(column.name) || `field${index}`;
-    const fieldComments = [ column.comment || fieldName ];
-    column.constraint && fieldComments.push(column.constraint);
+    const fieldType = SCHEMA_TYPES_MAP2JAVA[column.dataType] || column.dataType;
+    const fieldName = camelCase(column.name) || `field${index}`;
+    const fieldValue = column.default ? `= ${fieldType === 'String' ? "" : column.default };` : ';'
+    const comments = [ column.name ];
+    column.comment && comments.push(column.comment);
+    column.constraint && comments.push(column.constraint);
+    const fieldParts = [ fieldType, fieldName];
+    if(column.default !== 'NULL') {
+        fieldParts.push(`=`);
+        if(fieldType === 'String') {
+            fieldParts.push(`"${column.default}"`)
+        } else {
+            fieldParts.push(column.default);
+        }
+    }
     return [
-        `${INDENT_STR} /** ${fieldComments.join(' - ')} **/`,
-        `${INDENT_STR} private ${fieldType} ${fieldName};`
+        INDENT_STR + `/** ${comments.join(' - ')} **/`,
+        INDENT_STR + `private ${fieldParts.join(' ')};` + EMPTY_LINE
     ].join(EMPTY_LINE);
 }
