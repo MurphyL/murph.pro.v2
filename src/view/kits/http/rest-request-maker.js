@@ -2,6 +2,8 @@ import axios from 'axios';
 
 import { format } from '../json/json-kits.v1';
 
+import {} from '/src/plug/hooks';
+
 export const REST_REQUEST_RULE = /^(GET|POST|PUT|DELETE|PATCH)\s+/;
 
 const AXIOS_INSTANCE = axios.create({

@@ -27,6 +27,7 @@ const JSONPathQuery = React.lazy(() => import("./json/path-query/path-query.modu
 
 const DataXOptionsMaker = React.lazy(() => import("./datax/datax-options.module"));
 
+const SQLParser = React.lazy(() => import("./sql/parser/sql-parser.module"));
 const MySQLDDL2X = React.lazy(() => import("./sql/mysql-ddl2x/mysql-ddl2x.module"));
 
 const RestTemplate = React.lazy(() => import("./http/rest-template/rest-template.v1.module"));
@@ -47,6 +48,7 @@ export default function KitsRoutes() {
                 <Route path="/elasticsearch" element={<ElasticSearchLayout />} />
                 <Route path="/datetime" element={<DatetimeKits />} />
                 <Route path="/sql/*" element={<ChildRouteLayout navi={SQL_KITS_NAVI} parent="/kits/source-code" />}>
+                    <Route path="parser" element={<SQLParser />} />
                     <Route path="mysql/ddl" element={<MySQLDDL2X />} />    
                 </Route>
                 <Route path="/json/*" element={<ChildRouteLayout navi={JSON_KITS_NAVI} parent="/kits/source-code" />}>
