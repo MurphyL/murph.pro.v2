@@ -39,7 +39,7 @@ export const useServerKit = (path) => React.useCallback(({ data, params }) => {
         const success = status === 200 && data.success;
         return [ success, success ? data.payload : '服务端执行请求出错' ];
     }).catch(e => {
-        console.log('执行异步请求出错', request, e);
+        console.log('执行异步请求出错', path, e);
         return [ false, e.message || '未知错误' ];
     });
 }, [path]);

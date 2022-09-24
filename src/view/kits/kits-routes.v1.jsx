@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 
-import { siHttpie, siJson, siMysql, siVisualstudiocode } from 'simple-icons/icons';
+import { siJson, siMysql, siVisualstudiocode } from 'simple-icons/icons';
 import SimpleIconWrap from '/src/plug/widgets/container/x-icon/x-icon.module';
 
 import TabNaviLayout, { ChildRouteLayout } from "/src/plug/layout/tab-navi/tab-navi.layout.module";
@@ -9,7 +9,6 @@ import TabNaviLayout, { ChildRouteLayout } from "/src/plug/layout/tab-navi/tab-n
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import BubbleChartIcon from '@mui/icons-material/BubbleChart';
-import CodeOffIcon from '@mui/icons-material/CodeOff';
 import DynamicFormIcon from '@mui/icons-material/DynamicForm';
 import FormatIndentIncreaseIcon from '@mui/icons-material/FormatIndentIncrease';
 import LinkIcon from '@mui/icons-material/Link';
@@ -28,7 +27,7 @@ const JSONPathQuery = React.lazy(() => import("./json/path-query/path-query.modu
 const DataXOptionsMaker = React.lazy(() => import("./datax/datax-options.module"));
 
 const SQLParser = React.lazy(() => import("./sql/parser/sql-parser.module"));
-const MySQLDDL2X = React.lazy(() => import("./sql/mysql-ddl2x/mysql-ddl2x.module"));
+const DDL2X = React.lazy(() => import("./sql/ddl2x/sql-ddl2x.module"));
 
 const RestTemplate = React.lazy(() => import("./http/rest-template/rest-template.v1.module"));
 const StatusCodeList = React.lazy(() => import("./http/status-code/status-code.module"));
@@ -49,7 +48,7 @@ export default function KitsRoutes() {
                 <Route path="/datetime" element={<DatetimeKits />} />
                 <Route path="/sql/*" element={<ChildRouteLayout navi={SQL_KITS_NAVI} parent="/kits/source-code" />}>
                     <Route path="parser" element={<SQLParser />} />
-                    <Route path="mysql/ddl" element={<MySQLDDL2X />} />    
+                    <Route path="mysql/ddl" element={<DDL2X />} />    
                 </Route>
                 <Route path="/json/*" element={<ChildRouteLayout navi={JSON_KITS_NAVI} parent="/kits/source-code" />}>
                     <Route path="tree-view" element={<JSONView />} />
