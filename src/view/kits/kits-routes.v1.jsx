@@ -48,7 +48,7 @@ export default function KitsRoutes() {
                 <Route path="/datetime" element={<DatetimeKits />} />
                 <Route path="/sql/*" element={<ChildRouteLayout navi={SQL_KITS_NAVI} parent="/kits/source-code" />}>
                     <Route path="parser" element={<SQLParser />} />
-                    <Route path="mysql/ddl" element={<DDL2X />} />    
+                    <Route path="ddl2x" element={<DDL2X />} />    
                 </Route>
                 <Route path="/json/*" element={<ChildRouteLayout navi={JSON_KITS_NAVI} parent="/kits/source-code" />}>
                     <Route path="tree-view" element={<JSONView />} />
