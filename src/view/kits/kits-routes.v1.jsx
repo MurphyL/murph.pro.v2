@@ -79,7 +79,7 @@ export default function KitsRoutes() {
 }
 
 const ROOT_NAVI_ITEMS = [{
-    url: '/kits/source-code',
+    url: '/kits/source',
     icon: (<SimpleIconWrap {...siVisualstudiocode} />),
     label: 'Source Code',
 }, {
@@ -94,10 +94,6 @@ const ROOT_NAVI_ITEMS = [{
     url: '/kits/sql/ddl2x',
     icon: (<SimpleIconWrap {...siMysql} />),
     label: 'DDL Parser & Render',
-}, {
-    url: '/kits/datetime',
-    icon: (<AccessTimeFilledIcon />),
-    label: '时间工具类',
 }, {
     url: '/kits/converters/crypto',
     icon: (<TranslateIcon />),
@@ -119,9 +115,9 @@ const JSON_KITS_NAVI = [{
 }];
 
 const SQL_KITS_NAVI = [{
-    url: '/kits/sql/mysql/ddl',
+    url: '/kits/sql/ddl2x',
     icon: (<AccountTreeIcon />),
-    label: 'MySQL DDL',
+    label: 'DDL Parser & Render',
 }];
 
 const HTTP_KITS_NAVI = [{

@@ -153,11 +153,13 @@ const INDENT_STR = '   ';
 const SCHEMA_TYPES_MAP2JAVA = {
     VARCHAR: 'String',
     STRING: 'String',
+    TINYINT: 'Short',
     INT: 'Integer',
     INTEGER: 'Integer',
     BIGINT: 'Long',
     DECIMAL: 'BigDecimal',
     DATE: 'Date',
+    DATETIME: 'Date',
     TIMESTAMP: 'Date',
 };
 
