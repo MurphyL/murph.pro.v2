@@ -91,9 +91,9 @@ const ROOT_NAVI_ITEMS = [{
     icon: (<DynamicFormIcon />),
     label: 'REST Template',
 }, {
-    url: '/kits/sql/mysql/ddl',
+    url: '/kits/sql/ddl2x',
     icon: (<SimpleIconWrap {...siMysql} />),
-    label: 'MySQL DDL',
+    label: 'DDL Parser & Render',
 }, {
     url: '/kits/datetime',
     icon: (<AccessTimeFilledIcon />),
