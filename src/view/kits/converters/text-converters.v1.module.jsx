@@ -53,8 +53,8 @@ const convertors = {
 			display: 'Dencode',
 		}]
 	},
-	ascii: {
-		display: 'ASCII',
+	cron: {
+		display: 'CRON',
 		actions: [{
 			display: 'Unicode 转中文'
 		}]

@@ -9,10 +9,7 @@ import Alert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
+
 import ImageIcon from '@mui/icons-material/Image';
 import WorkIcon from '@mui/icons-material/Work';
 import BeachAccessIcon from '@mui/icons-material/BeachAccess';
@@ -32,44 +29,65 @@ import CodeBlock from '/src/plug/widgets/code/block/code-block.v1.module';
 import { siCodeberg, siLeetcode } from 'simple-icons/icons';
 import SimpleIconWrap from '/src/plug/widgets/container/x-icon/x-icon.module';
 
-import { useServerKit } from '/src/plug/hooks';
+import { useDocumentTitle, useServerKit } from '/src/plug/hooks';
 
 import styles from './sql-ddl2x.module.css';
 
 const renders = {
     javaClass: {
         label: 'Java Class',
-        language: 'java',
+        action: 'display-java-class',
         icon: (<SimpleIconWrap {...siLeetcode} />),
-        apply({ columns, table }) {
+        apply(parsed, options = {}) {
+            const { columns, table } = parsed;
             const fields = columns.map(column2field).join(EMPTY_LINE);
-            return {
-                language: 'java',
-                content: `public class ${pascalCase(table)} {\n${fields}\n}`,
-            };
+            return `public class ${pascalCase(table)} {\n${fields}\n}`;
         }
     },
     dql: {
         label: 'Data Query Language',
+        action: 'display-dql',
         icon: (<SimpleIconWrap {...siCodeberg} />),
-        apply(parsed) {
+        apply(parsed, options = {}) {
+            const { separator = ', \n\t' } = options;
             const dql_no_alias = [
-                `select ${parsed.columns.map(col => col.name).join(', ')}`,
+                `select ${parsed.columns.map(col => col.name).join(separator)}`,
                 `from ${parsed.schema}.${parsed.table}`
             ].join(EMPTY_LINE);
-            return {
-                language: 'sql',
-                content: dql_no_alias
-            };
+            return dql_no_alias;
         }
     }
 };
 
+function reducer(state, action) {
+    switch (action.type) {
+        case 'set-parsed':
+            return {
+                language: 'sql',
+                source: action.content,
+                renderType: renders.dql.action,
+                content: renders.dql.apply(action.content)
+            };
+        case 'display-ddl-meta':
+            return { 
+                ...state,
+                language: 'sql',
+                content: renders.dql.apply(state.source)
+            };
+        case 'display-java-class':
+            return {
+                ...state
+            };
+        default:
+            throw state;
+    }
+}
+
 export default function DDL2X() {
+    useDocumentTitle('DDL 工具集');
     const editorRef = React.useRef(null);
     const { enqueueSnackbar } = useSnackbar();
-    const [renderType, setRenderType] = React.useState(null);
-    const [parsed, setParsed] = React.useState(null);
+    const [state, dispatch] = React.useReducer(reducer, { source: null });
     const parseDDL = useServerKit('/sql/ddl/parse');
     const doParse = () => {
         if (!editorRef || !editorRef.current) {
@@ -84,49 +102,24 @@ export default function DDL2X() {
             });
         } else {
             parseDDL({ data: { sql } }).then(([success, payload]) => {
-                if (success) {
-                    setParsed(payload);
+                if (success && payload) {
+                    dispatch({ type: 'set-parsed', content: payload })
                 } else {
                     console.log(payload || '解析出错');
                 }
             });
         }
     };
-    const rendered = React.useMemo(() => {
-        if (!renderType || !parsed || !renders[renderType] || !renders[renderType].apply) {
-            return null;
-        }
-        return renders[renderType].apply(parsed);
-    }, [parsed, renderType]);
     return (
         <Splitter className={styles.root} minSizes={500}>
             <CodeEditor ref={editorRef} language="sql" />
             <div className={styles.extra}>
                 <div className={styles.stage}>
-                    {rendered ? (
-                        <CodeBlock language={rendered.language} children={rendered.content} />
-                    ) : (parsed ? (
-                        <List sx={{ width: '100%' }}>
-                            <ListItem>
-                                <ListItemAvatar>
-                                    <Avatar>
-                                        <PivotTableChartIcon />
-                                    </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText primary="Columns" secondary={Array.isArray(parsed.columns) ? parsed.columns.map(col => col.name).join(', ') : ''} />
-                            </ListItem>
-                            <ListItem>
-                                <ListItemAvatar>
-                                    <Avatar>
-                                        <TableViewIcon />
-                                    </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText primary="Meta" secondary={`${parsed.schema}.${parsed.table}`} />
-                            </ListItem>
-                        </List>
+                    {state.content ? (
+                        <CodeBlock language={state.language} children={state.content} />
                     ) : (
                         <Alert severity="info" sx={{ margin: 1 }} > 暂未配置相关解析器</Alert>
-                    ))}
+                    )}
                 </div>
                 <Stack className={styles.switch} spacing={2}>
                     <IconButton size='small' onClick={doParse}>
@@ -134,7 +127,7 @@ export default function DDL2X() {
                             <PodcastsIcon />
                         </Avatar>
                     </IconButton>
-                    <ToggleButtonGroup exclusive color="primary" orientation="vertical" size="small" value={renderType} onChange={(event, selected) => setRenderType(selected)}>
+                    <ToggleButtonGroup exclusive color="primary" orientation="vertical" size="small" value={state.renderType} onChange={(event, selected) => dispatch(renders[selected])}>
                         {Object.entries(renders).map(([key, render]) => (
                             <ToggleButton key={key} value={key} aria-label={render.label}>
                                 {render.icon}

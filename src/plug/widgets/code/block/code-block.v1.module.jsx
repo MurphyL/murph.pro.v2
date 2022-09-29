@@ -18,7 +18,7 @@ export default function CodeBlock({ language, children, dark = true, showLineNum
         language: language,
         showLineNumbers: showLineNumbers,
         style: dark ? nord : coy,
-        customStyle: { padding: '1rem', width: 'calc(100% - 1rem * 2)' }
+        customStyle: { margin: 0, padding: '1rem', width: 'calc(100% - 1rem * 2)' }
     }), [language, dark, children])
     return (
         <div className={styles.root}>
