@@ -171,7 +171,7 @@ export default function CronParser() {
 						<TableHead>
 							<TableRow>
 								{parts_v1.map((part, index) => (
-									<TableCell key={index} align="center" sx={{ backgroundColor: '#fefefe' }}>{part.label ? part.label.replaceAll('_', ' ') : ''}</TableCell>
+									<TableCell key={index} align="center" sx={{ backgroundColor: '#fafafa' }}>{part.label ? part.label.replaceAll('_', ' ') : ''}</TableCell>
 								))}
 							</TableRow>
 						</TableHead>
