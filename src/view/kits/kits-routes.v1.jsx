@@ -6,7 +6,6 @@ import { SimpleIconWrap } from '/src/plug/widgets/wrapper/icons/icons.wrapper';
 
 import TabNaviLayout, { ChildRouteLayout } from "/src/plug/layout/tab-navi/tab-navi.layout.module";
 
-import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import BubbleChartIcon from '@mui/icons-material/BubbleChart';
 import DynamicFormIcon from '@mui/icons-material/DynamicForm';

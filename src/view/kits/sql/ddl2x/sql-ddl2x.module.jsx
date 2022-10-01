@@ -20,7 +20,7 @@ import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
 import CodeBlock from '/src/plug/widgets/code/block/code-block.v1.module';
 
 import { siCodeberg, siLeetcode } from 'simple-icons/icons';
-import SimpleIconWrap from '/src/plug/widgets/container/x-icon/x-icon.module';
+import { SimpleIconWrap } from '/src/plug/widgets/wrapper/icons/icons.wrapper';
 
 import { useDocumentTitle, useServerKit } from '/src/plug/hooks';
 
