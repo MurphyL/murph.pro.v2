@@ -9,7 +9,7 @@ import './app.v1.css';
 
 const KitsRoutes = React.lazy(() => import('../view/kits/kits-routes.v1'));
 const SnippetRoutes = React.lazy(() => import('../view/snippets/snippets-routes.v1'));
-const Translators = React.lazy(() => import('../view/translators/translators-routes'));
+const KitsV1Routes = React.lazy(() => import('../view/kits/v1/kits.v1-routes'));
 
 export default function App() {
     return (
@@ -21,7 +21,7 @@ export default function App() {
                             <Route path="/" element={<div>Home</div>} />
                             <Route path="/snippets/*" element={<SnippetRoutes />} />
                             <Route path="/kits/*" element={<KitsRoutes />} errorElement={<div>Kits Error</div>} />
-                            <Route path="/translators/*" element={<Translators />} errorElement={<div>Kits Error</div>} />
+                            <Route path="/kits/v1/*" element={<KitsV1Routes />} errorElement={<div>Kits Error</div>} />
                             <Route path="/about" element={<div>About</div>} />
                         </Routes>
                     </BrowserRouter>

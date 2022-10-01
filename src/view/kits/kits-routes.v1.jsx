@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 
 import { siJson, siMysql, siVisualstudiocode } from 'simple-icons/icons';
-import SimpleIconWrap from '/src/plug/widgets/container/x-icon/x-icon.module';
+import { SimpleIconWrap } from '/src/plug/widgets/wrapper/icons/icons.wrapper';
 
 import TabNaviLayout, { ChildRouteLayout } from "/src/plug/layout/tab-navi/tab-navi.layout.module";
 

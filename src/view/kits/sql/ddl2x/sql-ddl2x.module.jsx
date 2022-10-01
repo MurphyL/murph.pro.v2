@@ -10,13 +10,6 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 
-import ImageIcon from '@mui/icons-material/Image';
-import WorkIcon from '@mui/icons-material/Work';
-import BeachAccessIcon from '@mui/icons-material/BeachAccess';
-
-import PivotTableChartIcon from '@mui/icons-material/PivotTableChart';
-import TableViewIcon from '@mui/icons-material/TableView';
-
 import PodcastsIcon from '@mui/icons-material/Podcasts';
 
 import ToggleButton from '@mui/material/ToggleButton';

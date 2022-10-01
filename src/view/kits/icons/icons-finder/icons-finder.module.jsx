@@ -4,7 +4,7 @@ import { IconButton, InputBase, Paper } from '@mui/material';
 import { useSnackbar } from 'notistack';
 
 import * as icons from 'simple-icons/icons';
-import SimpleIconWrap from '/src/plug/widgets/container/x-icon/x-icon.module';
+import { SimpleIconWrap } from '/src/plug/widgets/wrapper/icons/icons.wrapper';
 
 import { useDocumentTitle, useClipboard } from '/src/plug/hooks';
 
