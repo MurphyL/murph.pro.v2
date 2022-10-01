@@ -1,5 +1,9 @@
 import React from 'react';
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
+
+import { selectorFamily, useRecoilValue } from 'recoil';
+
+import axios from 'axios';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -29,15 +33,24 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const getDocument = selectorFamily({
+	key: 'get-document-v1',
+	get: (unique) => async () => {
+		console.log(unique);
+		return {};
+	},
+});
+
 export default function KitsV1Layout() {
-	const { pathname } = useLocation();
+	const params = useParams();
 	const navigate = useNavigate();
+	const { pathname } = useLocation();
 	const [dialogVisible, setDialogVisible] = React.useState(false);
-	const prepareBugInfo = React.useMemo(() => {
-		return {
-			title: `工具模块 - ${pathname}`
-		};
-	}, [pathname]);
+	const document = useRecoilValue(getDocument(params['*']));
+	const preparedIssueMeta = React.useMemo(() => ({
+		title: `工具模块 - ${pathname}`
+	}), [pathname]);
+	console.log(document);
 	return (
 		<React.Fragment>
 			<Splitter sizes={[80, 20]} minSizes={[1100, 400]}>
@@ -65,7 +78,7 @@ export default function KitsV1Layout() {
 					</Toolbar>
 				</AppBar>
 				<Stack spacing={2} sx={{ padding: 1 }}>
-					<GithubIssueCreator {...prepareBugInfo} />
+					<GithubIssueCreator {...preparedIssueMeta} />
 				</Stack>
 			</Dialog>
 		</React.Fragment>

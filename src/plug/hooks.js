@@ -28,7 +28,7 @@ export const useDocumentTitle = (title) => {
 
 export const useClipboard = () => React.useMemo(() => copy, []);
 
-export const useServerKit = (path) => React.useCallback(({ data, params }) => {
+export const useServerKitRequest = (path) => React.useCallback(({ data, params }) => {
     return KITS_AXIOS_INSTANCE.request({
         method: 'post', 
         url: path, 

@@ -22,7 +22,7 @@ import CodeBlock from '/src/plug/widgets/code/block/code-block.v1.module';
 import { siCodeberg, siLeetcode } from 'simple-icons/icons';
 import { SimpleIconWrap } from '/src/plug/widgets/wrapper/icons/icons.wrapper';
 
-import { useDocumentTitle, useServerKit } from '/src/plug/hooks';
+import { useDocumentTitle, useServerKitRequest } from '/src/plug/hooks';
 
 import styles from './sql-ddl2x.module.css';
 
@@ -81,7 +81,7 @@ export default function DDL2X() {
     const editorRef = React.useRef(null);
     const { enqueueSnackbar } = useSnackbar();
     const [state, dispatch] = React.useReducer(reducer, { source: null });
-    const parseDDL = useServerKit('/sql/ddl/parse');
+    const parseDDL = useServerKitRequest('/sql/ddl/parse');
     const doParse = () => {
         if (!editorRef || !editorRef.current) {
             return;
