@@ -23,9 +23,47 @@ import { weekdays, months } from '/src/plug/datetime_ex';
 
 const separator = ', ';
 
-const parts = [['', {
-	label: true
-}], ['second'], ['minute'], ['hour'], ['day_of_month'], ['month', months], ['day_of_week', weekdays], ['year']];
+const parts_v1 = [{
+	required: false,
+	range: '0-59'
+}, {
+	label: 'second',
+	required: false,
+	range: '0-59',
+	wildcards: ', - * /'
+}, {
+	label: 'minute',
+	required: true,
+	range: '0-59',
+	wildcards: ', - * /'
+}, {
+	label: 'hour',
+	required: true,
+	range: '0-59',
+	wildcards: ', - * /'
+}, {
+	label: 'day_of_month',
+	required: true,
+	range: '1-31',
+	wildcards: ', - * / ? L W'
+}, {
+	...months,
+	label: 'month',
+	required: true,
+	range: '1-12',
+	wildcards: ', - * /'
+}, {
+	...weekdays,
+	label: 'day_of_week',
+	required: true,
+	range: '0-7',
+	wildcards: ', - * / ? L #'
+}, {
+	label: 'year',
+	required: false,
+	range: '1970-3000',
+	wildcards: ', - * /'
+}];
 
 const valueRange = ({ from, to, step = 1 }) => range(from, to + 1, step);
 
@@ -33,49 +71,59 @@ const flattenPartValues = ({ values = [], ranges = [], steps = [], nearestWeekda
 	const convertedLastDays = lastDays.map(value => `${value} LAST DAYS`);
 	lastDay && convertedLastDays.unshift('LAST DAY');
 	const convertedWeekDays = nearestWeekdays.map(value => `${value} NEAREST WEEK DAYS`);
-	lastWeekday && convertedWeekDays('LAST WEEK DAY');
+	lastWeekday && convertedWeekDays.unshift('LAST WEEK DAY');
 	return [
 		...values,
 		...flattenDepth(ranges.map(valueRange), 1),
 		...flattenDepth(steps.map(valueRange), 1),
-		...convertedLastDays, 
-		...convertedWeekDays 
+		...convertedLastDays,
+		...convertedWeekDays
 	];
 };
 
-const convertors = [
-	(data, options = {}) => {
-		if (options.label) {
-			return 'values';
-		}
-		if (data.all) {
+const convertors_v1 = [({ part }, cellIndex) => {
+	return cellIndex === 0 ? 'parts' : (part || '');
+}, ({ parsed, options }, cellIndex) => {
+	if(cellIndex === 0) {
+		return 'values';
+	} else {
+		if (parsed.all) {
 			return options.values ? Object.keys(options.values).join(separator) : '*';
 		} else {
-			return flattenPartValues(data).join(separator);
+			return flattenPartValues(parsed).join(separator);
 		}
-	},
-	(data, options = {}) => {
-		if (options.label) {
-			return 'alias';
-		}
-		if (data.all) {
-			return options.values ? Object.values(options.values).map(item => item.alias || item.name).join(separator) : '*';
+	}
+}, ({ parsed, options }, cellIndex) => {
+	if(cellIndex === 0) {
+		return 'alias';
+	} else {
+		const mapper = (value) => options.values && options.values[value] ? (options.values[value].alias || options.values[value].name) : value;
+		if (parsed.all) {
+			return options.values ? Object.keys(options.values).map(mapper).join(separator) : '*';
 		} else {
-			return flattenPartValues(data).map(value => options.values && options.values[value] ? (options.values[value].alias || options.values[value].name) : value).join(separator);
+			return flattenPartValues(parsed).map(mapper).join(separator);
 		}
-	},
-	(data, options = {}) => {
-		if (options.label) {
-			return 'readable';
-		}
-		if (data.all) {
-			return options.values ? Object.values(options.values).map(item => item.name).join(separator) : '*';
+	}
+}, ({ parsed, options }, cellIndex) => {
+	if(cellIndex === 0) {
+		return 'readable';
+	} else {
+		const mapper = (value) => options.values && options.values[value] ? options.values[value].name : value;
+		if (parsed.all) {
+			return options.values ? Object.keys(options.values).map(mapper).join(separator) : '*';
 		} else {
-			return flattenPartValues(data).map(value => options.values && options.values[value] ? options.values[value].name : value).join(separator);
+			return flattenPartValues(parsed).map(mapper).join(separator);
 		}
-	},
-	(data, options = {}) => options.label ? 'json' : JSON.stringify(data)
-];
+	}
+}, ({ parsed }, cellIndex) => {
+	return cellIndex === 0 ? 'json' : JSON.stringify(parsed);
+}, ({ options }, cellIndex) => {
+	return cellIndex === 0 ? 'required' : (options.required ? 'Yes': '');
+}, ({ options }, cellIndex) => {
+	return cellIndex === 0 ? 'wildcards' : options.wildcards || '';
+}, ({ options }, cellIndex) => {
+	return cellIndex === 0 ? 'value range' : options.range || '';
+}];
 
 /**
  * 相关工具
@@ -84,10 +132,11 @@ const convertors = [
  */
 export default function CronParser() {
 	useDocumentTitle('CRON 表达式工具集');
-	const [expression, setExpression] = React.useState('* * * * * * *');
+	const [expression, setExpression] = React.useState('1-9/3 1-2 * 2W SEP,10 1L *');
 	const parsed = React.useMemo(() => {
 		const result = {};
 		if (trim(expression)) {
+			result.parts = expression.split(/\s/);
 			try {
 				const { expressions: [first] } = parseCRON(expression, { hasSeconds: true });
 				result.data = { success: true, payload: first };
@@ -112,7 +161,7 @@ export default function CronParser() {
 					<TextField fullWidth size="medium" label="CRON Expression" value={expression} onChange={e => setExpression(e.target.value)} />
 				</Grid>
 				<Grid item xs={9}>
-					<Alert variant="outlined" sx={{ m: 0.5 }} severity={parsed.desc.level}>{parsed.desc.text || '表达式转换出错'}</Alert>
+					<Alert variant="outlined" sx={{ p: 1 }} severity={parsed.desc.level}>{parsed.desc.text || '表达式转换出错'}</Alert>
 				</Grid>
 			</Grid>
 			<Typography variant="h5" sx={{ m: 1 }}>Parsed</Typography>
@@ -121,15 +170,21 @@ export default function CronParser() {
 					<Table aria-label="Parsed expression">
 						<TableHead>
 							<TableRow>
-								{parts.map(([part], index) => (
-									<TableCell key={index} align="center">{part.replaceAll('_', ' ')}</TableCell>
+								{parts_v1.map((part, index) => (
+									<TableCell key={index} align="center" sx={{ backgroundColor: '#fefefe' }}>{part.label ? part.label.replaceAll('_', ' ') : ''}</TableCell>
 								))}
 							</TableRow>
 						</TableHead>
 						<TableBody>
-							{convertors.map((convertor, rowIndex) => (
+							{convertors_v1.map((convertor, rowIndex) => (
 								<TableRow key={rowIndex}>
-									{parts.map(([part, options], colIndex) => <TableCell key={colIndex} align="center">{convertor(parsed.data.payload[part], options)}</TableCell>)}
+									{parts_v1.map((part, colIndex) => (
+										<TableCell key={colIndex} align="center">{convertor({
+											part: colIndex > 0 ? parsed.parts[colIndex - 1] : null,
+											options: part,
+											parsed: colIndex > 0 ? parsed.data.payload[part.label] : null,
+										}, colIndex)}</TableCell>
+									))}
 								</TableRow>
 							))}
 						</TableBody>
