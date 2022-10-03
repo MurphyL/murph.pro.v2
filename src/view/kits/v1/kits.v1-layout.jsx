@@ -1,7 +1,6 @@
 import React from 'react';
-import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
-
 import { selectorFamily, useRecoilValue } from 'recoil';
+import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 
 import axios from 'axios';
 
@@ -33,24 +32,22 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const getDocument = selectorFamily({
-	key: 'get-document-v1',
-	get: (unique) => async () => {
-		console.log(unique);
-		return {};
-	},
-});
+// const getDocument = selectorFamily({
+// 	key: 'get-document-v1',
+// 	get: (unique) => async () => {
+// 		return {};
+// 	},
+// });
 
 export default function KitsV1Layout() {
 	const params = useParams();
 	const navigate = useNavigate();
 	const { pathname } = useLocation();
 	const [dialogVisible, setDialogVisible] = React.useState(false);
-	const document = useRecoilValue(getDocument(params['*']));
+	// const document = useRecoilValue(getDocument(params['*']));
 	const preparedIssueMeta = React.useMemo(() => ({
 		title: `工具模块 - ${pathname}`
 	}), [pathname]);
-	console.log(document);
 	return (
 		<React.Fragment>
 			<Splitter sizes={[80, 20]} minSizes={[1100, 400]}>
