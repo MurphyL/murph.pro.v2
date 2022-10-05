@@ -25,7 +25,7 @@ const JSONPathQuery = React.lazy(() => import("./json/path-query/path-query.modu
 
 const DataXOptionsMaker = React.lazy(() => import("./datax/datax-options.module"));
 
-const SQLParser = React.lazy(() => import("./sql/parser/sql-parser.module"));
+const SQLParser = React.lazy(() => import("./sql/sql-parser.module"));
 const DDL2X = React.lazy(() => import("./sql/ddl2x/sql-ddl2x.module"));
 
 const RestTemplate = React.lazy(() => import("./http/rest-template/rest-template.v1.module"));
