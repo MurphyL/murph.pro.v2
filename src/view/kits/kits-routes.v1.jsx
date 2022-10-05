@@ -37,6 +37,9 @@ const TextDifference = React.lazy(() => import("./difference/text-difference.mod
 
 const SourceCodeKits = React.lazy(() => import('./source-code/code-kits.v1.module'));
 
+const CronParser = React.lazy(() => import('./expression/cron-parser'));
+
+const DdlFromCsv = React.lazy(() => import('./sql/ddl_from_csv'));
 
 export default function KitsRoutes() {
     return (
@@ -45,9 +48,11 @@ export default function KitsRoutes() {
                 <Route path="/es" element={<Navigate to="../elasticsearch" />} />
                 <Route path="/elasticsearch" element={<ElasticSearchLayout />} />
                 <Route path="/datetime" element={<DatetimeKits />} />
+                <Route path="/cron/parser" element={<CronParser />} />
                 <Route path="/sql/*" element={<ChildRouteLayout navi={SQL_KITS_NAVI} parent="/kits/source-code" />}>
                     <Route path="parser" element={<SQLParser />} />
-                    <Route path="ddl2x" element={<DDL2X />} />    
+                    <Route path="ddl2x" element={<DDL2X />} />
+                    <Route path="ddl_from_csv" element={<DdlFromCsv />} />
                 </Route>
                 <Route path="/json/*" element={<ChildRouteLayout navi={JSON_KITS_NAVI} parent="/kits/source-code" />}>
                     <Route path="tree-view" element={<JSONView />} />
@@ -115,6 +120,10 @@ const JSON_KITS_NAVI = [{
 
 const SQL_KITS_NAVI = [{
     url: '/kits/sql/ddl2x',
+    icon: (<AccountTreeIcon />),
+    label: 'DDL Parser & Render',
+}, {
+    url: '/kits/sql/ddl_from_csv',
     icon: (<AccountTreeIcon />),
     label: 'DDL Parser & Render',
 }];

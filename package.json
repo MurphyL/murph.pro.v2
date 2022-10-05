@@ -14,7 +14,6 @@
         "@mui/icons-material": "^5.10.3",
         "@mui/lab": "^5.0.0-alpha.99",
         "@mui/material": "^5.10.4",
-        "@tabler/icons": "^1.96.0",
         "axios": "^0.27.2",
         "clsx": "^1.2.1",
         "copy-to-clipboard": "^3.3.2",
@@ -41,6 +40,7 @@
         "react-syntax-highlighter": "^15.5.0",
         "recoil": "^0.7.5",
         "simple-icons": "^7.11.0",
+        "sql-bricks": "^3.0.0",
         "sql-formatter": "^10.6.0"
     },
     "devDependencies": {

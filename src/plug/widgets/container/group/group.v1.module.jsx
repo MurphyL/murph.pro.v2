@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+
 import styles from './group.v1.module.css';
 
 export default function Group({ className, title, children, padding = 10 }) {

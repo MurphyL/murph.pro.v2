@@ -6,7 +6,7 @@ import { JSONPath } from 'jsonpath-plus';
 const INDENT_SIZE = 4;
 const INDENT_TEXT = new Array(INDENT_SIZE).join(' ');
 
-const parseJSON = (source) => {
+export const parseJSON = (source) => {
     if (undefined === source || null === source) {
         return null;
     }
