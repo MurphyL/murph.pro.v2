@@ -4,9 +4,12 @@ import { pascalCase } from "pascal-case";
 import { camelCase, trim } from 'lodash';
 
 import { useSnackbar } from 'notistack';
+import { select, insert } from 'sql-bricks';
+import { zipObject } from 'lodash';
 
 import Alert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 
@@ -24,31 +27,19 @@ import { SimpleIconWrap } from '/src/plug/widgets/wrapper/icons/icons.wrapper';
 
 import { useDocumentTitle, useServerKitRequest } from '/src/plug/hooks';
 
-import styles from './sql-ddl2x.module.css';
+import { format as formatSQL } from '../sql/sql-kits.v1';
+import { format as formatJSON } from '../json/json-kits.v1';
 
 const renders = {
-    javaClass: {
-        label: 'Java Class',
-        action: 'display-java-class',
-        icon: (<SimpleIconWrap {...siLeetcode} />),
-        apply(parsed, options = {}) {
-            const { columns, table } = parsed;
-            const fields = columns.map(column2field).join(EMPTY_LINE);
-            return `public class ${pascalCase(table)} {\n${fields}\n}`;
-        }
-    },
-    dql: {
+    // javaClass: {
+    //     label: 'Java Class',
+    //     action: 'display-java-class',
+    //     icon: (<SimpleIconWrap {...siLeetcode} />)
+    // },
+    sqls: {
         label: 'Data Query Language',
-        action: 'display-dql',
-        icon: (<SimpleIconWrap {...siCodeberg} />),
-        apply(parsed, options = {}) {
-            const { separator = ', \n\t' } = options;
-            const dql_no_alias = [
-                `select ${parsed.columns.map(col => col.name).join(separator)}`,
-                `from ${parsed.schema}.${parsed.table}`
-            ].join(EMPTY_LINE);
-            return dql_no_alias;
-        }
+        action: 'display-sqls',
+        icon: (<SimpleIconWrap {...siCodeberg} />)
     }
 };
 
@@ -56,23 +47,27 @@ function reducer(state, action) {
     switch (action.type) {
         case 'set-parsed':
             return {
-                language: 'sql',
+                language: 'json',
                 source: action.content,
-                renderType: renders.dql.action,
-                content: renders.dql.apply(action.content)
+                content: formatJSON(action.content)
             };
-        case 'display-ddl-meta':
-            return { 
-                ...state,
-                language: 'sql',
-                content: renders.dql.apply(state.source)
-            };
-        case 'display-java-class':
+        case 'display-sqls':
+            if(!state.source) {
+                console.error('State 为空');
+                return state;
+            }
+            let tableColumns = state.source.columns.map(({ name }) => name);
+            let tableUnique = [state.source.schema, state.source.table].join('.');
             return {
-                ...state
+                language: 'sql',
+                source: state.source,
+                content: formatSQL([
+                    select(tableColumns).from(tableUnique).toString(),
+                    insert(tableUnique).values(zipObject(tableColumns, tableColumns.map(col => `#{${col}}`))).toString()
+                ].join(';'))
             };
         default:
-            throw state;
+            return state;
     }
 }
 
@@ -88,7 +83,6 @@ export default function DDL2X() {
         }
         const sql = trim(editorRef.current.getValue());
         if (sql.length === 0) {
-            setRenderType(null);
             enqueueSnackbar('请输入一条 SQL', {
                 autoHideDuration: 3000,
                 variant: 'error',
@@ -104,31 +98,31 @@ export default function DDL2X() {
         }
     };
     return (
-        <Splitter className={styles.root} minSizes={500}>
+        <Splitter sizes={[45, 55]} minSizes={[500, 300]}>
             <CodeEditor ref={editorRef} language="sql" />
-            <div className={styles.extra}>
-                <div className={styles.stage}>
+            <Stack spacing={1} sx={{ display: 'flex', p: 1 }} direction="row">
+                <Box sx={{ flex: 1 }}>
                     {state.content ? (
                         <CodeBlock language={state.language} children={state.content} />
                     ) : (
                         <Alert severity="info" sx={{ margin: 1 }} > 暂未配置相关解析器</Alert>
                     )}
-                </div>
-                <Stack className={styles.switch} spacing={2}>
+                </Box>
+                <Stack spacing={2}>
                     <IconButton size='small' onClick={doParse}>
                         <Avatar>
                             <PodcastsIcon />
                         </Avatar>
                     </IconButton>
-                    <ToggleButtonGroup exclusive color="primary" orientation="vertical" size="small" value={state.renderType} onChange={(event, selected) => dispatch(renders[selected])}>
+                    <ToggleButtonGroup exclusive color="primary" orientation="vertical" size="small" value={state.renderType} onChange={(event, action) => dispatch({ type: action })}>
                         {Object.entries(renders).map(([key, render]) => (
-                            <ToggleButton key={key} value={key} aria-label={render.label}>
+                            <ToggleButton key={key} value={render.action} aria-label={render.label}>
                                 {render.icon}
                             </ToggleButton>
                         ))}
                     </ToggleButtonGroup>
                 </Stack>
-            </div>
+            </Stack>
         </Splitter >
     );
 }

@@ -25,8 +25,8 @@ const JSONPathQuery = React.lazy(() => import("./json/path-query/path-query.modu
 
 const DataXOptionsMaker = React.lazy(() => import("./datax/datax-options.module"));
 
-const SQLParser = React.lazy(() => import("./sql/sql-parser.module"));
-const DDL2X = React.lazy(() => import("./sql/ddl2x/sql-ddl2x.module"));
+const DdlToX = React.lazy(() => import("./sql/ddl-to-x"));
+const DdlFromCsv = React.lazy(() => import('./sql/ddl-from-csv'));
 
 const RestTemplate = React.lazy(() => import("./http/rest-template/rest-template.v1.module"));
 const StatusCodeList = React.lazy(() => import("./http/status-code/status-code.module"));
@@ -39,7 +39,7 @@ const SourceCodeKits = React.lazy(() => import('./source-code/code-kits.v1.modul
 
 const CronParser = React.lazy(() => import('./expression/cron-parser'));
 
-const DdlFromCsv = React.lazy(() => import('./sql/ddl_from_csv'));
+
 
 export default function KitsRoutes() {
     return (
@@ -50,9 +50,8 @@ export default function KitsRoutes() {
                 <Route path="/datetime" element={<DatetimeKits />} />
                 <Route path="/cron/parser" element={<CronParser />} />
                 <Route path="/sql/*" element={<ChildRouteLayout navi={SQL_KITS_NAVI} parent="/kits/source-code" />}>
-                    <Route path="parser" element={<SQLParser />} />
-                    <Route path="ddl2x" element={<DDL2X />} />
-                    <Route path="ddl_from_csv" element={<DdlFromCsv />} />
+                    <Route path="ddl2x" element={<DdlToX />} />
+                    <Route path="ddl/from_csv" element={<DdlFromCsv />} />
                 </Route>
                 <Route path="/json/*" element={<ChildRouteLayout navi={JSON_KITS_NAVI} parent="/kits/source-code" />}>
                     <Route path="tree-view" element={<JSONView />} />
