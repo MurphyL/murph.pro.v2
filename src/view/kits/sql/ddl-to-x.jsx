@@ -7,20 +7,13 @@ import { camelCase, trim, upperFirst, zipObject } from 'lodash';
 
 import { useSnackbar } from 'notistack';
 
-import Alert from '@mui/material/Alert';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import Stack from '@mui/material/Stack';
-import SvgIcon from '@mui/material/SvgIcon';
+import { styled } from '@mui/material/styles';
+import { Alert, Avatar, Badge, IconButton, Stack, SvgIcon, ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
 
 import { SiJava, SiMysql } from "react-icons/si";
-import { SiAlibabacloud } from "react-icons/si";
-
 
 import PodcastsIcon from '@mui/icons-material/Podcasts';
-
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
 import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
@@ -33,17 +26,25 @@ import { useDocumentTitle } from '/src/plug/hooks';
 import { sqlEditorState, format as formatSQL } from '../sql/sql-kits.v1';
 import { createPojoClass } from '../java/java-kits.v1';
 
+import { DataxIcon } from '../datax/datax-options.kits.v1';
+
+const SmallAvatar = styled(Avatar)(({ theme }) => ({
+    width: 22,
+    height: 22,
+    border: `2px solid ${theme.palette.background.paper}`,
+}));
+
 const rendersV1 = {
     'java/classes': {
-        label: 'Java POJO Class',
+        label: 'Generate POJO class code',
         icon: (<SvgIcon><SiJava /></SvgIcon>),
     },
     'datax/options': {
-        label: 'Java POJO Class',
-        icon: (<SvgIcon><SiAlibabacloud /></SvgIcon>),
+        label: 'Generate DataX Options',
+        icon: (<SvgIcon><DataxIcon /></SvgIcon>),
     },
     'common/sqls': {
-        label: 'Data Query Language',
+        label: 'Generate common SQL',
         icon: (<SvgIcon><SiMysql /></SvgIcon>),
     }
 };
@@ -136,18 +137,41 @@ export default function DDL2X() {
                 )}
                 <Stack spacing={2} sx={{ position: 'absolute', top: 7, right: 16 }}>
                     <IconButton onClick={doParse}>
-                        <Avatar>
-                            <PodcastsIcon />
-                        </Avatar>
+                        <Tooltip placement="left" title="Parse DDL">
+                            <Avatar>
+                                <PodcastsIcon />
+                            </Avatar>
+                        </Tooltip>
                     </IconButton>
                     {state.parsed ? (
                         <ToggleButtonGroup orientation="vertical" size="small" sx={{ bgcolor: '#fff' }} onChange={(e, [type]) => dispatch({ type })}>
                             {Object.entries(rendersV1).map(([key, render]) => (
                                 <ToggleButton key={key} value={key} aria-label={render.label}>
-                                    {render.icon}
+                                    <Tooltip placement="left" title={render.label}>{render.icon}</Tooltip>
                                 </ToggleButton>
                             ))}
                         </ToggleButtonGroup>
+                    ) : null}
+                    {state.action && state.action === 'datax/options' ? (
+                        <IconButton>
+                            <Tooltip placement="left" title="change DataX Options">
+                                <Badge
+                                    overlap="circular"
+                                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                                    badgeContent={
+                                        <SmallAvatar alt="Settings" >
+                                            <SettingsIcon />
+                                        </SmallAvatar>
+                                    }
+                                >
+                                    <Avatar>
+                                        <SvgIcon>
+                                            <DataxIcon />
+                                        </SvgIcon>
+                                    </Avatar>
+                                </Badge>
+                            </Tooltip>
+                        </IconButton>
                     ) : null}
                 </Stack>
             </Stack>
@@ -206,5 +230,43 @@ const convertParsedDDL2POJO = (schemaOfDDL) => {
 };
 
 const convertParsedDDL2DataXOptions = (schemaOfDDL) => {
-
+    return JSON.stringify({
+        "job": {
+            "setting": {
+                "speed": {
+                    "channel": 1
+                }
+            },
+            "content": [
+                {
+                    "reader": {
+                        "name": "mysqlreader",
+                        "parameter": {
+                            "username": "root",
+                            "password": "root",
+                            "connection": [
+                                {
+                                    "querySql": [
+                                        "select db_id,on_line_flag from db_info where db_id < 10;"
+                                    ],
+                                    "jdbcUrl": [
+                                        "jdbc:mysql://bad_ip:3306/database",
+                                        "jdbc:mysql://127.0.0.1:bad_port/database",
+                                        "jdbc:mysql://127.0.0.1:3306/database"
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    "writer": {
+                        "name": "streamwriter",
+                        "parameter": {
+                            "print": false,
+                            "encoding": "UTF-8"
+                        }
+                    }
+                }
+            ]
+        }
+    }, null, 4);
 };
