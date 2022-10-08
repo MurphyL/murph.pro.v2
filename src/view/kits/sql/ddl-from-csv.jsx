@@ -11,7 +11,7 @@ import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
 import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
 
 import { parseJSON } from '../json/json-kits.v1';
-import { doImport } from '../source-code/code-kits.v1.support';
+import { doImport } from '../code/code-kits.v1.support';
 import { useDocumentTitle } from '/src/plug/hooks';
 
 // Dialect
