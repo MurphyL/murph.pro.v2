@@ -35,7 +35,7 @@ const ElasticSearchLayout = React.lazy(() => import("./elasticsearch/layout/es-l
 const TextConvertors = React.lazy(() => import("./converters/text-converters.v1.module"));
 const TextDifference = React.lazy(() => import("./difference/text-difference.module"));
 
-const SourceCodeKits = React.lazy(() => import('./source-code/code-kits.v1.module'));
+const CodeKits = React.lazy(() => import('./code/code-kits.v1.module'));
 
 const CronParser = React.lazy(() => import('./expression/cron-parser'));
 
@@ -73,8 +73,8 @@ export default function KitsRoutes() {
                     <Route path="status-code" element={<StatusCodeList />} />
                     <Route path="rest-template" element={<RestTemplate />} />
                 </Route>
-                <Route path="/source-code" element={<ChildRouteLayout navi={ROOT_NAVI_ITEMS} />}>
-                    <Route index element={<SourceCodeKits />} />
+                <Route path="/code" element={<ChildRouteLayout navi={ROOT_NAVI_ITEMS} />}>
+                    <Route index element={<CodeKits />} />
                 </Route>
             </Route>
         </Routes>

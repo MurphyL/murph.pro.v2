@@ -3,10 +3,12 @@ import { useParams } from "react-router-dom";
 import { IconButton, InputBase, Paper } from '@mui/material';
 import { useSnackbar } from 'notistack';
 
+import copy from 'copy-to-clipboard';
+
 import * as icons from 'simple-icons/icons';
 import { SimpleIconWrap } from '/src/plug/widgets/wrapper/icons/icons.wrapper';
 
-import { useDocumentTitle, useClipboard } from '/src/plug/hooks';
+import { useDocumentTitle } from '/src/plug/hooks';
 
 import styles from './icons-finder.module.css';
 
@@ -15,7 +17,6 @@ const si = Object.entries(icons);
 export default function IconsFinder() {
     useDocumentTitle('搜索图标');
     const params = useParams();
-    const copy = useClipboard();
     const { enqueueSnackbar } = useSnackbar();
     const [keyword, setKeyword] = React.useState(null);
     const doCopy = React.useCallback((key, item) => {

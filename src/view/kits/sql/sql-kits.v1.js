@@ -1,3 +1,6 @@
+import { atom } from 'recoil';
+
+
 import { format as formatSQL } from 'sql-formatter';
 
 const INDENT_SIZE = 4;
@@ -12,3 +15,10 @@ export const format = (source) => {
         paramTypes: { named: [':'] },
     });
 };
+
+
+export const sqlEditorState = atom({
+    key: 'sql-editor-state-v1',
+    default: null
+});
+
