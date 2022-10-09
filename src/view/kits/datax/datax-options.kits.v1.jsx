@@ -1,8 +1,25 @@
 import { atom } from 'recoil';
 
 import { SiAlibabacloud } from "react-icons/si";
+import { Unstable_Grid2 as Grid2, Stack, Typography } from '@mui/material';
 
 export const DataxIcon = SiAlibabacloud;
+
+export function DataxOptionsDash() {
+    return (
+        <Stack spacing={3}>
+            <Grid2 container>
+                <Grid2 xs={6}>
+                    <Typography variant="h6" component="div">Reader</Typography>
+                </Grid2>
+                <Grid2 xs={6}>
+                    <Typography variant="h6" component="div">Writer</Typography>
+                </Grid2>
+            </Grid2>
+        </Stack>
+    );
+}
+
 
 export const dataxStore = atom({
     key: 'datax-state-v1',

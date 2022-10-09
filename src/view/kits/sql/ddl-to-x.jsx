@@ -7,8 +7,7 @@ import { camelCase, trim, upperFirst, zipObject } from 'lodash';
 
 import { useSnackbar } from 'notistack';
 
-import { styled } from '@mui/material/styles';
-import { Alert, Avatar, Badge, IconButton, Stack, SvgIcon, ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
+import { Alert, Avatar, IconButton, Stack, SvgIcon, ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
 
 import { SiJava, SiMysql } from "react-icons/si";
 
@@ -18,6 +17,9 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
 import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
 import CodeBlock from '/src/plug/widgets/code/block/code-block.v1.module';
+import { DataxIcon, DataxOptionsDash } from '../datax/datax-options.kits.v1';
+import { OptionsDash } from '/src/plug/widgets/options-dash';
+
 
 import { KITS_AXIOS_INSTANCE, resolveServerKitResponse } from '/src/plug/server_kits';
 
@@ -25,14 +27,7 @@ import { useDocumentTitle } from '/src/plug/hooks';
 
 import { sqlEditorState, format as formatSQL } from '../sql/sql-kits.v1';
 import { createPojoClass } from '../java/java-kits.v1';
-
-import { DataxIcon } from '../datax/datax-options.kits.v1';
-
-const SmallAvatar = styled(Avatar)(({ theme }) => ({
-    width: 22,
-    height: 22,
-    border: `2px solid ${theme.palette.background.paper}`,
-}));
+import ExtraButton from '../../../plug/widgets/extra-button';
 
 const rendersV1 = {
     'java/classes': {
@@ -89,6 +84,7 @@ const reducer = (state, action) => {
 export default function DDL2X() {
     useDocumentTitle('DDL 工具集');
     const editorRef = React.useRef(null);
+    const dataxOptionsRef = React.useRef(null);
     const { enqueueSnackbar } = useSnackbar();
     const setSqlEditorState = useSetRecoilState(sqlEditorState);
     const [state, dispatch] = React.useReducer(reducer, { message: '暂无可渲染数据' });
@@ -153,25 +149,16 @@ export default function DDL2X() {
                         </ToggleButtonGroup>
                     ) : null}
                     {state.action && state.action === 'datax/options' ? (
-                        <IconButton>
-                            <Tooltip placement="left" title="change DataX Options">
-                                <Badge
-                                    overlap="circular"
-                                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                                    badgeContent={
-                                        <SmallAvatar alt="Settings" >
-                                            <SettingsIcon />
-                                        </SmallAvatar>
-                                    }
-                                >
-                                    <Avatar>
-                                        <SvgIcon>
-                                            <DataxIcon />
-                                        </SvgIcon>
-                                    </Avatar>
-                                </Badge>
-                            </Tooltip>
-                        </IconButton>
+                        <React.Fragment>
+                            <ExtraButton extra={<SettingsIcon />} onClick={(e) => dataxOptionsRef && dataxOptionsRef.current && dataxOptionsRef.current.show() }>
+                                <SvgIcon>
+                                    <DataxIcon />
+                                </SvgIcon>
+                            </ExtraButton>
+                            <OptionsDash ref={dataxOptionsRef} title="DataX Settings">
+                                <DataxOptionsDash />
+                            </OptionsDash>
+                        </React.Fragment>
                     ) : null}
                 </Stack>
             </Stack>

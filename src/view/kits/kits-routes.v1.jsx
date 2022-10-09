@@ -17,8 +17,6 @@ import WidgetsIcon from '@mui/icons-material/Widgets';
 
 import { SiJson, SiMysql, SiVisualstudiocode } from "react-icons/si";
 
-const DatetimeKits = React.lazy(() => import('./datetime/datetime-kits.module'));
-
 const JSONView = React.lazy(() => import("./json/json-view/json-view.module"));
 const JSONPathQuery = React.lazy(() => import("./json/path-query/path-query.module"));
 
@@ -46,7 +44,6 @@ export default function KitsRoutes() {
             <Route path="/" element={<TabNaviLayout navi={ROOT_NAVI_ITEMS} />}>
                 <Route path="/es" element={<Navigate to="../elasticsearch" />} />
                 <Route path="/elasticsearch" element={<ElasticSearchLayout />} />
-                <Route path="/datetime" element={<DatetimeKits />} />
                 <Route path="/cron/parser" element={<CronParser />} />
                 <Route path="/sql/*" element={<ChildRouteLayout navi={SQL_KITS_NAVI} parent="/kits/source-code" />}>
                     <Route path="ddl2x" element={<DdlToX />} />
