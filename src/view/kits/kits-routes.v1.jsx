@@ -19,8 +19,6 @@ import { SiJson, SiMysql, SiVisualstudiocode } from "react-icons/si";
 
 const DatetimeKits = React.lazy(() => import('./datetime/datetime-kits.module'));
 
-const IconsFinder = React.lazy(() => import("./icons/icons-finder/icons-finder.module"));
-
 const JSONView = React.lazy(() => import("./json/json-view/json-view.module"));
 const JSONPathQuery = React.lazy(() => import("./json/path-query/path-query.module"));
 
@@ -65,7 +63,6 @@ export default function KitsRoutes() {
                 <Route path="/difference" element={<TextDifference />} />
                 <Route path="/icons/*" element={<Outlet />}>
                     <Route index element={<div>Icons</div>} />
-                    <Route path="finder" element={<IconsFinder />} />
                 </Route>
                 <Route path="/datax/*">
                     <Route path="options" element={<DataXOptionsMaker />} />

@@ -99,7 +99,7 @@ export default function DDL2X() {
         }
         const sql = trim(editorRef.current.getValue());
         if (sql.length === 0) {
-            dispatch({ type: 'message', message: '请输入一条 SQL' })
+            dispatch({ type: 'message', level: 'error', message: '请输入一条 SQL' })
             enqueueSnackbar('请输入一条 SQL', {
                 autoHideDuration: 3000,
                 variant: 'error',
@@ -112,14 +112,14 @@ export default function DDL2X() {
                 setSqlEditorState(sql);
                 dispatch({ type: 'ddl/parsed', parsed: content })
             } else {
-                dispatch({ type: 'message', message: content || '服务端错误' })
+                dispatch({ type: 'message', level: 'error', message: content || '服务端错误' })
                 enqueueSnackbar(content || '服务端错误', {
                     autoHideDuration: 3000,
                     variant: 'error',
                 });
             }
         }).catch(e => {
-            dispatch({ type: 'message', message: e.message || '请求出错' })
+            dispatch({ type: 'message', level: 'error', message: e.message || '请求出错' })
             enqueueSnackbar(e.message || '请求出错', {
                 autoHideDuration: 3000,
                 variant: 'error',
@@ -131,7 +131,7 @@ export default function DDL2X() {
             <CodeEditor ref={editorRef} language="sql" />
             <Stack spacing={1} sx={{ margin: 1, p: 1 }}>
                 {state.message ? (
-                    <Alert severity="info" sx={{ p: 1.2 }}>{state.message}</Alert>
+                    <Alert severity={state.level || 'info'} sx={{ p: 1.2 }}>{state.message}</Alert>
                 ) : (
                     <CodeBlock language={state.language} children={state.content} />
                 )}
