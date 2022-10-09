@@ -1,8 +1,6 @@
 import React from "react";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 
-import { siJson, siMysql, siVisualstudiocode } from 'simple-icons/icons';
-import { SimpleIconWrap } from '/src/plug/widgets/wrapper/icons/icons.wrapper';
 
 import TabNaviLayout, { ChildRouteLayout } from "/src/plug/layout/tab-navi/tab-navi.layout.module";
 
@@ -13,8 +11,11 @@ import FormatIndentIncreaseIcon from '@mui/icons-material/FormatIndentIncrease';
 import LinkIcon from '@mui/icons-material/Link';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
+import SvgIcon from '@mui/material/SvgIcon';
 import TranslateIcon from '@mui/icons-material/Translate';
 import WidgetsIcon from '@mui/icons-material/Widgets';
+
+import { SiJson, SiMysql, SiVisualstudiocode } from "react-icons/si";
 
 const DatetimeKits = React.lazy(() => import('./datetime/datetime-kits.module'));
 
@@ -83,11 +84,11 @@ export default function KitsRoutes() {
 
 const ROOT_NAVI_ITEMS = [{
     url: '/kits/source',
-    icon: (<SimpleIconWrap {...siVisualstudiocode} />),
+    icon: (<SvgIcon><SiVisualstudiocode /></SvgIcon>),
     label: 'Source Code',
 }, {
     url: '/kits/json/path-query',
-    icon: (<SimpleIconWrap {...siJson} />),
+    icon: (<SvgIcon><SiJson /></SvgIcon>),
     label: 'JSONPath Query',
 }, {
     url: '/kits/http/rest-template',
@@ -95,7 +96,7 @@ const ROOT_NAVI_ITEMS = [{
     label: 'REST Template',
 }, {
     url: '/kits/sql/ddl2x',
-    icon: (<SimpleIconWrap {...siMysql} />),
+    icon: (<SvgIcon><SiMysql /></SvgIcon>),
     label: 'DDL Parser & Render',
 }, {
     url: '/kits/converters/crypto',

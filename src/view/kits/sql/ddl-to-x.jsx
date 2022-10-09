@@ -216,6 +216,7 @@ const convertParsedDDL2POJO = (schemaOfDDL) => {
     const fields = schemaOfDDL.columns.map((column, index) => ({
         index,
         name: camelCase(column.name),
+        comment: column.comment,
         dataType: SCHEMA_TYPES_MAP2JAVA[column.dataType] || column.dataType,
         database: {
             column: column.name,

@@ -3,8 +3,6 @@ import React from 'react';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import Slider from '@mui/material/Slider';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
