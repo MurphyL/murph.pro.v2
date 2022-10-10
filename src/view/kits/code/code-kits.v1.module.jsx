@@ -22,9 +22,27 @@ import OptionBoard from "/src/plug/widgets/container/options/options.module";
 
 import COSUTOM_MODES from '/src/plug/widgets/code/custom-languages';
 
-import { getActions, doConvert, doImport } from './code-kits.v1.support';
+import { getActions, doConvert } from './code-support';
+
+import { parseCSVFile } from "../csv/csv-support";
 
 import styles from './code-kits.v1.module.css';
+
+export const doImport = (event, callback) => {
+    const [file] = (event.files || []);
+    if (event.accept === '.csv') {
+        parseCSVFile(file).then(([success, payload]) => {
+            callback(success, success ? JSON.stringify(payload, null, 4) : payload);
+        });
+    } else {
+        const reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = () => {
+            callback(true, reader.result);
+        }
+    }
+};
+
 
 export default function CodeKits() {
     useDocumentTitle('源代码工具集');

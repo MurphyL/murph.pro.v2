@@ -1,5 +1,4 @@
 import YAML from 'js-yaml';
-import Papa from 'papaparse';
 import { format as formatSQL } from 'sql-formatter';
 
 const INDENT_SIZE = 4;
@@ -93,33 +92,5 @@ export const getActions = (language) => {
             }];
         default:
             return [];
-    }
-};
-
-export const doImport = (event, callback) => {
-    const [file] = (event.files || []);
-    if (event.accept) {
-        switch (event.accept) {
-            case '.csv':
-                Papa.parse(file, {
-                    header: true,
-                    worker: true,
-                    skipEmptyLines: true,
-                    complete: (result) => {
-                        console.log('CSV 文件解析成功：', file.name);
-                        callback(true, converters.json.stringify(result, true));
-                    },
-                    error: (e) => {
-                        callback(false, e.message || '未知错误');
-                        console.error('CSV 文件解析错误：', file.name, e);
-                    }
-                })
-        }
-    } else {
-        const reader = new FileReader();
-        reader.readAsText(file);
-        reader.onload = () => {
-            callback(true, reader.result);
-        }
     }
 };

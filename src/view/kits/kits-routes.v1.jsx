@@ -47,7 +47,7 @@ export default function KitsRoutes() {
                 <Route path="/cron/parser" element={<CronParser />} />
                 <Route path="/sql/*" element={<ChildRouteLayout navi={SQL_KITS_NAVI} parent="/kits/source-code" />}>
                     <Route path="ddl2x" element={<DdlToX />} />
-                    <Route path="ddl/from_csv" element={<DdlFromCsv />} />
+                    <Route path="inserts/from_csv" element={<DdlFromCsv />} />
                 </Route>
                 <Route path="/json/*" element={<ChildRouteLayout navi={JSON_KITS_NAVI} parent="/kits/source-code" />}>
                     <Route path="tree-view" element={<JSONView />} />
@@ -77,7 +77,7 @@ export default function KitsRoutes() {
 }
 
 const ROOT_NAVI_ITEMS = [{
-    url: '/kits/source',
+    url: '/kits/code',
     icon: (<SvgIcon><SiVisualstudiocode /></SvgIcon>),
     label: 'Source Code',
 }, {
@@ -96,10 +96,6 @@ const ROOT_NAVI_ITEMS = [{
     url: '/kits/converters/crypto',
     icon: (<TranslateIcon />),
     label: '加/解密',
-}, {
-    url: '/kits/icons/finder',
-    icon: (<WidgetsIcon />),
-    label: '查找图标',
 }];
 
 const JSON_KITS_NAVI = [{
@@ -117,7 +113,7 @@ const SQL_KITS_NAVI = [{
     icon: (<AccountTreeIcon />),
     label: 'DDL Parser & Render',
 }, {
-    url: '/kits/sql/ddl_from_csv',
+    url: '/kits/sql/inserts/from_csv',
     icon: (<AccountTreeIcon />),
     label: 'DDL Parser & Render',
 }];
