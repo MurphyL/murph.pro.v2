@@ -7,7 +7,6 @@ import { nord, coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
 // import IconButton from '@mui/material/IconButton';
 // import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
-import styles from './code-block.v1.module.css';
 
 export default function CodeBlock({ language, children, dark = true, showLineNumbers = true, showCopy = true }) {
     const options = React.useMemo(() => ({
