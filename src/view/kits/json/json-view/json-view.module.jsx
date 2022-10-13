@@ -7,8 +7,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 
-import Group from '/src/plug/widgets/container/group/group.v1.module';
-import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
+import { Group, Splitter } from "/src/plug/widgets/containers";
 import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
 
 import styles from './json-view.module.css';

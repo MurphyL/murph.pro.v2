@@ -1,6 +1,6 @@
-import Group from '/src/plug/widgets/container/group/group.v1.module';
+import { Group } from "/src/plug/widgets/containers";
 
-import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
+import { Splitter } from "/src/plug/widgets/containers";
 
 export default function ElasticSearchLayout() {
     return (

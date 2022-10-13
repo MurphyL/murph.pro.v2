@@ -16,9 +16,9 @@ import { useSnackbar } from 'notistack';
 import { useDocumentTitle } from '/src/plug/hooks';
 
 import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
-import Group from '/src/plug/widgets/container/group/group.v1.module';
-import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
 import OptionBoard from "/src/plug/widgets/container/options/options.module";
+
+import { Group, Splitter } from "/src/plug/widgets/containers";
 
 import COSUTOM_MODES from '/src/plug/widgets/code/custom-languages';
 
@@ -28,7 +28,7 @@ import { parseCSVFile } from "../csv/csv-support";
 
 import styles from './code-kits.v1.module.css';
 
-export const doImport = (event, callback) => {
+const doImport = (event, callback) => {
     const [file] = (event.files || []);
     if (event.accept === '.csv') {
         parseCSVFile(file).then(([success, payload]) => {
@@ -42,7 +42,6 @@ export const doImport = (event, callback) => {
         }
     }
 };
-
 
 export default function CodeKits() {
     useDocumentTitle('源代码工具集');
@@ -109,7 +108,7 @@ export default function CodeKits() {
     React.useEffect(() => editorRef.current && editorRef.current.setValue(state.content || ''), [state.content, editorRef]);
     const actions = React.useMemo(() => getActions(state.language), [state.language]);
     return (
-        <Splitter className={styles.root} sizes={[75, 25]} minSizes={[800, 400]}>
+        <Splitter className={styles.root} sizes={[75, 25]} minSize={[800, 400]}>
             <CodeEditor ref={editorRef} language={state.language} />
             <div className={styles.extra}>
                 <div className={styles.bar}>
@@ -132,13 +131,13 @@ export default function CodeKits() {
                     </div>
                 </div>
                 <Group title="基本操作">
-                    <Button variant="contained" component="label">
+                    <Button variant="contained" sx={{ m: 0.5 }} component="label">
                         <input hidden={true} accept="*" type="file" onChange={e => dispatch({ action: 'import-file', files: e.target.files })} />
                         <span>导入</span>
                     </Button>
-                    <Button variant="contained" onClick={() => dispatch({ action: 'navigate-to', redirect: '/kits/difference' })}>比较</Button>
+                    <Button variant="contained" sx={{ m: 0.5 }} onClick={() => dispatch({ action: 'navigate-to', redirect: '/kits/difference' })}>比较</Button>
                     {state.options && state.options.snippet ? (
-                        <Button variant="contained" onClick={() => enqueueSnackbar('功能暂未实现')}>代码片段</Button>
+                        <Button variant="contained" sx={{ m: 0.5 }} onClick={() => enqueueSnackbar('功能暂未实现')}>代码片段</Button>
                     ) : null}
                 </Group>
                 {Array.isArray(actions) && actions.length ? (
@@ -152,14 +151,14 @@ export default function CodeKits() {
                             switch (item.action) {
                                 case 'import-file':
                                     return (
-                                        <Button key={index} variant="outlined" component="label">
+                                        <Button key={index} variant="outlined" sx={{ mx: 0.5, my: 0.3 }} component="label">
                                             <input hidden={true} accept={item.accept || '*'} type="file" onChange={e => dispatch({ ...item, files: e.target.files })} />
                                             <span>{item.display || '未知操作'}</span>
                                         </Button>
                                     );
                                 default:
                                     return (
-                                        <Button key={index} variant="outlined" onClick={() => dispatch(item)}>{item.display || '未知操作'}</Button>
+                                        <Button key={index} variant="outlined" sx={{ mx: 0.5, my: 0.3 }} onClick={() => dispatch(item)}>{item.display || '未知操作'}</Button>
                                     );
                             }
                         })}

@@ -14,7 +14,7 @@ import { SiJava, SiMysql } from "react-icons/si";
 import PodcastsIcon from '@mui/icons-material/Podcasts';
 import SettingsIcon from '@mui/icons-material/Settings';
 
-import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
+import { Splitter } from "/src/plug/widgets/containers";
 import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
 import CodeBlock from '/src/plug/widgets/code/block/code-block.v1.module';
 import { DataxIcon, DataxOptionsDash } from '../datax/datax-options.kits.v1';

@@ -7,7 +7,7 @@ import { parse as parsePath } from 'path-browserify';
 
 import { fetchEntries } from '/src/plug/github_api';
 
-import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
+import { Splitter } from "/src/plug/widgets/containers";
 
 const CONTENT_BASE = 'src/core/';
 

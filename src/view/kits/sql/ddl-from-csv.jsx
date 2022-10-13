@@ -11,7 +11,7 @@ import exportFromJSON from "export-from-json";
 import { useDocumentTitle } from '/src/plug/hooks';
 
 import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
-import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
+import { Splitter } from "/src/plug/widgets/containers";
 
 import { parse as parseJSON } from '../json/json-kits.v1';
 

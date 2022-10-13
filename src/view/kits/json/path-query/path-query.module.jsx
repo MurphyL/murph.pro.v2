@@ -1,13 +1,9 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-// import Button from '@mui/material/Button';
-
 import { useDocumentTitle } from '/src/plug/hooks';
 
-// import Bar from '/src/plug/widgets/container/bar/bar.v1.module';
-import Group from '/src/plug/widgets/container/group/group.v1.module';
-import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
+import { Group, Splitter } from "/src/plug/widgets/containers";
 import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
 import CodeBlock from '/src/plug/widgets/code/block/code-block.v1.module';
 

@@ -9,7 +9,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import TextField from '@mui/material/TextField';
 
-import Splitter from "/src/plug/widgets/container/splitter/splitter.v1.module";
+import { Splitter } from "/src/plug/widgets/containers";
 import CodeBlock from '/src/plug/widgets/code/block/code-block.v1.module';
 
 import { useDocumentTitle } from '/src/plug/hooks';
