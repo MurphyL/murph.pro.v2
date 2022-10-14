@@ -14,7 +14,6 @@ import DATAX_PROXIES from './datax-options.proxies.json';
 
 import OPTIONS_REDUCER from './datax-options.reducer';
 
-import styles from './datax-options.module.css';
 import { Box } from '@mui/material';
 
 const proxies = {
@@ -35,7 +34,7 @@ export default function DataXOptionsMaker() {
     const [state, dispatch] = React.useReducer(OPTIONS_REDUCER, DATAX_TEMPLATE);
     const value = React.useMemo(() => JSON.stringify(state, null, 2), [state]);
     return (
-        <Splitter className={styles.root} sizes={[65, 35]} minSizes={[700, 300]}>
+        <Splitter sizes={[65, 35]} minSizes={[700, 300]}>
             <CodeEditor language="json" defaultValue={value} />
             <SettingsBoard />
         </Splitter>

@@ -26,7 +26,7 @@ import { getActions, doConvert } from './code-support';
 
 import { parseCSVFile } from "../csv/csv-support";
 
-import styles from './code-kits.v1.module.css';
+import { Box } from "@mui/material";
 
 const doImport = (event, callback) => {
     const [file] = (event.files || []);
@@ -108,12 +108,12 @@ export default function CodeKits() {
     React.useEffect(() => editorRef.current && editorRef.current.setValue(state.content || ''), [state.content, editorRef]);
     const actions = React.useMemo(() => getActions(state.language), [state.language]);
     return (
-        <Splitter className={styles.root} sizes={[75, 25]} minSize={[800, 400]}>
+        <Splitter sizes={[75, 25]} minSize={[800, 400]}>
             <CodeEditor ref={editorRef} language={state.language} />
-            <div className={styles.extra}>
-                <div className={styles.bar}>
-                    <div className={styles.language}>
-                        <FormControl sx={{ m: 1, minWidth: 160 }} size="small">
+            <Box sx={{ m: 1 }}>
+                <Box sx={{ display: "flex", m: 1 }}>
+                    <Box sx={{ flex: 1 }}>
+                        <FormControl sx={{ minWidth: 160 }} size="small">
                             <InputLabel>当前语言</InputLabel>
                             <Select value={state.language} label="切换语言" onChange={e => dispatch({ action: 'set-language', language: e.target.value })}>
                                 {COSUTOM_MODES.map(item => (
@@ -121,15 +121,13 @@ export default function CodeKits() {
                                 ))}
                             </Select>
                         </FormControl>
-                    </div>
-                    <div className={styles.actions}>
-                        <Tooltip title="设置">
-                            <IconButton color="default" onClick={() => setShowOptionBoard(true)}>
-                                <ConstructionIcon />
-                            </IconButton>
-                        </Tooltip>
-                    </div>
-                </div>
+                    </Box>
+                    <Tooltip title="设置">
+                        <IconButton color="default" onClick={() => setShowOptionBoard(true)}>
+                            <ConstructionIcon />
+                        </IconButton>
+                    </Tooltip>
+                </Box>
                 <Group title="基本操作">
                     <Button variant="contained" sx={{ m: 0.5 }} component="label">
                         <input hidden={true} accept="*" type="file" onChange={e => dispatch({ action: 'import-file', files: e.target.files })} />
@@ -167,7 +165,7 @@ export default function CodeKits() {
                 {state.options && state.options ? (
                     <OptionBoard show={showOptionBoard} options={{}} onClose={() => setShowOptionBoard(false)} />
                 ) : null}
-            </div>
+            </Box>
         </Splitter >
     );
 }

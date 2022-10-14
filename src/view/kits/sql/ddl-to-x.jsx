@@ -27,7 +27,7 @@ import { useDocumentTitle } from '/src/plug/hooks';
 
 import { sqlEditorState, format as formatSQL } from '../sql/sql-kits.v1';
 import { createPojoClass } from '../java/java-kits.v1';
-import ExtraButton from '../../../plug/widgets/extra-button';
+import ExtraButton from '../../../plug/widgets/buttons';
 
 const rendersV1 = {
     'java/classes': {

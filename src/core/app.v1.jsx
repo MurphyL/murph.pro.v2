@@ -10,10 +10,11 @@ import './app.v1.css';
 const KitsRoutes = React.lazy(() => import('../view/kits/kits-routes.v1'));
 const SnippetRoutes = React.lazy(() => import('../view/snippets/snippets-routes.v1'));
 
+
 export default function App() {
     return (
-        <SnackbarProvider maxSnack={5} autoHideDuration={5000}>
-            <RecoilRoot>
+        <RecoilRoot>
+            <SnackbarProvider maxSnack={5} autoHideDuration={5000}>
                 <React.Suspense fallback={<Box sx={{ p: 1 }}><CircularProgress /></Box>}>
                     <BrowserRouter>
                         <Routes>
@@ -24,8 +25,8 @@ export default function App() {
                         </Routes>
                     </BrowserRouter>
                 </React.Suspense>
-            </RecoilRoot>
-        </SnackbarProvider>
+            </SnackbarProvider>
+        </RecoilRoot>
     )
 }
 

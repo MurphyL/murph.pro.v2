@@ -13,12 +13,11 @@ import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import SvgIcon from '@mui/material/SvgIcon';
 import TranslateIcon from '@mui/icons-material/Translate';
-import WidgetsIcon from '@mui/icons-material/Widgets';
 
 import { SiJson, SiMysql, SiVisualstudiocode } from "react-icons/si";
 
 const JSONView = React.lazy(() => import("./json/json-view/json-view.module"));
-const JSONPathQuery = React.lazy(() => import("./json/path-query/path-query.module"));
+const ExpressionQueryJSON = React.lazy(() => import("./json/expression-query"));
 
 const DataXOptionsMaker = React.lazy(() => import("./datax/datax-options.module"));
 
@@ -32,11 +31,9 @@ const ElasticSearchLayout = React.lazy(() => import("./elasticsearch/layout/es-l
 const TextConvertors = React.lazy(() => import("./converters/text-converters.v1.module"));
 const TextDifference = React.lazy(() => import("./difference/text-difference.module"));
 
-const CodeKits = React.lazy(() => import('./code/code-kits.v1.module'));
+const CodeKits = React.lazy(() => import('./code/code-kits.v1'));
 
 const CronParser = React.lazy(() => import('./expression/cron-parser'));
-
-
 
 export default function KitsRoutes() {
     return (
@@ -45,15 +42,15 @@ export default function KitsRoutes() {
                 <Route path="/es" element={<Navigate to="../elasticsearch" />} />
                 <Route path="/elasticsearch" element={<ElasticSearchLayout />} />
                 <Route path="/cron/parser" element={<CronParser />} />
-                <Route path="/sql/*" element={<ChildRouteLayout navi={SQL_KITS_NAVI} parent="/kits/source-code" />}>
+                <Route path="/sql/*" element={<ChildRouteLayout navi={SQL_KITS_NAVI} parent="/kits/code" />}>
                     <Route path="ddl2x" element={<DdlToX />} />
                     <Route path="inserts/from_csv" element={<DdlFromCsv />} />
                 </Route>
-                <Route path="/json/*" element={<ChildRouteLayout navi={JSON_KITS_NAVI} parent="/kits/source-code" />}>
+                <Route path="/json/*" element={<ChildRouteLayout navi={JSON_KITS_NAVI} parent="/kits/code" />}>
                     <Route path="tree-view" element={<JSONView />} />
-                    <Route path="path-query" element={<JSONPathQuery />} />    
+                    <Route path="expression-query" element={<ExpressionQueryJSON />} />    
                 </Route>
-                <Route path="/converters/*" element={<ChildRouteLayout navi={CONVERTORS_NAVI} parent="/kits/source-code" />}>
+                <Route path="/converters/*" element={<ChildRouteLayout navi={CONVERTORS_NAVI} parent="/kits/code" />}>
                     <Route index element={<Navigate to="../url" />} />
                     <Route path=":cate" element={<TextConvertors />} />
                 </Route>
@@ -64,7 +61,7 @@ export default function KitsRoutes() {
                 <Route path="/datax/*">
                     <Route path="options" element={<DataXOptionsMaker />} />
                 </Route>
-                <Route path="/http/*" element={<ChildRouteLayout navi={HTTP_KITS_NAVI} parent="/kits/source-code" />}>
+                <Route path="/http/*" element={<ChildRouteLayout navi={HTTP_KITS_NAVI} parent="/kits/code" />}>
                     <Route path="status-code" element={<StatusCodeList />} />
                     <Route path="rest-template" element={<RestTemplate />} />
                 </Route>
