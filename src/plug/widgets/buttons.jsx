@@ -28,10 +28,10 @@ export function ButtonActions({ labelPrefix = '', onClick, options = [] }) {
     }, { options, action: options[0], pop: false });
     return (
         <React.Fragment>
-            <ButtonGroup variant="contained" ref={anchorRef} aria-label="button and actions">
-                <Button onClick={onClick ? e => onClick(e, state.action) : null}>{`${labelPrefix} ${state.action || ''}`.trim()}</Button>
-                <Button size="small" onClick={() => dispatch({ pop: true })}>
-                    <ArrowDropDownIcon />
+            <ButtonGroup variant="contained" aria-label="button and actions">
+                <Button onClick={onClick ? e => onClick(e, state.action) : null}>{labelPrefix}</Button>
+                <Button endIcon={<ArrowDropDownIcon />}  ref={anchorRef} onClick={() => dispatch({ pop: true })}>
+                    {state.action}
                 </Button>
             </ButtonGroup>
             <Popper open={state.pop} sx={{ zIndex: 1 }} anchorEl={anchorRef.current} disablePortal>
