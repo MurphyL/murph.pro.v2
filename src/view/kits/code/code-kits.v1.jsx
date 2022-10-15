@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { extname } from 'path-browserify';
 
 
-import { Avatar, Backdrop, Box, Button, FormControl, FormControlLabel, FormLabel, IconButton, InputLabel, List, ListItem, ListItemAvatar, ListItemText, MenuItem, Radio, RadioGroup, Select, Tooltip } from "@mui/material";
+import { Avatar, Backdrop, Box, Button, FormControl, FormControlLabel, FormLabel, IconButton, InputLabel, List, ListItem, ListItemAvatar, ListItemText, MenuItem, Radio, RadioGroup, Select, Stack, Tooltip } from "@mui/material";
 
 import CircularProgress from '@mui/material/CircularProgress';
 import ConstructionIcon from '@mui/icons-material/Construction';
@@ -26,7 +26,6 @@ import { Group, Splitter } from "/src/plug/widgets/containers";
 import { COSUTOM_MODES } from '/src/plug/widgets/code/custom-languages';
 
 import { getActions, reducer } from './code-support';
-import { Stack } from "@mui/system";
 
 const prepareState = {
     content: '', showOverlay: false, showOptionBoard: false, importCache: null, options: { snippet: true }
