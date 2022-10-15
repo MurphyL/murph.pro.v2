@@ -109,7 +109,7 @@ export default function CodeKits() {
     const actions = React.useMemo(() => getActions(state.language), [state.language]);
     return (
         <Splitter sizes={[75, 25]} minSize={[800, 400]}>
-            <CodeEditor ref={editorRef} language={state.language} />
+            <CodeEditor ref={editorRef} language={state.language} sx={{ my: 0.2 }} />
             <Box sx={{ m: 1 }}>
                 <Box sx={{ display: "flex", m: 1 }}>
                     <Box sx={{ flex: 1 }}>

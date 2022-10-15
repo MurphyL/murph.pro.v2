@@ -9,8 +9,9 @@ import CodeBlock from '/src/plug/widgets/code/block/code-block.v1.module';
 
 import { demo, format, parse, doJEMSPathQuery, doJSONPathQuery } from './json-kits.v1';
 
-import { Alert, Box, TextField } from '@mui/material';
-import { ButtonActions } from '/src/plug/widgets/buttons';
+import { Alert, Box, Button, IconButton, TextField } from '@mui/material';
+import HelpIcon from '@mui/icons-material/Help';
+import { ButtonOptions } from '/src/plug/widgets/buttons';
 
 const evaluators = {
     JSONPath: doJSONPathQuery,
@@ -28,32 +29,37 @@ const doQuery = (evaluatorName, payload, expression) => {
 };
 
 export default function JSONPathQuery() {
-    useDocumentTitle('JSONPath Evaluator');
+    useDocumentTitle('JSON Expression Evaluator');
     const editorRef = React.useRef(null);
     const [state, dispatch] = React.useReducer((state, action) => {
         if (action.evaluatorName && editorRef.current) {
             const content = editorRef.current.getValue();
             const result = doQuery(action.evaluatorName, content, state.expression)
-            return { ...state, content, ...result };
+            return { ...state, content, ...action, ...result };
         } else {
             return { ...state, ...action };
         }
-    }, { expression: '$', content: demo, message: { severity: 'info', text: '尚未进行查询' } });
+    }, { expression: '$', content: demo, evaluatorName: 'JSONPath', message: { severity: 'info', text: '尚未进行查询' } });
     return (
         <Splitter sizes={[40, 60]} minSize={[500, 600]}>
             <CodeEditor language="json" ref={editorRef} defaultValue={state.content} />
             <Box sx={{ m: 1, width: '100%' }}>
-                <Group title="JSONPath" padding={0}>
+                <Group title="Expression" padding={0}>
                     <TextField fullWidth multiline size="small" rows={3} placeholder="请输入 JSONPath" defaultValue={state.expression} onChange={(e) => dispatch({ expression: e.target.value })} />
                 </Group>
-                <Box sx={{ mx: 0.5, mt: 1.5, mb: 1 }}>
-                    <ButtonActions labelPrefix="exec" options={['JSONPath', 'JMESPath']} onClick={(e, evaluatorName) => dispatch({ evaluatorName })} />
+                <Box sx={{ display: 'flex', ml: 0.5, mr: 2, mt: 1.5, mb: 1 }}>
+                    <Box sx={{ flex: 1 }}>
+                        <ButtonOptions label="exec" selected={state.evaluatorName} options={['JSONPath', 'JMESPath']} onClick={(e, evaluatorName) => dispatch({ evaluatorName })} />
+                    </Box>
+                    <IconButton>
+                        <HelpIcon />
+                    </IconButton>
                 </Box>
                 {state.message ? (
                     <Alert severity={state.message.severity || 'warn'} sx={{ mx: 0.5, my: 2 }}>{state.message.text}</Alert>
                 ) : null}
                 {state.result ? (
-                    <Group title="查询结果">
+                    <Group title={`${state.evaluatorName} - 查询结果`}>
                         <CodeBlock language="json" children={format(state.result, true, 4)} />
                     </Group>
                 ) : null}

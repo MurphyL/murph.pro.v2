@@ -39,7 +39,8 @@
         "react-syntax-highlighter": "^15.5.0",
         "recoil": "^0.7.5",
         "sql-bricks": "^3.0.0",
-        "sql-formatter": "^10.6.0"
+        "sql-formatter": "^10.6.0",
+        "strip-json-comments": "^5.0.0"
     },
     "devDependencies": {
         "@vitejs/plugin-react": "^2.0.1",

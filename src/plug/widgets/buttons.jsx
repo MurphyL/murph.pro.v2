@@ -1,5 +1,5 @@
 import React from "react";
-import { styled, Avatar, Badge, Button, ButtonGroup, ClickAwayListener, Grow, IconButton, MenuItem, MenuList, Paper, Popper } from "@mui/material";
+import { Avatar, Badge, Button, ButtonGroup, ClickAwayListener, Grow, IconButton, MenuItem, MenuList, Paper, Popper } from "@mui/material";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 
@@ -21,17 +21,17 @@ export function BadgeButton() {
     return null;
 }
 
-export function ButtonActions({ labelPrefix = '', onClick, options = [] }) {
+export function ButtonOptions({ label = 'Button', onClick, selected, options = [] }) {
     const anchorRef = React.useRef(null);
     const [state, dispatch] = React.useReducer((state, action) => {
         return { ...state, ...action };
-    }, { options, action: options[0], pop: false });
+    }, { options, selected: selected || options[0], pop: false });
     return (
         <React.Fragment>
             <ButtonGroup variant="contained" aria-label="button and actions">
-                <Button onClick={onClick ? e => onClick(e, state.action) : null}>{labelPrefix}</Button>
-                <Button endIcon={<ArrowDropDownIcon />}  ref={anchorRef} onClick={() => dispatch({ pop: true })}>
-                    {state.action}
+                <Button onClick={onClick ? e => onClick(e, state.selected) : null}>{label}</Button>
+                <Button endIcon={<ArrowDropDownIcon />} ref={anchorRef} onClick={() => dispatch({ pop: true })}>
+                    {state.selected}
                 </Button>
             </ButtonGroup>
             <Popper open={state.pop} sx={{ zIndex: 1 }} anchorEl={anchorRef.current} disablePortal>
@@ -39,7 +39,7 @@ export function ButtonActions({ labelPrefix = '', onClick, options = [] }) {
                     <ClickAwayListener onClickAway={() => dispatch({ pop: false })}>
                         <MenuList autoFocusItem>
                             {options.map((option) => (
-                                <MenuItem key={option} selected={option === state.action} onClick={() => dispatch({ action: option, pop: false })} >
+                                <MenuItem key={option} selected={option === state.selected} onClick={() => dispatch({ selected: option, pop: false })} >
                                     {option}
                                 </MenuItem>
                             ))}
