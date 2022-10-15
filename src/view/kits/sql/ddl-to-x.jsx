@@ -18,7 +18,7 @@ import { Splitter } from "/src/plug/widgets/containers";
 import CodeEditor from "/src/plug/widgets/code/code-editor.v1";
 import CodeBlock from '/src/plug/widgets/code/code-block.v1';
 import { DataxIcon, DataxOptionsDash } from '../datax/datax-options.kits.v1';
-import { OptionsDash } from '/src/plug/widgets/options-dash';
+import { OptionsDash } from '/src/plug/widgets/options';
 
 
 import { KITS_AXIOS_INSTANCE, resolveServerKitResponse } from '/src/plug/server_kits';

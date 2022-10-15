@@ -10,7 +10,7 @@ import FormatLineSpacingIcon from '@mui/icons-material/FormatLineSpacing';
 
 import * as monaco from 'monaco-editor';
 
-import OptionBoard from '/src/plug/widgets/container/options/options.module';
+import { OptionBoard } from '/src/plug/widgets/options';
 
 import { useDocumentTitle } from '/src/plug/hooks';
 

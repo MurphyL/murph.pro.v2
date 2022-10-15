@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Link, Outlet, useOutletContext } from "react-router-dom";
 
-import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';

@@ -1,6 +1,8 @@
 import YAML from 'js-yaml';
 import { format as formatSQL } from 'sql-formatter';
 
+import { parseCSVFile } from "../csv/csv-support";
+
 const INDENT_SIZE = 4;
 
 const converters = {
@@ -92,5 +94,32 @@ export const getActions = (language) => {
             }];
         default:
             return [];
+    }
+};
+
+
+export const reducer = (state, event) => {
+    const { language = 'plaintext', content = '' } = event;
+    switch (event.action) {
+        case 'set-language':
+            return { ...state, language };
+        case 'set-content':
+            return { ...state, content };
+        case 'set-options':
+            return { ...state, options: { ...state.options, [event.option]: event.value } };
+        case 'navigate-to':
+            return { ...state, redirect: event.redirect };
+        // case 'convert-to':
+        //     try {
+        //         const editorContent = editorRef.current ? editorRef.current.getValue() : '';
+        //         const { language, content } = doConvert(event.language, editorContent, event.pretty);
+        //         return { ...state, language, content };
+        //     } catch (e) {
+        //         state.showMessage(`${event.display || '转换操作'}出错：${e.message || '未知错误'}`, { type: 'error' });
+        //         console.error(`${event.display || '转换操作'}出错：`, e);
+        //         return state;
+        //     }
+        default:
+            return { ...state, ...event };
     }
 };

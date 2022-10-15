@@ -19,7 +19,7 @@ const MURPH_LANGS = {
         snippet: true
     },
     javascript: {
-        snippet: true
+        snippet: true,
     },
     json: {
         options: {
@@ -77,7 +77,7 @@ const MURPH_LANGS = {
     yaml: {}
 };
 
-export default languages.getLanguages().filter(item => {
+export const COSUTOM_MODES = languages.getLanguages().filter(item => {
     const custom = MURPH_LANGS[item.id];
     Object.assign(item, custom);
     return custom;
