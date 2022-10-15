@@ -15,7 +15,7 @@ import { useSnackbar } from 'notistack';
 
 import { useDocumentTitle } from '/src/plug/hooks';
 
-import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
+import CodeEditor from "/src/plug/widgets/code/code-editor.v1";
 import OptionBoard from "/src/plug/widgets/container/options/options.module";
 
 import { Group, Splitter } from "/src/plug/widgets/containers";

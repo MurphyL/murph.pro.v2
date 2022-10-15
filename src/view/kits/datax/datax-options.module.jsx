@@ -6,7 +6,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
+import CodeEditor from "/src/plug/widgets/code/code-editor.v1";
 import { Splitter } from '/src/plug/widgets/containers';
 
 import DATAX_TEMPLATE from './datax-options.template.json';

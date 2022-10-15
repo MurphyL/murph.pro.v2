@@ -1,11 +1,10 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
 
 import { useDocumentTitle } from '/src/plug/hooks';
 
 import { Group, Splitter } from "/src/plug/widgets/containers";
-import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
-import CodeBlock from '/src/plug/widgets/code/block/code-block.v1.module';
+import CodeEditor from "/src/plug/widgets/code/code-editor.v1";
+import CodeBlock from '/src/plug/widgets/code/code-block.v1';
 
 import { demo, format, parse, doJEMSPathQuery, doJSONPathQuery } from './json-kits.v1';
 

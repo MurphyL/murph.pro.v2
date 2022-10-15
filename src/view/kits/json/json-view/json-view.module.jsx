@@ -1,5 +1,4 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
 
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
@@ -8,7 +7,7 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 
 import { Group, Splitter } from "/src/plug/widgets/containers";
-import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
+import CodeEditor from "/src/plug/widgets/code/code-editor.v1";
 
 import styles from './json-view.module.css';
 

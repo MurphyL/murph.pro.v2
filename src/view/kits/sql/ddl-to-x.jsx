@@ -15,8 +15,8 @@ import PodcastsIcon from '@mui/icons-material/Podcasts';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 import { Splitter } from "/src/plug/widgets/containers";
-import CodeEditor from "/src/plug/widgets/code/editor/code-editor.v1.module";
-import CodeBlock from '/src/plug/widgets/code/block/code-block.v1.module';
+import CodeEditor from "/src/plug/widgets/code/code-editor.v1";
+import CodeBlock from '/src/plug/widgets/code/code-block.v1';
 import { DataxIcon, DataxOptionsDash } from '../datax/datax-options.kits.v1';
 import { OptionsDash } from '/src/plug/widgets/options-dash';
 

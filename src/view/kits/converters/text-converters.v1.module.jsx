@@ -10,7 +10,7 @@ import Tab from '@mui/material/Tab';
 import TextField from '@mui/material/TextField';
 
 import { Splitter } from "/src/plug/widgets/containers";
-import CodeBlock from '/src/plug/widgets/code/block/code-block.v1.module';
+import CodeBlock from '/src/plug/widgets/code/code-block.v1';
 
 import { useDocumentTitle } from '/src/plug/hooks';
 

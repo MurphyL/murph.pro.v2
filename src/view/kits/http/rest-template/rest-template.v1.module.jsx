@@ -7,7 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useDocumentTitle } from '/src/plug/hooks';
 
 import { Splitter } from "/src/plug/widgets/containers";
-import CodeBlock from "/src/plug/widgets/code/block/code-block.v1.module";
+import CodeBlock from "/src/plug/widgets/code/code-block.v1";
 
 import { doAjaxRequest, renderResponse } from '../rest-request-maker';
 
