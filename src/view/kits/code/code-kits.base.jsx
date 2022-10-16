@@ -123,30 +123,32 @@ export default function CodeKits() {
                             </IconButton>
                         </Tooltip>
                     </Box>
-                    <Group title="基本操作">
-                        <Button variant="contained" sx={{ m: 0.5 }} component="label">
-                            <input hidden={true} accept="*" type="file" onChange={e => loadFilesContent(e.target.files)} />
-                            <span>导入</span>
-                        </Button>
-                        <Button variant="contained" sx={{ m: 0.5 }} onClick={() => dispatch({ redirect: '/kits/difference' })}>比较</Button>
-                        {state.options && state.options.snippet ? (
-                            <Button variant="contained" sx={{ m: 0.5 }} onClick={() => enqueueSnackbar('功能暂未实现')}>代码片段</Button>
-                        ) : null}
-                    </Group>
-                    {language && Array.isArray(language.actions) && language.actions.length ? (
-                        <Group title="相关操作">
-                            {language.actions.map((item, index) => {
-                                if (!item) {
-                                    return (
-                                        <br key={index} />
-                                    );
-                                }
-                                return (
-                                    <Button key={index} variant="outlined" sx={{ mx: 0.5, my: 0.3 }} onClick={() => dispatch(item)}>{item.display || '未知操作'}</Button>
-                                );
-                            })}
+                    <Stack spacing={1}>
+                        <Group title="基本操作">
+                            <Button variant="contained" sx={{ m: 0.5 }} component="label">
+                                <input hidden={true} accept="*" type="file" onChange={e => loadFilesContent(e.target.files)} />
+                                <span>导入</span>
+                            </Button>
+                            <Button variant="contained" sx={{ m: 0.5 }} onClick={() => dispatch({ redirect: '/kits/difference' })}>比较</Button>
+                            {state.options && state.options.snippet ? (
+                                <Button variant="contained" sx={{ m: 0.5 }} onClick={() => enqueueSnackbar('功能暂未实现')}>代码片段</Button>
+                            ) : null}
                         </Group>
-                    ) : null}
+                        {language && Array.isArray(language.actions) && language.actions.length ? (
+                            <Group title="相关操作">
+                                {language.actions.map((item, index) => {
+                                    if (!item) {
+                                        return (
+                                            <br key={index} />
+                                        );
+                                    }
+                                    return (
+                                        <Button key={index} variant="outlined" sx={{ mx: 0.5, my: 0.3 }} onClick={() => dispatch(item)}>{item.display || '未知操作'}</Button>
+                                    );
+                                })}
+                            </Group>
+                        ) : null}
+                    </Stack>
                 </Box>
             </Splitter>
             {state.importCache ? (

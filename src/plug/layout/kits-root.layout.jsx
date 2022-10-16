@@ -13,15 +13,13 @@ import IconButton from '@mui/material/IconButton';
 
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
-import styles from './tab-navi.layout.module.css';
-
 export default function KitsRootLayout({ navi = [], parent }) {
 	const naviPopoverAnchor = React.useRef(null);
 	const [payload, setPayload] = React.useState({ navi, parent });
 	return (
 		<React.Fragment>
-			<div className={styles.root}>
-				<Box className={styles.navi} sx={{ display: 'flex', mb: 1, flexDirection: 'column', justifyContent: 'space-between' }}>
+			<div style={{ display: 'flex', height: '100%' }}>
+				<Box sx={{ display: 'flex', px: '3px', py: 1, flexDirection: 'column', justifyContent: 'space-between', borderRight: '1px solid #efefef' }}>
 					<Stack spacing={1}>
 						{payload.parent ? (
 							<IconButton size="small" component={Link} to={payload.parent}>
@@ -38,11 +36,11 @@ export default function KitsRootLayout({ navi = [], parent }) {
 						<MoreHorizIcon />
 					</IconButton>
 				</Box>
-				<div className={styles.stage}>
+				<Box sx={{ flex: 1 }}>
 					<React.Suspense fallback={<Box sx={{ p: 1 }}><CircularProgress /></Box>}>
 						<Outlet context={{ setNavi: setPayload }} />
 					</React.Suspense>
-				</div>
+				</Box>
 			</div>
 			<Popover open={false} anchorEl={naviPopoverAnchor.current} anchorOrigin={{ vertical: 'top', horizontal: 'right'}} transformOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
 				<Box sx={{ p: 1, width: 1000, height: 618 }}></Box>
