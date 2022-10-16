@@ -31,7 +31,7 @@ const ElasticSearchLayout = React.lazy(() => import("./elasticsearch/layout/es-l
 const TextConvertors = React.lazy(() => import("./converters/text-converters.v1.module"));
 const TextDifference = React.lazy(() => import("./difference/text-difference.module"));
 
-const CodeKits = React.lazy(() => import('./code/code-kits.v1'));
+const CodeKits = React.lazy(() => import('./code/code-kits.base'));
 
 const CronParser = React.lazy(() => import('./expression/cron-parser'));
 
@@ -65,8 +65,7 @@ export default function KitsRoutes() {
                     <Route path="status-code" element={<StatusCodeList />} />
                     <Route path="rest-template" element={<RestTemplate />} />
                 </Route>
-                <Route path="/code" element={<ChildRouteLayout navi={ROOT_NAVI_ITEMS} />}>
-                    <Route index element={<CodeKits />} />
+                <Route path="/code" element={<CodeKits />}>
                 </Route>
             </Route>
         </Routes>
@@ -78,7 +77,7 @@ const ROOT_NAVI_ITEMS = [{
     icon: (<SvgIcon><SiVisualstudiocode /></SvgIcon>),
     label: 'Source Code',
 }, {
-    url: '/kits/json/path-query',
+    url: '/kits/json/expression-query',
     icon: (<SvgIcon><SiJson /></SvgIcon>),
     label: 'JSONPath Query',
 }, {
@@ -96,7 +95,7 @@ const ROOT_NAVI_ITEMS = [{
 }];
 
 const JSON_KITS_NAVI = [{
-    url: '/kits/json/path-query',
+    url: '/kits/json/expression-query',
     icon: (<ManageSearchIcon />),
     label: 'JSONPath Query',
 }, {

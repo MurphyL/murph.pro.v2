@@ -93,7 +93,7 @@ export default function TextConverters() {
 				))}
 			</Tabs>
 			<div className={styles.stage}>
-				<Splitter sizes={[65, 35]} minSizes={[700, 500]}>
+				<Splitter sizes={[65, 35]} minSize={[700, 500]}>
 					<div className={styles.form}>
 						<div className={styles.source}>
 							<TextField {...TEXT_AREA_PROPS} autoFocus={true} label="原文" value={state.source} onChange={(e) => dispatch({ type: 'exchange', source: e.target.value })} />

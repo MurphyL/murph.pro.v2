@@ -32,7 +32,7 @@ export default function RestTemplate() {
         });
     }, [setResponse]);
     return (
-        <Splitter className={styles.root} sizes={[60, 40]} minSizes={[600, 400]}>
+        <Splitter className={styles.root} sizes={[60, 40]} minSize={[600, 400]}>
             <RestRequestEditor className={styles.editor} defaultValue={TEMPLATE_REQUESTS} execRequest={execRequest} />
             <div className={styles.response}>
                 <RestStatusView {...response} />

@@ -6,11 +6,13 @@ import { Group, Splitter } from "/src/plug/widgets/containers";
 import CodeEditor from "/src/plug/widgets/code/code-editor.v1";
 import CodeBlock from '/src/plug/widgets/code/code-block.v1';
 
-import { demo, format, parse, doJEMSPathQuery, doJSONPathQuery } from './json-kits.v1';
+import { converters } from '/src/plug/widgets/code/custom-languages';
+import { demo, doJEMSPathQuery, doJSONPathQuery } from './json-kits.v1';
 
-import { Alert, Box, Button, IconButton, TextField } from '@mui/material';
+import { Alert, Box, IconButton, TextField } from '@mui/material';
 import HelpIcon from '@mui/icons-material/Help';
 import { ButtonOptions } from '/src/plug/widgets/buttons';
+import { useLocation } from 'react-router-dom';
 
 const evaluators = {
     JSONPath: doJSONPathQuery,
@@ -20,8 +22,8 @@ const evaluators = {
 const doQuery = (evaluatorName, payload, expression) => {
     try {
         const evaluator = evaluators[evaluatorName];
-        const result = evaluator(parse(payload), expression);
-        return { result, message: null };
+        const result = evaluator(converters.json.parse(payload), expression);
+        return { result: converters.json.stringify(result), message: null };
     } catch (e) {
         return { result: null, message: { text: `操作出错 - ${e.message}`, severity: 'error' } };
     }
@@ -29,6 +31,7 @@ const doQuery = (evaluatorName, payload, expression) => {
 
 export default function JSONPathQuery() {
     useDocumentTitle('JSON Expression Evaluator');
+    const location = useLocation();
     const editorRef = React.useRef(null);
     const [state, dispatch] = React.useReducer((state, action) => {
         if (action.evaluatorName && editorRef.current) {
@@ -38,7 +41,9 @@ export default function JSONPathQuery() {
         } else {
             return { ...state, ...action };
         }
-    }, { expression: '$', content: demo, evaluatorName: 'JSONPath', message: { severity: 'info', text: '尚未进行查询' } });
+    }, { expression: '$', evaluatorName: 'JSONPath', message: { severity: 'info', text: '尚未进行查询' } }, (initial) => {
+        return { ...initial, content: location.state.content || demo };
+    });
     return (
         <Splitter sizes={[40, 60]} minSize={[500, 600]}>
             <CodeEditor language="json" ref={editorRef} defaultValue={state.content} />
@@ -59,7 +64,7 @@ export default function JSONPathQuery() {
                 ) : null}
                 {state.result ? (
                     <Group title={`${state.evaluatorName} - 查询结果`}>
-                        <CodeBlock language="json" children={format(state.result, true, 4)} />
+                        <CodeBlock language="json" children={state.result} />
                     </Group>
                 ) : null}
             </Box>

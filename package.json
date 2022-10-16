@@ -40,6 +40,7 @@
         "recoil": "^0.7.5",
         "sql-bricks": "^3.0.0",
         "sql-formatter": "^10.6.0",
+        "stringify-object": "^4.0.1",
         "strip-json-comments": "^5.0.0"
     },
     "devDependencies": {

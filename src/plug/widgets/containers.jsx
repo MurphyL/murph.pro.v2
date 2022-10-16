@@ -2,14 +2,14 @@ import React from 'react';
 
 import Split from 'react-split'
 
-import { styled, Box, Typography } from '@mui/material';
+import { styled, Box, Typography, Stack } from '@mui/material';
 
 
-export function Group({ title, children, sx = {} }) {
+export function Group({ title, children, sx = {}, direction, ...restOptions }) {
     return (
         <Box component="fieldset" sx={{ p: 1, border: `1px solid #efefef`, borderRadius: 1, ...sx }}>
             <Typography component="legend" variant="subtitle2" sx={{ px: 0.6, color: '#455a64', userSelect: 'none' }}>{title}</Typography>
-            <Box sx={{ p: 0.5 }}>{children}</Box>
+            <Stack sx={{ p: 0.5 }} direction={direction} {...restOptions}>{children}</Stack>
         </Box >
     );
 }

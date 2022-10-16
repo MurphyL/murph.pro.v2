@@ -1,8 +1,6 @@
 import axios from 'axios';
 
-import { format } from '../json/json-kits.v1';
-
-import {} from '/src/plug/hooks';
+import { converters } from '/src/plug/widgets/code/custom-languages';
 
 export const REST_REQUEST_RULE = /^(GET|POST|PUT|DELETE|PATCH)\s+/;
 
@@ -70,10 +68,10 @@ export const doAjaxRequest = async (url = '/', params = {}) => {
 export const renderResponse = (request = {}, response = {}) => {
     return [
         `${request.method} ${request.url}\n`,
-        format(request.body),
+        converters.json.stringify(request.body),
         `\n`,
         `HTTP/1 - ${response.status}\n`,
-        format(response.payload)
+        converters.json.stringify(response.payload)
     ].join('\n');
 }
 

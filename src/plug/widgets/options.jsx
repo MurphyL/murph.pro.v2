@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Alert, AppBar, Box, Button, Dialog, Drawer, IconButton, Slide, Slider, Stack, Toolbar, Typography } from "@mui/material";
+import { Alert, AppBar, Box, Button, Dialog, Drawer, IconButton, Slide, Stack, Toolbar, Typography } from "@mui/material";
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CloseIcon from '@mui/icons-material/Close';
 
-export function OptionBoard({ title = "设置", show = false, width = 1000, options, onClose }) {
+export function OptionBoard({ children, title = "设置", spacing = 1, message, show = false, sx = { p: 2, width: 700 }, onClose }) {
     return (
         <Drawer anchor="right" open={show}>
             <Toolbar variant="dense">
@@ -14,43 +14,13 @@ export function OptionBoard({ title = "设置", show = false, width = 1000, opti
                 </IconButton>
                 <Typography variant="h6" component="div">{title}</Typography>
             </Toolbar>
-            <Box sx={{ width }}>
-                {options ? (
-                    <div style={{ width: '90%', lineHeight: '2rem' }}>
-                        {Object.entries(options).map(([key, option]) => (
-                            <div key={key} style={{ display: 'flex', height: '2rem' }}>
-                                <div style={{ flex: 1 }}>{option.label}</div>
-                                <div style={{ flex: 2 }}>
-                                    <OptionItem option={option} />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                ) : (
-                    <Alert severity="warning">没有任何配置项</Alert>
+            <Stack sx={sx} spacing={spacing}>
+                {children ? children : (
+                    <Alert severity="warning">{message || '没有任何配置项'}</Alert>
                 )}
-            </Box>
+            </Stack>
         </Drawer>
     );
-}
-
-function OptionItem({ option }) {
-    console.log(option);
-    switch (option.type) {
-        case Number:
-            if (option.range) {
-                const [min, max] = option.range;
-                return (
-                    <Slider marks defaultValue={option.value} min={min} max={max} valueLabelDisplay="on" />
-                );
-            } else {
-                return null;
-            }
-        default:
-            return (
-                <Alert severity="warning">不支持的配置项：{option.type}</Alert>
-            );
-    }
 }
 
 const Transition = React.forwardRef(function Transition(props, ref) {

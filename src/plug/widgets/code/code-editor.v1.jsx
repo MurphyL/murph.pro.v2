@@ -55,6 +55,11 @@ export default React.forwardRef(function CodeEditor({ sx, ...props }, ref) {
                 state.instance.setValue(payload);
             }
         },
+        runAction(action) {
+            if (state.instance) {
+                state.instance.getAction(action).run();
+            }
+        },
         setLanguage(language) {
             if (state.instance) {
                 const model = state.instance.getModel();
@@ -71,3 +76,4 @@ export default React.forwardRef(function CodeEditor({ sx, ...props }, ref) {
 
 
 // TODO - Format Document - editor.action.formatDocument
+// editor.getAction('editor.action.formatDocument').run();
