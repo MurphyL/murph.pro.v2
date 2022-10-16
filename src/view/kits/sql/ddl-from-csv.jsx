@@ -59,7 +59,7 @@ export default function DdlFromCsv() {
             <Splitter sizes={[80, 20]} minSize={[1100, 400]}>
                 <CodeEditor ref={editorRef} language="json" />
                 <Stack spacing={2} sx={{ px: 2, height: '100vh', overflowY: 'auto' }}>
-                    <Group title="基础操作" direction="row" spacing={1} sx={{ mt: 1, p: 1 }}>
+                    <Group title="基础操作" direction="row" spacing={1} Component={Stack} sx={{ mt: 1, p: 1 }}>
                         <Stack direction="row" sx={{ flex: 1 }} spacing={1}>
                             <Button variant="contained" component="label">
                                 <input hidden={true} accept=".csv" type="file" onChange={e => doCsvImport(e.target.files)} />
@@ -75,7 +75,7 @@ export default function DdlFromCsv() {
                             </IconButton>
                         </Tooltip>
                     </Group>
-                    <Group title="导出配置" spacing={3} sx={{ pb: 2 }}>
+                    <Group title="导出配置" spacing={3} Component={Stack} sx={{ pb: 2 }}>
                         <TextField size="small" label="Table Name" value={state.tableName} onChange={e => dispatch({ tableName: e.target.value })} />
                         <TextField size="small" type="number" label="Batch Size" value={state.batchSize} onChange={e => dispatch({ batchSize: e.target.value })} />
                     </Group>

@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Alert, AppBar, Box, Button, Dialog, Drawer, IconButton, Slide, Stack, Toolbar, Typography } from "@mui/material";
+import { Alert, AppBar, Button, Dialog, Drawer, IconButton, Slide, Stack, Toolbar, Typography } from "@mui/material";
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CloseIcon from '@mui/icons-material/Close';
 
-export function OptionBoard({ children, title = "设置", spacing = 1, message, show = false, sx = { p: 2, width: 700 }, onClose }) {
+export function OptionBoard({ children, title = "设置", spacing = 1, direction, message, show = false, sx = { p: 2, width: 700 }, onClose }) {
     return (
         <Drawer anchor="right" open={show}>
             <Toolbar variant="dense">
@@ -14,7 +14,7 @@ export function OptionBoard({ children, title = "设置", spacing = 1, message, 
                 </IconButton>
                 <Typography variant="h6" component="div">{title}</Typography>
             </Toolbar>
-            <Stack sx={sx} spacing={spacing}>
+            <Stack sx={sx} direction={direction} spacing={spacing}>
                 {children ? children : (
                     <Alert severity="warning">{message || '没有任何配置项'}</Alert>
                 )}
@@ -27,7 +27,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export const OptionsDash = React.forwardRef(function OptionsDash({ children, direction, spacing, title, onSave, onClose, saveLabel = 'Save', open = false }, ref) {
+export const OptionsDash = React.forwardRef(function OptionsDash({ children, direction, message, spacing, title, onSave, onClose, saveLabel = 'Save', open = false }, ref) {
     const [visible, setVisible] = React.useState(open);
     React.useImperativeHandle(ref, () => ({
         show() {
@@ -52,7 +52,11 @@ export const OptionsDash = React.forwardRef(function OptionsDash({ children, dir
                     <Button color="inherit" onClick={onSave}>{saveLabel}</Button>
                 </Toolbar>
             </AppBar>
-            <Stack direction={direction} spacing={spacing} sx={{ height: 'calc(100% - 80px)' }}>{children}</Stack>
+            <Stack direction={direction} spacing={spacing} sx={{ height: 'calc(100% - 80px)' }}>
+                {children ? children : (
+                    <Alert severity="warning">{message || '没有任何配置项'}</Alert>
+                )}
+            </Stack>
         </Dialog>
     );
 });

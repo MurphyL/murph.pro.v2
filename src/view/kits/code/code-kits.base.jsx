@@ -123,7 +123,7 @@ export default function CodeKits() {
                             </IconButton>
                         </Tooltip>
                     </Box>
-                    <Group title="基本操作" direction="row">
+                    <Group title="基本操作">
                         <Button variant="contained" sx={{ m: 0.5 }} component="label">
                             <input hidden={true} accept="*" type="file" onChange={e => loadFilesContent(e.target.files)} />
                             <span>导入</span>
@@ -134,7 +134,7 @@ export default function CodeKits() {
                         ) : null}
                     </Group>
                     {language && Array.isArray(language.actions) && language.actions.length ? (
-                        <Group title="相关操作" direction="row">
+                        <Group title="相关操作">
                             {language.actions.map((item, index) => {
                                 if (!item) {
                                     return (
@@ -153,14 +153,14 @@ export default function CodeKits() {
                 <OptionsDash direction="row" title="导入" spacing={2} ref={importDashRef} open={state.importCache !== null} onSave={saveImportCache} onClose={() => dispatch({ importCache: null })}>
                     <CodeBlock sx={{ p: 1, flex: 1, height: '100%', borderRight: '1px solid #efefef', overflow: 'auto' }} dark={false} language={state.importCache.preferLanguage} children={state.importCache.content} />
                     <Stack spacing={2} sx={{ py: 2, width: 350, }}>
-                        <Group title="切换语言"  direction="row">
+                        <Group title="切换语言">
                             <RadioGroup row value={state.importCache.preferLanguage} onChange={(e, preferLanguage) => dispatch({ importCache: { ...state.importCache, preferLanguage } })}>
                                 {[language, ...(state.importCache.languages || [])].map(language => (
                                     <FormControlLabel key={language.id} value={language.id} control={<Radio />} label={language.aliases[0]} />
                                 ))}
                             </RadioGroup>
                         </Group>
-                        <Group title="相关操作"  direction="row">
+                        <Group title="相关操作">
                             {state.importCache.fileMeta.type === 'text/csv' ? (
                                 <Button>转换为 JSON</Button>
                             ) : null}
