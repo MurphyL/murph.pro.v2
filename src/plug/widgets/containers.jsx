@@ -5,14 +5,22 @@ import Split from 'react-split'
 import { styled, Box, Typography } from '@mui/material';
 
 
-export function Group({ title, children, sx = {}, direction, Component = Box, ...restOptions }) {
+export const Group = React.forwardRef(function Group({ title, children, sx = {}, direction, Component, ...restOptions }, ref) {
     return (
-        <Box component="fieldset" sx={{ p: 1, border: `1px solid #efefef`, borderRadius: 1, ...sx }}>
+        <Box component="fieldset" ref={ref} sx={{ p: 1, border: `1px solid #efefef`, borderRadius: 1, ...sx }}>
             <Typography component="legend" variant="subtitle2" sx={{ px: 0.6, color: '#455a64', userSelect: 'none' }}>{title}</Typography>
-            <Component sx={{ p: 0.5 }} direction={direction} {...restOptions}>{children}</Component>
+            {Component ? (
+                <Component direction={direction} {...restOptions}>{children}</Component>
+            ) : (
+                <Box sx={{ p: 0.5 }} direction={direction} {...restOptions}>{children}</Box>
+            )}
         </Box >
     );
-}
+});
+
+export const FullHeightBox = styled(Box)({
+    height: '100%'
+});
 
 export const Splitter = styled(Split)(({ direction = 'row' }) => ({
     display: 'flex',

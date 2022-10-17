@@ -10,15 +10,20 @@ import { Box } from '@mui/material';
  * @param {*} param1 
  * @returns 
  */
-const createEditor = (containerId, { defaultValue, language, showLineNumber = true }) => {
+const createEditor = (containerId, { defaultValue, language, showLineNumber = true, showMinimap = true, readOnly = false }) => {
     const container = document.getElementById(containerId);
     if (container.childElementCount) {
         // 兼容开发环境 hooks 会被调用两次的问题
         const editors = monaco.editor.getEditors();
         return editors.find(editor => editor._domElement.id === containerId);
     } else {
+        const minimap = {
+            enabled: showMinimap
+        };
         console.log('Create a new editor:', containerId);
         return monaco.editor.create(container, {
+            minimap,
+            readOnly,
             value: defaultValue || '',
             language: language || 'plaintext',
             lineNumbers: showLineNumber ? 'on' : 'off',
@@ -30,7 +35,7 @@ const createEditor = (containerId, { defaultValue, language, showLineNumber = tr
     }
 };
 
-export default React.forwardRef(function CodeEditor({ sx, ...props }, ref) {
+const CodeEditor = React.forwardRef(function CodeEditor({ sx, ...props }, ref) {
     const containerId = React.useId();
     const [state, dispatch] = React.useReducer((state, action) => {
         switch (action.type) {
@@ -68,12 +73,21 @@ export default React.forwardRef(function CodeEditor({ sx, ...props }, ref) {
         }
     }));
     return (
-        <Box sx={sx}>
+        <Box classes="editor" sx={sx}>
             <div id={containerId} style={{ height: '100%' }} />
         </Box>
     )
 });
 
+export default CodeEditor;
 
 // TODO - Format Document - editor.action.formatDocument
 // editor.getAction('editor.action.formatDocument').run();
+
+export function ReadOnlyEditor({ value, sx }) {
+    const resultRef = React.useRef(null);
+    React.useEffect(() => resultRef.current && resultRef.current.setValue(value), [value]);
+    return (
+        <CodeEditor ref={resultRef} language="json" defaultValue={value} showLineNumber={false} showMinimap={false} readOnly={true} sx={sx} />
+    );
+};
