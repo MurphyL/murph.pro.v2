@@ -184,7 +184,13 @@ export const converters = {
             }
         },
         stringify(source) {
-            return YAML.dump(source);
+            return YAML.dump(source, {
+                noRefs: true,
+                indent: INDENT_SIZE,
+                lineWidth: -1,
+                quotingType: '"',
+                forceQuotes: true,
+            });
         },
         json(source) {
             return converters.json.stringify(converters.yaml.parse(source));

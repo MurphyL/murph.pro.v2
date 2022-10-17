@@ -11,6 +11,8 @@ import CodeEditor from "/src/plug/widgets/code/code-editor.v1";
 
 import styles from './json-view.module.css';
 
+
+// https://www.npmjs.com/package/react-inspector
 export default function JSONView() {
 	const [ currentView, setCurrentView ] = React.useState('code');
 	return (
