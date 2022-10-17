@@ -10,7 +10,7 @@ import { SiJson, SiMysql, SiVisualstudiocode } from "react-icons/si";
 
 import KitsNaviLayout from "/src/plug/layout/kits-root.layout";
 
-const JSONView = React.lazy(() => import("./json/json-view/json-view.module"));
+const JSONView = React.lazy(() => import("./json/json-view"));
 const ExpressionQueryJSON = React.lazy(() => import("./json/expression-query"));
 
 const DataXOptionsMaker = React.lazy(() => import("./datax/datax-options.module"));
