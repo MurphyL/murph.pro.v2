@@ -1,7 +1,6 @@
 import React from 'react';
 
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import DataObjectIcon from '@mui/icons-material/DataObject';
@@ -9,30 +8,33 @@ import DataObjectIcon from '@mui/icons-material/DataObject';
 import { Group, Splitter } from "/src/plug/widgets/containers";
 import CodeEditor from "/src/plug/widgets/code/code-editor.v1";
 
-import styles from './json-view.module.css';
-
+const VIEWS = ['tree', 'code'];
 
 // https://www.npmjs.com/package/react-inspector
 export default function JSONView() {
-	const [ currentView, setCurrentView ] = React.useState('code');
+	const [state, dispatch] = React.useReducer((state, action) => {
+		return { ...state, ...action };
+	}, {}, (initial) => {
+		return { ...initial, selected: [ VIEWS[0] ] };
+	});
 	return (
-		<Splitter className={styles.root}>
+		<Splitter>
 			<CodeEditor language="json" />
-			<div className={styles.views}>
-				<Group title="文本视图">
-					<div className={styles.switch}>
-						<ToggleButtonGroup size="small" value={[currentView]} onChange={(e, [ view ]) => setCurrentView(view)}>
-							<ToggleButton value="code" key="code">
-								<DataObjectIcon />
-							</ToggleButton>
-							<ToggleButton value="tree" key="tree">
-								<AccountTreeIcon />
-							</ToggleButton>
-						</ToggleButtonGroup>
-					</div>
-					<div>Hello</div>
-				</Group>
-			</div>
+			<Box sx={{ position: 'relative', p: 1 }}>
+				<ToggleButtonGroup size="small" value={state.selected} sx={{position: 'absolute', top: '15px', right: '15px'}} onChange={(e, [_, view]) => dispatch({selected: [view]})}>
+					<ToggleButton value="tree">
+						<AccountTreeIcon />
+					</ToggleButton>
+					<ToggleButton value="code">
+						<DataObjectIcon />
+					</ToggleButton>
+				</ToggleButtonGroup>
+				{state.selected === 'code' ? (
+					<div>Code</div>
+				) : (
+					<div>Tree</div>
+				)}
+			</Box>
 		</Splitter>
 	);
 }
