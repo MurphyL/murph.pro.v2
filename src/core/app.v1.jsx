@@ -7,9 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import CheatSheets from "/src/view/cheat-sheets";
 
-import HTTPStatusCodeList from "../view/kits/http/status-code-list";
-import HTTPContentTypeList from "../view/kits/http/content-type-list";
-import HTTPResponseLineList from "../view/kits/http/response-line-list";
+import HTTPMessagePayload from "../view/kits/http/http-message";
 
 import './app.v1.css';
 
@@ -25,7 +23,7 @@ export default function App() {
                         <Routes>
                             <Route path="/" element={<div>Home</div>} />
                             <Route path="/cheat-sheets/*" element={<CheatSheets />}>
-                                <Route path="http/message" element={<HTTPResponseLineList />} />
+                                <Route path="http/message" element={<HTTPMessagePayload />} />
                             </Route>
                             <Route path="/snippets/*" element={<SnippetRoutes />} />
                             <Route path="/kits/*" element={<KitsRoutes />} errorElement={<div>Kits Error</div>} />

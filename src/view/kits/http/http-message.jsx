@@ -6,16 +6,17 @@ import { useDocumentTitle } from '/src/plug/hooks';
 
 import CodeBlock from "/src/plug/widgets/code/code-block.v1";
 
-const MESSAGE_PARTS = ['<method>', '<status-code>', '<headers>'];
+const MESSAGE_PARTS = ['status-code', 'method', 'headers'];
 
 /**
+ * - // https://seo.juziseo.com/doc/http_code/
  * - https://www.runoob.com/http/http-methods.html
  * - https://www.runoob.com/http/http-header-fields.html
  * @returns 
  */
 export default function HTTPResponseLineList() {
 	useDocumentTitle('HTTP 响应');
-	const [selected, setPart] = React.useState('<status-code>');
+	const [selected, setPart] = React.useState('status-code');
 	return (
 		<Box direction="row" sx={{ display: 'flex', height: '100%', }}>
 			<Stack spacing={1} sx={{ flex: 1, py: '10px', px: 2, height: 'calc(100% - 10px * 2)', overflowY: 'auto' }}>
@@ -25,33 +26,31 @@ export default function HTTPResponseLineList() {
 					))}
 				</Stack>
 				{Object.entries(HTTP_STATUS).map(([group, data]) => (
-					<Paper key={group} variant="outlined">
-						<List subheader={<GroupHeader label={`HTTP 状态码 - ${data.label}（${group}）`} desc={data.desc} />}>
-							{data.codes.map((code, index) => (
-								<ListItem key={index} >
-									<ListItemText primary={code.phrase} secondary={code.desc} />
-								</ListItem>
-							))}
-						</List>
-					</Paper>
+					<List key={group} component={Paper} variant="outlined" subheader={<GroupHeader label={`HTTP 状态码 - ${data.label}（${group}）`} desc={data.desc} />}>
+						{data.codes.map((code, index) => (
+							<ListItem key={index} >
+								<ListItemText primary={code.phrase} secondary={code.desc} />
+							</ListItem>
+						))}
+					</List>
 				))}
 			</Stack>
-			<Stack sx={{ px: 1, width: '700px', overflowY: 'auto' }}>
-				<List subheader={<GroupHeader label="请求报文" desc="请求地址、参数" />}>
+			<Stack spacing={1} sx={{ px: 1, py: '10px', width: '700px', overflowY: 'auto' }}>
+				<List component={Paper} variant="outlined" subheader={<GroupHeader label="请求报文" desc="请求地址、参数" />}>
 					<CodeBlock dark={false} language="shell" children={[
 						'<method> <request-URL> <version>			# Head line',
 						'<headers>									# 请求头\n',
 						'<entity-body>								# 响应体'
 					].join('\n')} />
 				</List>
-				<List subheader={<GroupHeader label="响应报文" desc="响应数据" />}>
+				<List component={Paper} variant="outlined" subheader={<GroupHeader label="响应报文" desc="响应数据" />}>
 					<CodeBlock dark={false} language="shell" children={[
 						'<version> <status-code> <reason-phrase>	# Head line',
 						'<headers>									# 请求头\n',
 						'<entity-body>								# 响应体'
 					].join('\n')} />
 				</List>
-				<List subheader={<GroupHeader label="报文描述" desc="报文参数描述" />}>
+				<List component={Paper} variant="outlined" subheader={<GroupHeader label="报文描述" desc="报文参数描述" />}>
 					<CodeBlock dark={false} language="shell" children={[
 						'<method> - 客户端希望服务器对请求资源执行的动作；',
 						'<request-URL> - 指定锁所请求的资源；',

@@ -18,7 +18,6 @@ const DataXOptionsMaker = React.lazy(() => import("./datax/datax-options.module"
 const DdlToX = React.lazy(() => import("./sql/ddl-to-x"));
 const DdlFromCsv = React.lazy(() => import('./sql/ddl-from-csv'));
 
-const StatusCodeList = React.lazy(() => import("./http/status-code-list"));
 const RestTemplate = React.lazy(() => import("./http/rest-template/rest-template.v1.module"));
 const ElasticSearchLayout = React.lazy(() => import("./elasticsearch/layout/es-layout.v1.module"));
 
@@ -56,7 +55,6 @@ export default function KitsRoutes() {
                     <Route path="options" element={<DataXOptionsMaker />} />
                 </Route>
                 <Route path="/http/*">
-                    <Route path="status-code" element={<StatusCodeList />} />
                     <Route path="rest-template" element={<RestTemplate />} />
                 </Route>
                 <Route path="/code" element={<CodeKits />}>
