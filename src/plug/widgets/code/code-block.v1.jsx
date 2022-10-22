@@ -13,7 +13,7 @@ export default function CodeBlock({ language, children, sx, dark = true, showLin
         language: language,
         showLineNumbers: showLineNumbers,
         style: dark ? nord : coy,
-        customStyle: { margin: 0, padding: '1rem 0', width: '100%' }
+        customStyle: { padding: '1rem' }
     }), [language, dark, children])
     return (
         <Box sx={sx}>

@@ -123,7 +123,7 @@ export default function DDL2X() {
         })
     };
     return (
-        <Splitter sizes={[45, 55]} minSizes={[500, 300]}>
+        <Splitter sizes={[45, 55]} minSize={[500, 300]}>
             <CodeEditor ref={editorRef} language="sql" />
             <Stack spacing={1} sx={{ margin: 1, p: 1 }}>
                 {state.message ? (

@@ -17,6 +17,7 @@ import { useDocumentTitle } from '/src/plug/hooks';
 import textConvertersReducer from './text-converters.v1.reducer';
 
 import styles from './text-converters.v1.module.css';
+import { Box } from '@mui/material';
 
 const convertors = {
 	crypto: {
@@ -51,12 +52,6 @@ const convertors = {
 		}, {
 			type: 'url/dencode',
 			display: 'Dencode',
-		}]
-	},
-	cron: {
-		display: 'CRON',
-		actions: [{
-			display: 'Unicode 转中文'
 		}]
 	}
 };
@@ -94,7 +89,7 @@ export default function TextConverters() {
 			</Tabs>
 			<div className={styles.stage}>
 				<Splitter sizes={[65, 35]} minSize={[700, 500]}>
-					<div className={styles.form}>
+					<Box className={styles.form} sx={{ m: 1 }}>
 						<div className={styles.source}>
 							<TextField {...TEXT_AREA_PROPS} autoFocus={true} label="原文" value={state.source} onChange={(e) => dispatch({ type: 'exchange', source: e.target.value })} />
 						</div>
@@ -107,7 +102,7 @@ export default function TextConverters() {
 						<div className={styles.target}>
 							<CodeBlock showLineNumbers={false} children={state.target} language={state.language || 'plaintext'} />
 						</div>
-					</div>
+					</Box>
 					<div className={styles.extra}>
 						<p>相关文档</p>
 					</div>
