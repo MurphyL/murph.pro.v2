@@ -27,6 +27,7 @@ const TextDifference = React.lazy(() => import("./difference/text-difference.mod
 const CodeKits = React.lazy(() => import('./code/code-kits.base'));
 
 const CronParser = React.lazy(() => import('./expression/cron-parser'));
+const DatetimeKits = React.lazy(() => import('./datetime/datetime-kits'));
 
 export default function KitsRoutes() {
     return (
@@ -34,7 +35,12 @@ export default function KitsRoutes() {
             <Route path="/" element={<KitsNaviLayout navi={ROOT_NAVI_ITEMS} />}>
                 <Route path="/es" element={<Navigate to="../elasticsearch" />} />
                 <Route path="/elasticsearch" element={<ElasticSearchLayout />} />
-                <Route path="/cron/parser" element={<CronParser />} />
+                <Route path="/datetime" element={<DatetimeKits />}>
+
+                </Route>
+                <Route path="/cron/*" >
+                    <Route path="parser" element={<CronParser />} />
+                </Route>
                 <Route path="/sql/*" >
                     <Route path="ddl2x" element={<DdlToX />} />
                     <Route path="inserts/from_csv" element={<DdlFromCsv />} />
