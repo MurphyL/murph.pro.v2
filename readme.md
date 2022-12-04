@@ -32,3 +32,10 @@ query {
   }
 }
 ```
+
+### Cheat Sheet
+
+> 参考 - https://devhints.io/httpie
+
+- Intro
+- Block

@@ -1,7 +1,7 @@
 import React from "react";
 import { SnackbarProvider } from 'notistack';
 import { RecoilRoot } from 'recoil';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter as BrowserRouter, Routes, Route } from "react-router-dom";
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 
