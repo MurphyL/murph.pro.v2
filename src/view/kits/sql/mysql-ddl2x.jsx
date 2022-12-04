@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { useSetRecoilState } from 'recoil';
-
 import { select, insert } from 'sql-bricks';
 import { camelCase, trim, upperFirst, zipObject } from 'lodash';
 
@@ -9,11 +7,16 @@ import { useSnackbar } from 'notistack';
 
 import { Parser } from 'sql-ddl-to-json-schema'
 
-import { Alert, Avatar, IconButton, Stack, SvgIcon, ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
+import { Alert, Box, Stack, SvgIcon, ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
+
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { SiJava, SiMysql } from "react-icons/si";
 
-import PodcastsIcon from '@mui/icons-material/Podcasts';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 import { Splitter } from "/src/plug/widgets/containers";
@@ -27,9 +30,10 @@ import { OptionsDash } from '/src/plug/widgets/options';
 
 import { useDocumentTitle } from '/src/plug/hooks';
 
-import { sqlEditorState, format as formatSQL } from './sql-kits.v1';
+import { format as formatSQL } from './sql-kits.v1';
 import { createPojoClass } from '../java/java-kits.v1';
 import ExtraButton from '../../../plug/widgets/buttons';
+
 
 
 const parser = new Parser('mysql');
@@ -88,17 +92,10 @@ const reducer = (state, action) => {
 
 export default function DDL2X() {
     useDocumentTitle('DDL 工具集');
-    const editorRef = React.useRef(null);
-    const dataxOptionsRef = React.useRef(null);
     const { enqueueSnackbar } = useSnackbar();
-    const setSqlEditorState = useSetRecoilState(sqlEditorState);
     const [state, dispatch] = React.useReducer(reducer, { message: '暂无可渲染数据' });
-    const doParse = () => {
-        dispatch({ type: 'message', message: '正在解析 DDL' })
-        if (!editorRef || !editorRef.current) {
-            return;
-        }
-        const sql = trim(editorRef.current.getValue());
+    const onChange = (content) => {
+        const sql = trim(content);
         if (sql.length === 0) {
             dispatch({ type: 'message', level: 'error', message: '请输入一条 SQL' })
             enqueueSnackbar('请输入一条 SQL', {
@@ -106,49 +103,38 @@ export default function DDL2X() {
                 variant: 'error',
             });
             return;
+        } else {
+            // const jsonSchemaDocuments = parser.feed(sql).toJsonSchemaArray(options);
+            const compactJsonTablesArray = parser.feed(sql).toCompactJson(parser.results);
+            dispatch({ type: 'ddl/parsed', parsed: compactJsonTablesArray })
         }
-        // const jsonSchemaDocuments = parser.feed(sql).toJsonSchemaArray(options);
-        const compactJsonTablesArray = parser.feed(sql).toCompactJson(parser.results);
-        // console.log('compactJsonTablesArray:', compactJsonTablesArray);
-        /** 
-        KITS_AXIOS_INSTANCE.post('/sql/ddl/parse', { sql }).then(resp => {
-            const [success, content] = resolveServerKitResponse(resp);
-            if (success) {
-                setSqlEditorState(sql);
-                dispatch({ type: 'ddl/parsed', parsed: content })
-            } else {
-                dispatch({ type: 'message', level: 'error', message: content || '服务端错误' })
-                enqueueSnackbar(content || '服务端错误', {
-                    autoHideDuration: 3000,
-                    variant: 'error',
-                });
-            }
-        }).catch(e => {
-            dispatch({ type: 'message', level: 'error', message: e.message || '请求出错' })
-            enqueueSnackbar(e.message || '请求出错', {
-                autoHideDuration: 3000,
-                variant: 'error',
-            });
-        })
-        */
     };
     return (
         <Splitter sizes={[45, 55]} minSize={[500, 300]}>
-            <CodeEditor ref={editorRef} language="sql" />
-            <Stack spacing={1} sx={{ margin: 1, p: 1 }}>
+            <CodeEditor language="sql" onChange={onChange} />
+            <Stack spacing={1} sx={{ overflowY: 'scroll' }}>
                 {state.message ? (
-                    <Alert severity={state.level || 'info'} sx={{ p: 1.2 }}>{state.message}</Alert>
+                    <Alert sx={{ m: 2, p: 1.2 }} severity={state.level || 'info'}>{state.message}</Alert>
                 ) : (
-                    <CodeBlock language={state.language} children={state.content} />
+                    <Box sx={{ m: 1.5 }}>
+                        {state.parsed.map((item, index) => (
+                            <Accordion key={index} disableGutters elevation={0} square sx={{ border: `1px solid rgba(0, 0, 0, 0.1)` }}>
+                                <AccordionSummary expandIcon={<ExpandMoreIcon />} id={`stmt-${index}`} sx={{ bgcolor: 'background.paper', }}>
+                                    <Typography sx={{ width: '33%', flexShrink: 0 }}>{item.name}</Typography>
+                                    {item.options.comment && (
+                                        <Typography sx={{ color: 'text.secondary' }}>{item.options.comment}</Typography>
+                                    )}
+                                </AccordionSummary>
+                                <AccordionDetails sx={{ py: 0, borderTop: '1px solid rgba(0, 0, 0, .125)' }}>
+                                    <CodeBlock language={state.language} dark={false} children={state.content} />
+                                </AccordionDetails>
+                            </Accordion>
+                        ))}
+
+                    </Box>
+
                 )}
-                <Stack spacing={2} sx={{ position: 'absolute', top: 7, right: 16 }}>
-                    <IconButton onClick={doParse}>
-                        <Tooltip placement="left" title="Parse DDL">
-                            <Avatar>
-                                <PodcastsIcon />
-                            </Avatar>
-                        </Tooltip>
-                    </IconButton>
+                <Stack spacing={2} sx={{ position: 'absolute', top: 70, right: 25 }}>
                     {state.parsed ? (
                         <ToggleButtonGroup orientation="vertical" size="small" sx={{ bgcolor: '#fff' }} onChange={(e, [type]) => dispatch({ type })}>
                             {Object.entries(rendersV1).map(([key, render]) => (
@@ -158,20 +144,21 @@ export default function DDL2X() {
                             ))}
                         </ToggleButtonGroup>
                     ) : null}
-                    {state.action && state.action === 'datax/options' ? (
-                        <React.Fragment>
-                            <ExtraButton extra={<SettingsIcon />} onClick={(e) => dataxOptionsRef && dataxOptionsRef.current && dataxOptionsRef.current.show()}>
-                                <SvgIcon>
-                                    <DataxIcon />
-                                </SvgIcon>
-                            </ExtraButton>
-                            <OptionsDash ref={dataxOptionsRef} title="DataX Settings">
-                                <DataxOptionsDash />
-                            </OptionsDash>
-                        </React.Fragment>
-                    ) : null}
+
                 </Stack>
             </Stack>
+            {state.action && state.action === 'datax/options' ? (
+                <React.Fragment>
+                    <ExtraButton extra={<SettingsIcon />} onClick={(e) => dataxOptionsRef && dataxOptionsRef.current && dataxOptionsRef.current.show()}>
+                        <SvgIcon>
+                            <DataxIcon />
+                        </SvgIcon>
+                    </ExtraButton>
+                    <OptionsDash ref={dataxOptionsRef} title="DataX Settings">
+                        <DataxOptionsDash />
+                    </OptionsDash>
+                </React.Fragment>
+            ) : null}
         </Splitter >
     );
 }

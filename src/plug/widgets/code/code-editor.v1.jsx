@@ -2,6 +2,8 @@ import React from 'react';
 
 import * as monaco from 'monaco-editor';
 
+import { isFunction } from 'lodash';
+
 import { Box } from '@mui/material';
 
 /**
@@ -10,7 +12,7 @@ import { Box } from '@mui/material';
  * @param {*} param1 
  * @returns 
  */
-const createEditor = (containerId, { defaultValue, language, showLineNumber = true, showMinimap = true, readOnly = false }) => {
+const createEditor = (containerId, { defaultValue, language, onChange, showLineNumber = true, showMinimap = true, readOnly = false }) => {
     const container = document.getElementById(containerId);
     if (container.childElementCount) {
         // 兼容开发环境 hooks 会被调用两次的问题
@@ -21,7 +23,7 @@ const createEditor = (containerId, { defaultValue, language, showLineNumber = tr
             enabled: showMinimap
         };
         console.log('Create a new editor:', containerId);
-        return monaco.editor.create(container, {
+        const editor = monaco.editor.create(container, {
             minimap,
             readOnly,
             value: defaultValue || '',
@@ -29,9 +31,16 @@ const createEditor = (containerId, { defaultValue, language, showLineNumber = tr
             lineNumbers: showLineNumber ? 'on' : 'off',
             multiCursorMergeOverlapping: showLineNumber,
             fontSize: 20,
+            links: false,
             smoothScrolling: true,
             automaticLayout: true,
         });
+        if (onChange && isFunction(onChange)) {
+            editor.getModel().onDidChangeContent(() => {
+                onChange.call(null, editor.getValue());
+            });
+        }
+        return editor;
     }
 };
 
