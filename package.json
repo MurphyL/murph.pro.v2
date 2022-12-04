@@ -16,7 +16,6 @@
         "@mui/material": "^5.10.4",
         "@rehooks/component-size": "^1.0.3",
         "axios": "^0.27.2",
-        "clsx": "^1.2.1",
         "copy-to-clipboard": "^3.3.2",
         "cronstrue": "^2.11.0",
         "crypto-js": "^4.1.1",
@@ -41,6 +40,7 @@
         "react-syntax-highlighter": "^15.5.0",
         "recoil": "^0.7.5",
         "sql-bricks": "^3.0.0",
+        "sql-ddl-to-json-schema": "^4.0.7",
         "sql-formatter": "^10.6.0",
         "stringify-object": "^4.0.1",
         "strip-json-comments": "^5.0.0"

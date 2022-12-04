@@ -7,6 +7,8 @@ import { camelCase, trim, upperFirst, zipObject } from 'lodash';
 
 import { useSnackbar } from 'notistack';
 
+import { Parser } from 'sql-ddl-to-json-schema'
+
 import { Alert, Avatar, IconButton, Stack, SvgIcon, ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
 
 import { SiJava, SiMysql } from "react-icons/si";
@@ -21,13 +23,16 @@ import { DataxIcon, DataxOptionsDash } from '../datax/datax-options.kits.v1';
 import { OptionsDash } from '/src/plug/widgets/options';
 
 
-import { KITS_AXIOS_INSTANCE, resolveServerKitResponse } from '/src/plug/server_kits';
+// import { KITS_AXIOS_INSTANCE, resolveServerKitResponse } from '/src/plug/server_kits';
 
 import { useDocumentTitle } from '/src/plug/hooks';
 
-import { sqlEditorState, format as formatSQL } from '../sql/sql-kits.v1';
+import { sqlEditorState, format as formatSQL } from './sql-kits.v1';
 import { createPojoClass } from '../java/java-kits.v1';
 import ExtraButton from '../../../plug/widgets/buttons';
+
+
+const parser = new Parser('mysql');
 
 const rendersV1 = {
     'java/classes': {
@@ -102,6 +107,10 @@ export default function DDL2X() {
             });
             return;
         }
+        // const jsonSchemaDocuments = parser.feed(sql).toJsonSchemaArray(options);
+        const compactJsonTablesArray = parser.feed(sql).toCompactJson(parser.results);
+        // console.log('compactJsonTablesArray:', compactJsonTablesArray);
+        /** 
         KITS_AXIOS_INSTANCE.post('/sql/ddl/parse', { sql }).then(resp => {
             const [success, content] = resolveServerKitResponse(resp);
             if (success) {
@@ -121,6 +130,7 @@ export default function DDL2X() {
                 variant: 'error',
             });
         })
+        */
     };
     return (
         <Splitter sizes={[45, 55]} minSize={[500, 300]}>
@@ -150,7 +160,7 @@ export default function DDL2X() {
                     ) : null}
                     {state.action && state.action === 'datax/options' ? (
                         <React.Fragment>
-                            <ExtraButton extra={<SettingsIcon />} onClick={(e) => dataxOptionsRef && dataxOptionsRef.current && dataxOptionsRef.current.show() }>
+                            <ExtraButton extra={<SettingsIcon />} onClick={(e) => dataxOptionsRef && dataxOptionsRef.current && dataxOptionsRef.current.show()}>
                                 <SvgIcon>
                                     <DataxIcon />
                                 </SvgIcon>

@@ -15,8 +15,7 @@ const ExpressionQueryJSON = React.lazy(() => import("./json/expression-query"));
 
 const DataXOptionsMaker = React.lazy(() => import("./datax/datax-options.module"));
 
-const DdlToX = React.lazy(() => import("./sql/ddl-to-x"));
-const DdlFromCsv = React.lazy(() => import('./sql/ddl-from-csv'));
+const MySQLDDL2X = React.lazy(() => import("./sql/mysql-ddl2x"));
 
 const RestTemplate = React.lazy(() => import("./http/rest-template/rest-template.v1.module"));
 const ElasticSearchLayout = React.lazy(() => import("./elasticsearch/layout/es-layout.v1.module"));
@@ -42,8 +41,7 @@ export default function KitsRoutes() {
                     <Route path="parser" element={<CronParser />} />
                 </Route>
                 <Route path="/sql/*" >
-                    <Route path="ddl2x" element={<DdlToX />} />
-                    <Route path="inserts/from_csv" element={<DdlFromCsv />} />
+                    <Route path="mysql/ddl2x" element={<MySQLDDL2X />} />
                 </Route>
                 <Route path="/json/*">
                     <Route path="tree-view" element={<JSONView />} />
@@ -83,7 +81,7 @@ const ROOT_NAVI_ITEMS = [{
     icon: (<DynamicFormIcon />),
     label: 'REST Template',
 }, {
-    url: '/kits/sql/ddl2x',
+    url: '/kits/sql/mysql/ddl2x',
     icon: (<SvgIcon><SiMysql /></SvgIcon>),
     label: 'DDL Parser & Render',
 }, {
