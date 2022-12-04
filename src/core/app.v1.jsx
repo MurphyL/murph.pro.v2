@@ -9,6 +9,7 @@ import CheatSheets from "/src/view/cheat-sheets";
 
 import HTTPMessagePayload from "../view/kits/http/http-message";
 
+import 'normalize.css';
 import './app.v1.css';
 
 const KitsRoutes = React.lazy(() => import('../view/kits/kits-routes.v1'));
