@@ -1,6 +1,8 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 
+import piniaPersistedstate from 'pinia-plugin-persistedstate';
+
 import router from './core/router';
 import appV1 from './core/app.v1.vue';
 
@@ -43,7 +45,10 @@ self.MonacoEnvironment = {
 
 const app = createApp(appV1);
 
-app.use(createPinia());
+const pinia = createPinia();
+pinia.use(piniaPersistedstate);
+
+app.use(pinia);
 app.use(router);
 
 app.mount('#root');
