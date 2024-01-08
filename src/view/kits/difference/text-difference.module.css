@@ -1,8 +1,0 @@
-.root,
-.root .editor {
-    height: 100%;
-}
-
-.root {
-    overflow-y: hidden;
-}

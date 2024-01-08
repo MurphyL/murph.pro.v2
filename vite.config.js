@@ -1,20 +1,20 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import monacoEditorPlugin from 'vite-plugin-monaco-editor'
+import { fileURLToPath, URL } from 'node:url';
+import { defineConfig } from 'vite';
+
+import vue from '@vitejs/plugin-vue';
 
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
-        react(),
-        monacoEditorPlugin.default({})
+        vue(),
     ],
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url))
+      }
+    },
     server: {
         proxy: {
-            '/endpoints': {
-                target: 'http://127.0.0.1:5000',
-                changeOrigin: true,
-                rewrite: path => path.replace(/^\/endpoints/, '')
-            }
         }
     }
 })
