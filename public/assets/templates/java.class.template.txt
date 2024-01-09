@@ -1,9 +1,0 @@
-/**
- * 
- * 数据表： <%= data.schema %>.<%= data.table %>
- */
-public class <%= pascalCase(data.table) %> {
-	
-<% _.map(data.columns, (column) => print(indent + 'private Integer ' + camelCase(column.name) + ';\n\n')); %>
-
-}

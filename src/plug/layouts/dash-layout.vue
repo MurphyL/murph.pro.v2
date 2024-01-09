@@ -1,13 +1,15 @@
 <template>
     <div class="dash-layout">
         <div class="header">
-            <NMenu responsive mode="horizontal" :options="menuOptions" />
+            <NMenu responsive mode="horizontal" :options="topNavi" v-model:value="activeMenuItem" />
         </div>
         <div class="stage" :class="{ 'with-sidebar': hasSidebar }">
             <div class="content">
                 <RouterView />
             </div>
-            <RouterView name="sidebar" />
+            <div class="sidebar" v-if="hasSidebar">
+                <RouterView name="sidebar" />
+            </div>
         </div>
     </div>
 </template>
@@ -16,79 +18,71 @@
 import { defineComponent, h } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
 
-import { NIcon, NMenu } from 'naive-ui';
+import { last, uniqueId } from 'lodash';
 
-import { HomeRound, MoreHorizFilled } from '@vicons/material';
+import { NMenu } from 'naive-ui';
 
-const renderIcon = (icon) => {
-    return () => h(NIcon, null, { default: () => h(icon) });
-};
+import VIcon from '@/plug/widgets/v-icon.vue';
 
-const jumper = ({ label, link }, router = false) => {
-    return () => h(router ? RouterLink : 'a', link, { default: () => label });
-};
+import { useLayoutStore } from '@/plug/stores/layout-store';
 
-const menuOptions = [
-    {
-        key: 'home',
-        icon: renderIcon(HomeRound),
-        label: jumper({
-            label: 'Home',
-            link: { to: { name: 'json-kits', } },
-        }, true),
-    }, {
-        key: 'more',
-        label: '舞',
-        icon: renderIcon(MoreHorizFilled),
-        children: [
-            {
-                key: 'sql-formatter',
-                label: jumper({
-                    label: 'SQL Formatter',
-                    link: { to: { name: 'sql-formatter', } },
-                }, true),
-            },
-            {
-                key: 'kits-dash',
-                label: jumper({
-                    label: 'Kits Dash',
-                    link: { to: { name: 'sql-formatter', } },
-                }, true),
-            },
-            {
-                key: 'devdocs',
-                label: jumper({
-                    label: 'DevDocs',
-                    link: {
-                        href: 'https://devdocs.io/',
-                        target: '_blank',
-                        rel: 'noopenner noreferrer'
-                    }
-                }),
-            }
-        ]
-    }
-];
+import preparedTopNavi from '@/plug/dataset/top-navi.json';
 
 export default defineComponent({
     name: 'dash-layout.v1',
     components: {
-        NMenu
+        NMenu,
+    },
+    props: {
+        hasSidebar: {
+            type: Boolean,
+            default: false,
+        }
     },
     setup() {
+        const layoutStore = useLayoutStore();
         return {
-            menuOptions
+            layoutStore,
         };
     },
     computed: {
-        hasSidebar() {
-            let ret = false;
-            this.$route.matched.forEach(e => {
-                if ('sidebar' in e.components) {
-                    ret = true;
+        activeMenuItem: {
+            get() {
+                return last(this.$route.matched.map(e => e.path));
+            },
+            set(val) {
+                console.log(val);
+            }
+        },
+        topNavi() {
+            return this.wrapTopNavi(preparedTopNavi);
+        }
+    },
+    methods: {
+        wrapTopNavi(menus = []) {
+            const result = [];
+            menus.forEach((e = {}) => {
+                const item = { key: 'key' in e ? e.key : uniqueId('top-navi-') };
+                if ('icon' in e) {
+                    if(typeof(e.icon) === 'string') {
+                        item.icon = () => h(VIcon, { slug: e.icon, size: 20 });
+                    } else {
+                        item.icon = () => h(VIcon, { slug: e.icon.slug, group: e.icon.group, size: 20 });
+                    }
+                }
+                if ('children' in e && Array.isArray(e.children)) {
+                    item.label = () => h('a', e.target, { default: () => e.label });
+                    item.children = this.wrapTopNavi(e.children);
+                    result.push(item);
+                } else if ('href' in e.target) {
+                    item.label = () => h('a', e.target, { default: () => e.label });
+                    result.push(item);
+                } else if ('to' in e.target) {
+                    item.label = () => h(RouterLink, e.target, { default: () => e.label });
+                    result.push(item);
                 }
             });
-            return ret;
+            return result;
         }
     }
 });
@@ -106,7 +100,7 @@ export default defineComponent({
     }
 
     .stage {
-        padding: 5px;
+        padding: 5px 0;
 
         &.with-sidebar {
             display: grid;

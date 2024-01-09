@@ -11,8 +11,7 @@ import { NCard } from 'naive-ui';
 export default defineComponent({
     name: 'kits-dash',
     components: {
-        NCard,
+        NCard, 
     },
 });
-
 </script>

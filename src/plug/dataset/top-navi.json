@@ -1,0 +1,44 @@
+[
+    {
+        "key": "/kits/dash",
+        "label": "主页",
+        "icon": "HomeRound",
+        "target": {
+            "to": {
+                "name": "kits-dash"
+            }
+        }
+    },    
+    {
+        "key": "/data/json-kits",
+        "label": "JSON Kits",
+        "icon": { "group": "simple-icons", "slug": "JSON" },
+        "target": {
+            "to": {
+                "name": "json-kits"
+            }
+        }
+    },
+    {
+        "key": "/data/sql-formatter",
+        "label": "SQL Formatter",
+        "icon": { "group": "simple-icons", "slug": "SQLite" },
+        "target": {
+            "to": {
+                "name": "sql-formatter"
+            }
+        }
+    },
+    {
+        "label": "更多",
+        "icon": "HdrStrongOutlined",
+        "children": [{
+            "label": "开发文档",
+            "target": {
+                "href": "https://devdocs.io/",
+                "target": "_blank",
+                "rel": "noopenner noreferrer"
+            }
+        }]
+    }
+]
