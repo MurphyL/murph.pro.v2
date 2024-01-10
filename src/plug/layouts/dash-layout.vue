@@ -100,7 +100,7 @@ export default defineComponent({
     }
 
     .stage {
-        padding: 5px 0;
+        padding: 3px 0;
 
         &.with-sidebar {
             display: grid;
